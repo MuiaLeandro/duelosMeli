@@ -1,0 +1,50 @@
+[33mcommit a39184a1e9d7c06424d3913a40a84e486536be71[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/binding_views[m[33m)[m
+Author: LeanTrk <lmuia@alumno.unlam.edu.ar>
+Date:   Sat Sep 11 19:49:41 2021 -0300
+
+    Add data binding to layouts and files
+
+[33mcommit eaad40f75ac128cfc30e3720d48f555ae9c36f4f[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: fbd8719 7cc12c3
+Author: learanda <49699988+learanda@users.noreply.github.com>
+Date:   Thu Sep 9 21:14:41 2021 -0300
+
+    Merge pull request #1 from MuiaLeandro/feature/activities-design
+    
+    Add the views to the activities
+
+[33mcommit 7cc12c3e7d403be83036d537ae07462fb3a3677d[m[33m ([m[1;31morigin/feature/activities-design[m[33m)[m
+Author: Brenda Rodriguez <rodriguez.brenm@gmail.com>
+Date:   Thu Sep 9 20:21:01 2021 -0300
+
+    Add the views to the activities
+
+[33mcommit fbd8719191d73c6e1d087b6e3da98259acf25790[m
+Author: Lean M <74152144+MuiaLeandro@users.noreply.github.com>
+Date:   Thu Sep 9 14:05:50 2021 -0300
+
+    Update .gitignore
+
+[33mcommit 8e677642c778a6c9265163dddac9955e2f06bd22[m
+Author: Lean M <74152144+MuiaLeandro@users.noreply.github.com>
+Date:   Thu Sep 9 12:49:22 2021 -0300
+
+    Delete .idea directory
+
+[33mcommit 8ce37e121bec2ff83b9e73065ee429e17400066b[m[33m ([m[1;32mActivities_design[m[33m)[m
+Author: LeanTrk <lmuia@alumno.unlam.edu.ar>
+Date:   Wed Sep 8 21:43:52 2021 -0300
+
+    New activities added
+
+[33mcommit 4afd0c19bacf3bc0c9a4d4eb7e3254e863bc2325[m
+Author: LeanTrk <lmuia@alumno.unlam.edu.ar>
+Date:   Wed Sep 8 21:12:34 2021 -0300
+
+    Gradle update
+
+[33mcommit 16ee712120a118753ccf610f9929a21c80e94e9d[m
+Author: LeanTrk <lmuia@alumno.unlam.edu.ar>
+Date:   Wed Sep 8 21:04:45 2021 -0300
+
+    First commit
