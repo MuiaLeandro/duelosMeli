@@ -1,6 +1,8 @@
 package ar.teamrocket.duelosmeli.service
 
 import ar.teamrocket.duelosmeli.model.Article
+import ar.teamrocket.duelosmeli.model.Articles
+import ar.teamrocket.duelosmeli.model.Categories
 import ar.teamrocket.duelosmeli.model.Category
 import com.google.gson.Gson
 import retrofit2.Callback
@@ -22,11 +24,11 @@ class API {
         getAPI().getArticle(id).enqueue(callback)
     }
 
-    fun getCategories(callback: Callback<Category>){
+    fun getCategories(callback: Callback<Categories>){
         getAPI().getCategories().enqueue(callback)
     }
 
-    fun getArticlesFromCategory(id: String, callback: Callback<Article>){
+    fun getArticlesFromCategory(id: String, callback: Callback<Articles>){
         getAPI().getArticlesFromCategory(id).enqueue(callback)
     }
 }

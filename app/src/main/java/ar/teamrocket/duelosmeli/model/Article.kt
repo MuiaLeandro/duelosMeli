@@ -13,3 +13,7 @@ data class ArticlePicture (
     @SerializedName("secure_url")
     var secureUrl: String
 )
+
+data class Articles (
+    var results: List<Article>
+)
