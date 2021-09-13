@@ -5,16 +5,14 @@ _Juego donde utilizamos la api de MercadoLibre_
 
 _Menciona las herramientas que utilizaste para crear tu proyecto_
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
-
+* [Gradle](https://gradle.org/) - Herramienta de automatización de compilación
 
 ## Autores ✒️
 
-* [Brenda Rodriguez](https://github.com/BrenMiRo)
 * [Leandro Muia](https://github.com/MuiaLeandro)
 * [Leandro Aranda](https://github.com/learanda)
+* [Brenda Rodriguez](https://github.com/BrenMiRo)
+
 
 También puedes mirar la lista de todos los [contribuyentes](https://github.com/MuiaLeandro/duelosMeli/graphs/contributors) quíenes han participado en este proyecto. 
 
