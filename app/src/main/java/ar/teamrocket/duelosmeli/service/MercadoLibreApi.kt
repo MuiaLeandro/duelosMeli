@@ -7,6 +7,7 @@ import ar.teamrocket.duelosmeli.model.Category
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MercadoLibreApi {
 
@@ -20,6 +21,9 @@ interface MercadoLibreApi {
     @GET("sites/${ARGENTINA}/categories")
     fun getCategories(): Call<Categories>
 
-    @GET("items/{categoryId}")
-    fun getArticlesFromCategory(id: String): Call<Articles>
+    /*@GET("items/{categoryId}")
+    fun getArticlesFromCategory(@Path("categoryId")id: String): Call<Articles>*/
+
+    @GET("sites/${ARGENTINA}/search")
+    fun getArticlesFromCategory(@Query("category")id: String): Call<Articles>
 }

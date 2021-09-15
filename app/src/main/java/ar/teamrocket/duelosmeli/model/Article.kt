@@ -6,7 +6,7 @@ data class Article (
     var id: String,
     var title: String,
     var pictures: List<ArticlePicture>,
-    var price: Long
+    var price: Double
 )
 
 data class ArticlePicture (

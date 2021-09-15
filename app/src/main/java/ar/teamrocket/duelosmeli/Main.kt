@@ -1,5 +1,6 @@
 package ar.teamrocket.duelosmeli
 
+import android.util.Log
 import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
 import ar.teamrocket.duelosmeli.model.Categories
@@ -28,6 +29,12 @@ fun main(args: Array<String>) {
     categoria.add("MLA1512")
     categoria.add("MLA1403")
     categoria.add("MLA1071")
+    categoria.add("MLA1367")
+    categoria.add("MLA1368")
+    categoria.add("MLA1743")
+    categoria.add("MLA1384")
+    categoria.add("MLA1246")
+    categoria.add("MLA1039")
 
     //Funcion para obtener una categoria random desde una lista
     fun randomCategory(categoriesList: List<String>): String {
@@ -36,6 +43,8 @@ fun main(args: Array<String>) {
     }
     val randomCategory = randomCategory(categoria)
     println(randomCategory)
+
+
 
     searchItem()
     searchCategories()
@@ -60,7 +69,9 @@ fun searchItemFromCategory(id: String) {
         override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
             if (response.isSuccessful) {
                 response.body()!!.apply {
-                    println(this.results[0].id)
+                    var itemsList: MutableList<Article> = mutableListOf()
+                    itemsList.addAll(this.results)
+                    println(itemsList.get((itemsList.indices).random()).title)
                 }
             } else {
                 println("Falló con código ${response.code()}")
@@ -68,7 +79,7 @@ fun searchItemFromCategory(id: String) {
         }
 
         override fun onFailure(call: Call<Articles>, t: Throwable) {
-            println("Falló al obtener el artículo :(")
+            Log.e("Main", "Falló al obtener los articulos de la categoría", t)
         }
 
     })
@@ -88,7 +99,7 @@ fun searchCategories() {
         }
 
         override fun onFailure(call: Call<Categories>, t: Throwable) {
-            println("Falló al obtener las categorias :(")
+            Log.e("Main", "Falló al obtener las categorias", t)
         }
 
     })
