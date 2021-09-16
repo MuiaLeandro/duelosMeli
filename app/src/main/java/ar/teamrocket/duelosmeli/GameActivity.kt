@@ -2,7 +2,6 @@ package ar.teamrocket.duelosmeli
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 
 class GameActivity : AppCompatActivity() {
@@ -10,6 +9,9 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_game)
+        binding = ActivityGameBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
     }
 }

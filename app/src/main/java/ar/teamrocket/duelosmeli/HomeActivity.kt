@@ -1,8 +1,7 @@
 package ar.teamrocket.duelosmeli
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatActivity
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -10,6 +9,9 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
     }
 }
