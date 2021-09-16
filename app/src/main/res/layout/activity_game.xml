@@ -21,11 +21,11 @@
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="5"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvQuestion"
-        app:layout_constraintTop_toTopOf="@+id/tvQuestion" />
+        app:layout_constraintTop_toTopOf="@+id/tvQuestion"
+        tools:text="5" />
 
     <TextView
         android:id="@+id/tvProductName"
@@ -45,10 +45,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        tools:text="Opción 1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProductName"
+        tools:text="Opción 1" />
 
     <Button
         android:id="@+id/btnOption3"
@@ -57,10 +57,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        tools:text="Opción 3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOption2" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOption2"
+        tools:text="Opción 3" />
 
     <Button
         android:id="@+id/btnOption2"
@@ -69,10 +69,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        tools:text="Opción 2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOption1" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOption1"
+        tools:text="Opción 2" />
 
     <ImageView
         android:id="@+id/ivProductPicture"
