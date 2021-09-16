@@ -56,7 +56,10 @@ fun main(args: Array<String>) {
     * Entonces primero se busca una categoria, la guardo en un val y ese val entra en la de
     * buscar el item. */
     // Tambien meti la funcion de buscar item por su id para obtener la imagen
-    searchCategoryRandomAndItemFromCategoryRandom()
+    //searchCategoryRandomAndItemFromCategoryRandom()
+
+    //val numeroRandom = (1..3).random()
+    //println(numeroRandom)
 }
 
 fun searchCategoryRandomAndItemFromCategoryRandom() {
