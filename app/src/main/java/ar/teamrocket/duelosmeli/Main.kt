@@ -73,10 +73,9 @@ fun searchCategoryRandomAndItemFromCategoryRandom() {
                                     response.body()!!.apply {
                                         var itemsList: MutableList<Article> = mutableListOf()
                                         itemsList.addAll(this.results)
-                                        val item = itemsList.get((itemsList.indices).random()).title
-                                        val price = itemsList.get((itemsList.indices).random()).price
-                                        println("El artículo es: $item")
-                                        println("Precio: $price")
+                                        val item = itemsList.get((itemsList.indices).random())
+                                        println("El artículo es: ${item.title}")
+                                        println("Precio: ${item.price}")
                                     }
                                 } else {
                                     println("Falló con código ${response.code()}")
