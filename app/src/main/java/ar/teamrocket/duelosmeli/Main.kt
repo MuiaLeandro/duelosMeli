@@ -6,6 +6,7 @@ import ar.teamrocket.duelosmeli.model.Articles
 import ar.teamrocket.duelosmeli.model.Categories
 import ar.teamrocket.duelosmeli.model.Category
 import ar.teamrocket.duelosmeli.service.API
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,6 +55,7 @@ fun main(args: Array<String>) {
     * de las funciones, sale tod0 como Unit, y por mas que use toString() se rompia.
     * Entonces primero se busca una categoria, la guardo en un val y ese val entra en la de
     * buscar el item. */
+    // Tambien meti la funcion de buscar item por su id para obtener la imagen
     searchCategoryRandomAndItemFromCategoryRandom()
 }
 
@@ -76,6 +78,29 @@ fun searchCategoryRandomAndItemFromCategoryRandom() {
                                         val item = itemsList.get((itemsList.indices).random())
                                         println("El artículo es: ${item.title}")
                                         println("Precio: ${item.price}")
+                                        println("URL del thumbnail del producto: ${item.thumbnail}")
+                                        val id = item.id
+
+                                        // Esta es la funcion de buscar un item por su ID
+                                        // La uso para obtener una picture, para que vean la diferencia
+                                        // de calidad de la imagen comparado con el thumbnail
+                                        fun searchItem(id:String) {
+                                            API().getArticle(id, object : Callback<Article> {
+                                                override fun onResponse(call: Call<Article>, response: Response<Article>) {
+                                                    if (response.isSuccessful) {
+                                                        response.body()!!.apply {
+                                                            println("URL de la imagen del producto: ${this.pictures[0].secureUrl}")
+                                                        }
+                                                    } else {
+                                                        println("Falló con código ${response.code()}")
+                                                    }
+                                                }
+                                                override fun onFailure(call: Call<Article>, t: Throwable) {
+                                                    Log.e("Main", "Falló al obtener el artículo", t)
+                                                }
+                                            })
+                                        }
+                                        searchItem(id)
                                     }
                                 } else {
                                     println("Falló con código ${response.code()}")
@@ -155,6 +180,8 @@ private fun searchItem() {
             if (response.isSuccessful) {
                 response.body()!!.apply {
                     println(this.title)
+                    println(this.pictures[0].secureUrl)
+                    println(this.thumbnail)
                 }
             } else {
                 println("Falló con código ${response.code()}")
