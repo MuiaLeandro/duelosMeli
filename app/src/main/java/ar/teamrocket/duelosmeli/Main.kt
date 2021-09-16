@@ -12,8 +12,6 @@ import retrofit2.Response
 import kotlin.random.Random
 
 fun main(args: Array<String>) {
-    // Your code here!
-
     /*fun test(){
         var asd: MutableList<Int> = mutableListOf()
 
@@ -42,26 +40,72 @@ fun main(args: Array<String>) {
         return categoriesList[randomNumber]
     }
     val randomCategory = randomCategory(categoria)
-    println(randomCategory)
+    //println(randomCategory)
 
 
 
-    searchItem()
-    searchCategories()
-    //recibeIds(categoriesList)
-    searchItemFromCategory(randomCategory)
+    //searchItem()
+    //searchCategories()
+    //searchItemFromCategory("1648")
+
+    /* Tuve que inventar esta funcion que parece un choclo, es una combinacion entre
+    *  searchCategories() y searchItemFromCategory(). Tuve que meter searchItemFromCategory()
+    * adentro del onResponse de searchCategories() porque no puedo sacar un valor de retorno
+    * de las funciones, sale tod0 como Unit, y por mas que use toString() se rompia.
+    * Entonces primero se busca una categoria, la guardo en un val y ese val entra en la de
+    * buscar el item. */
+    searchCategoryRandomAndItemFromCategoryRandom()
 }
 
-/*private var categoriesList = mutableListOf<Category>()
+fun searchCategoryRandomAndItemFromCategoryRandom() {
+    fun searchCategories() {
+        API().getCategories(object : Callback<List<Category>> {
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                if (response.isSuccessful) {
+                    val categories = response.body()!!
+                    val category = categories.get((categories.indices).random()).id
+                    println("La categoría es: $category")
 
-fun recibeIds(categories: List<Category>?) {
-    categoriesList.clear()
-    if (categories != null){
-        categoriesList.addAll(categories)
+                    fun searchItemFromCategory(id: String) {
+                        API().getArticlesFromCategory(id, object : Callback<Articles> {
+                            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
+                                if (response.isSuccessful) {
+                                    response.body()!!.apply {
+                                        var itemsList: MutableList<Article> = mutableListOf()
+                                        itemsList.addAll(this.results)
+                                        val item = itemsList.get((itemsList.indices).random()).title
+                                        val price = itemsList.get((itemsList.indices).random()).price
+                                        println("El artículo es: $item")
+                                        println("Precio: $price")
+                                    }
+                                } else {
+                                    println("Falló con código ${response.code()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Articles>, t: Throwable) {
+                                Log.e("Main", "Falló al obtener los articulos de la categoría", t)
+                            }
+
+                        })
+                    }
+
+                    searchItemFromCategory(category)
+
+                } else {
+                    println("Falló con código ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                Log.e("Main", "Falló al obtener las categorias", t)
+            }
+
+        })
     }
+    searchCategories()
 }
 
-var categoria: MutableList<Int> = mutableListOf()*/
 
 // Fun para buscar items de una categoria
 fun searchItemFromCategory(id: String) {
@@ -72,6 +116,7 @@ fun searchItemFromCategory(id: String) {
                     var itemsList: MutableList<Article> = mutableListOf()
                     itemsList.addAll(this.results)
                     println(itemsList.get((itemsList.indices).random()).title)
+                    //println(itemsList.get((itemsList.indices).random()).price)
                 }
             } else {
                 println("Falló con código ${response.code()}")
@@ -87,18 +132,17 @@ fun searchItemFromCategory(id: String) {
 
 // Fun para buscar las categorias
 fun searchCategories() {
-    API().getCategories(object : Callback<Categories> {
-        override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
+    API().getCategories(object : Callback<List<Category>> {
+        override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
             if (response.isSuccessful) {
-                response.body()!!.apply {
-                    println("Successful")
-                }
+                val categories = response.body()!!
+                println(categories.get((categories.indices).random()).id)
             } else {
                 println("Falló con código ${response.code()}")
             }
         }
 
-        override fun onFailure(call: Call<Categories>, t: Throwable) {
+        override fun onFailure(call: Call<List<Category>>, t: Throwable) {
             Log.e("Main", "Falló al obtener las categorias", t)
         }
 
@@ -119,7 +163,7 @@ private fun searchItem() {
         }
 
         override fun onFailure(call: Call<Article>, t: Throwable) {
-            println("Falló al obtener el artículo :(")
+            Log.e("Main", "Falló al obtener el artículo", t)
         }
 
     })
