@@ -60,6 +60,13 @@ fun main(args: Array<String>) {
 
     //val numeroRandom = (1..3).random()
     //println(numeroRandom)
+
+    var play = true
+    while (play == true){
+        println("Let's play")
+        play = false
+        println("Game over")
+    }
 }
 
 fun searchCategoryRandomAndItemFromCategoryRandom() {
