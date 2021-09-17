@@ -1,5 +1,6 @@
 package ar.teamrocket.duelosmeli
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +24,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.btnExitGame.setOnClickListener { viewGameOver() }
 
         val game = Game()
         val gameState = game.state
@@ -30,6 +32,10 @@ class GameActivity : AppCompatActivity() {
 
         //successChecker()
         //errorsChecker()
+    }
+    fun viewGameOver() {
+        val intent = Intent(this, GameOverActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startGame(gameState: Boolean) {
