@@ -3,9 +3,9 @@ package ar.teamrocket.duelosmeli
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.HandlerCompat.postDelayed
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
@@ -53,19 +53,28 @@ class GameActivity : AppCompatActivity() {
 
     private fun successChecker(randomNumber: Int): Boolean {
         var correct = false
-
-        if (randomNumber == 1) {
-            binding.btnOption1.setOnClickListener { oneGreen(); correct = true; Handler().postDelayed({colorResetter(); clearPrices()},1000); Handler().postDelayed({searchInfo()},1500) }
-            binding.btnOption2.setOnClickListener { oneGreen(); correct = false }
-            binding.btnOption3.setOnClickListener { oneGreen(); correct = false  }
-        }else if (randomNumber == 2) {
-            binding.btnOption1.setOnClickListener { twoGreen(); correct = false  }
-            binding.btnOption2.setOnClickListener { twoGreen(); correct = true; Handler().postDelayed({colorResetter(); clearPrices()},1000); Handler().postDelayed({searchInfo()},1500) }
-            binding.btnOption3.setOnClickListener { twoGreen(); correct = false  }
-        }else {
-            binding.btnOption1.setOnClickListener { threeGreen(); correct = false  }
-            binding.btnOption2.setOnClickListener { threeGreen(); correct = false  }
-            binding.btnOption3.setOnClickListener { threeGreen(); correct = true; Handler().postDelayed({colorResetter(); clearPrices()},1000); Handler().postDelayed({searchInfo()},1500) }
+        when (randomNumber) {
+            1 -> {
+                binding.btnOption1.setOnClickListener { oneGreen(); correct = true
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({searchInfo()},1500) }
+                binding.btnOption2.setOnClickListener { oneGreen(); correct = false }
+                binding.btnOption3.setOnClickListener { oneGreen(); correct = false  }
+            }
+            2 -> {
+                binding.btnOption1.setOnClickListener { twoGreen(); correct = false  }
+                binding.btnOption2.setOnClickListener { twoGreen(); correct = true
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({searchInfo()},1500) }
+                binding.btnOption3.setOnClickListener { twoGreen(); correct = false  }
+            }
+            else -> {
+                binding.btnOption1.setOnClickListener { threeGreen(); correct = false  }
+                binding.btnOption2.setOnClickListener { threeGreen(); correct = false  }
+                binding.btnOption3.setOnClickListener { threeGreen(); correct = true
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({searchInfo()},1500) }
+            }
         }
         return correct
     }
