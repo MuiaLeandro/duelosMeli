@@ -4,11 +4,11 @@
     <string name="nuevo_jugador">Nuevo jugador</string>
     <string name="seleccione_jugador">o seleccione un jugador</string>
     <string name="hint_nombre">Nombre</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="partida_finalizada">Partida finalizada</string>
     <string name="tabla_de_puntajes">Tabla de puntajes</string>
     <string name="volver_al_inicio">Volver al inicio</string>
     <string name="siguiente">Siguiente</string>
-    <string name="salir">Salir</string>
+    <string name="salir">X</string>
     <string name="jugar">Jugar</string>
 </resources>
