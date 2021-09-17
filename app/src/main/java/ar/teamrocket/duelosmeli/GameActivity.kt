@@ -107,17 +107,11 @@ class GameActivity : AppCompatActivity() {
 
                                             successChecker(randomNumber1to3)
 
-                                            //val id = item.id
-
-                                            // Esta es la funcion de buscar un item por su ID
-                                            // La uso para obtener una picture, para que vean la diferencia
-                                            // de calidad de la imagen comparado con el thumbnail
                                             fun searchItem(id:String) {
                                                 API().getArticle(id, object : Callback<Article> {
                                                     override fun onResponse(call: Call<Article>, response: Response<Article>) {
                                                         if (response.isSuccessful) {
                                                             response.body()!!.apply {
-                                                                //println("URL de la imagen del producto: ${this.pictures[0].secureUrl}")
                                                                 Picasso.get()
                                                                     .load(this.pictures[0].secureUrl)
                                                                     .into(binding.ivProductPicture)
