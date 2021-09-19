@@ -3,6 +3,7 @@ package ar.teamrocket.duelosmeli
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -29,24 +30,76 @@ class GameActivity : AppCompatActivity() {
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
-
-        //val gameState = game.state
-        /*while (game.state == true) {
-            var actualGame = searchInfo(game)
-            game.state = actualGame.state
-        }*/
-        //var actualGame = playGame(game)
         playGame(game)
-        //finishedGame(actualGame)
-        //searchInfo(game)
-
-
-        //finishedGame = lo que retorne el playGame (meter el while dentro de playGame y hacer que retorne un Game)
-        //despues puedo obtener finishedGame.status, points, etc....
-
-        //successChecker()
-        //errorsCounter()
     }
+
+    private fun timer(game: Game,  randomNumber: Int){
+        var actualGame = game
+        class Timer(millisInFuture: Long, countDownInterval: Long) :
+            CountDownTimer(millisInFuture, countDownInterval) {
+            override fun onFinish() {
+                    when(randomNumber) {
+                        1 -> oneGreen()
+                        2 -> twoGreen()
+                        else -> threeGreen()
+                    }
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500)
+            }
+            override fun onTick(millisUntilFinished: Long) {
+                //se muestra el conteo en textview
+                binding.tvTime.setText((millisUntilFinished / 1000).toString() + "")
+            }
+        }
+        val timer = Timer(11000, 1000)
+        timer.start()
+        when (randomNumber) {
+            1 -> {
+                binding.btnOption1.setOnClickListener {timer.cancel(); oneGreen()
+                    pointsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+                binding.btnOption2.setOnClickListener {timer.cancel(); oneGreen()
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+                binding.btnOption3.setOnClickListener {timer.cancel(); oneGreen()
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+            }
+            2 -> {
+                binding.btnOption1.setOnClickListener {timer.cancel(); twoGreen()
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+                binding.btnOption2.setOnClickListener {timer.cancel(); twoGreen()
+                    pointsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({continuePlayChecker(actualGame)},1500) }
+                binding.btnOption3.setOnClickListener {timer.cancel(); twoGreen()
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+            }
+            else -> {
+                binding.btnOption1.setOnClickListener {timer.cancel(); threeGreen()
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+                binding.btnOption2.setOnClickListener {timer.cancel(); threeGreen()
+                    errorsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
+                binding.btnOption3.setOnClickListener {timer.cancel(); threeGreen()
+                    pointsCounter(actualGame)
+                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
+                    Handler(Looper.getMainLooper()).postDelayed({continuePlayChecker(actualGame)},1500) }
+            }
+        }
+    }
+
+
     private fun viewGameOver(game: Game) {
         val intent = Intent(this, GameOverActivity::class.java)
         intent.putExtra("Points",game.points)
@@ -92,52 +145,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun successChecker(randomNumber: Int, game: Game): Game {
-        //var correct = false
-        var actualGame = game
-        when (randomNumber) {
-            1 -> {
-                binding.btnOption1.setOnClickListener { oneGreen()
-                    pointsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-                binding.btnOption2.setOnClickListener { oneGreen()
-                    errorsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-                binding.btnOption3.setOnClickListener { oneGreen()
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-            }
-            2 -> {
-                binding.btnOption1.setOnClickListener { twoGreen()
-                    errorsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-                binding.btnOption2.setOnClickListener { twoGreen()
-                    pointsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({continuePlayChecker(actualGame)},1500) }
-                binding.btnOption3.setOnClickListener { twoGreen()
-                    errorsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-            }
-            else -> {
-                binding.btnOption1.setOnClickListener { threeGreen()
-                    errorsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-                binding.btnOption2.setOnClickListener { threeGreen()
-                    errorsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({actualGame = continuePlayChecker(actualGame)},1500) }
-                binding.btnOption3.setOnClickListener { threeGreen()
-                    pointsCounter(actualGame)
-                    Handler(Looper.getMainLooper()).postDelayed({colorResetter(); clearPrices()},1000)
-                    Handler(Looper.getMainLooper()).postDelayed({continuePlayChecker(actualGame)},1500) }
-            }
-        }
-        return actualGame
+        timer(game, randomNumber)
+        return game
     }
 
     private fun searchInfo(game: Game): Game {
