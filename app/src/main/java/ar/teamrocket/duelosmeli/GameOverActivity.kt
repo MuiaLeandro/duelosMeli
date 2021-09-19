@@ -13,6 +13,10 @@ class GameOverActivity : AppCompatActivity() {
         binding = ActivityGameOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
+
+        val pointsAchieved = intent.extras?.getInt("Points")
+        binding.tvScoreAchieved.text = "Lograste ${pointsAchieved.toString()} puntos"
+        binding.tvHigherScore.text = "Tu mayor puntaje: ${pointsAchieved.toString()}"
     }
 
     fun viewNewGame() {
