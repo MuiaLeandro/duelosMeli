@@ -220,7 +220,7 @@ class GameActivity : AppCompatActivity() {
                                                         })
                                                 }
                                                 searchItem(item.id)
-                                                randomPrices(item, randomNumber1to3)
+                                                randomOptionsCalculator(item, randomNumber1to3)
                                                 game = successChecker(randomNumber1to3, game)
 
                                                 //continuePlayChecker(game)
@@ -275,40 +275,40 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
     }
-    private fun randomPrices (item: Article, randomNumber: Int){
+    private fun randomOptionsCalculator (item: Article, correctOptionPosition: Int){
+        val randomPrice1 = randomPriceCalculator(item)
+        var randomPrice2 = randomPriceCalculator(item)
 
-        val random1 = randomAddOrSubtract(item, randomNumber)
-        var random2 = randomAddOrSubtract(item, randomNumber)
-        if (random1.equals(random2)){
-            random2 = randomAddOrSubtract(item, randomNumber)
+        while (randomPrice1.equals(randomPrice2)){
+            randomPrice2 = randomPriceCalculator(item)
         }
-        randomOptions(randomNumber,
-            random1, random2)
+        randomOptionsPosition(correctOptionPosition,
+            randomPrice1, randomPrice2)
     }
-    private fun randomOptions (correctOption: Int,
-                               random1: Double, random2: Double){
-        when (correctOption) {
-            1 -> {binding.btnOption2.text = random1
+    private fun randomOptionsPosition (correctOptionPosition: Int,
+                                       randomCalculatedPrice1: Double, randomCalculatedPrice2: Double){
+        when (correctOptionPosition) {
+            1 -> {binding.btnOption2.text = randomCalculatedPrice1
                 .toString()
-                binding.btnOption3.text = random2
+                binding.btnOption3.text = randomCalculatedPrice2
                     .toString()}
-            2 -> {binding.btnOption1.text = random1
+            2 -> {binding.btnOption1.text = randomCalculatedPrice1
                 .toString()
-                binding.btnOption3.text = random2
+                binding.btnOption3.text = randomCalculatedPrice2
                     .toString()}
-            3 -> {binding.btnOption1.text = random1
+            3 -> {binding.btnOption1.text = randomCalculatedPrice1
                 .toString()
-                binding.btnOption2.text = random2
+                binding.btnOption2.text = randomCalculatedPrice2
                     .toString()}
             else -> println("Out of bounds")
         }
     }
-    private fun randomAddOrSubtract (item: Article, randomNumber: Int): Double{
+    private fun randomPriceCalculator (item: Article): Double{
         val realPrice = item.price
-        val randomPrice = (1..8).random()
+        val randomNumber = (1..8).random()
         var optionPrice = 0.0
 
-        when (randomPrice){
+        when (randomNumber){
             1 -> optionPrice = realPrice.times(1.10).roundToInt().toDouble()
             2 -> optionPrice = realPrice.times(1.15).roundToInt().toDouble()
             3 -> optionPrice = realPrice.times(1.20).roundToInt().toDouble()
