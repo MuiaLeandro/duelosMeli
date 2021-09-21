@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.roundToInt
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
@@ -219,6 +220,7 @@ class GameActivity : AppCompatActivity() {
                                                         })
                                                 }
                                                 searchItem(item.id)
+                                                randomPrices(item, randomNumber1to3)
                                                 game = successChecker(randomNumber1to3, game)
 
                                                 //continuePlayChecker(game)
@@ -272,5 +274,51 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red, null))
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
+    }
+    private fun randomPrices (item: Article, randomNumber: Int){
+
+        val random1 = randomAddOrSubtract(item, randomNumber)
+        var random2 = randomAddOrSubtract(item, randomNumber)
+        if (random1.equals(random2)){
+            random2 = randomAddOrSubtract(item, randomNumber)
+        }
+        randomOptions(randomNumber,
+            random1, random2)
+    }
+    private fun randomOptions (correctOption: Int,
+                               random1: Double, random2: Double){
+        when (correctOption) {
+            1 -> {binding.btnOption2.text = random1
+                .toString()
+                binding.btnOption3.text = random2
+                    .toString()}
+            2 -> {binding.btnOption1.text = random1
+                .toString()
+                binding.btnOption3.text = random2
+                    .toString()}
+            3 -> {binding.btnOption1.text = random1
+                .toString()
+                binding.btnOption2.text = random2
+                    .toString()}
+            else -> println("Out of bounds")
+        }
+    }
+    private fun randomAddOrSubtract (item: Article, randomNumber: Int): Double{
+        val realPrice = item.price
+        val randomPrice = (1..8).random()
+        var optionPrice = 0.0
+
+        when (randomPrice){
+            1 -> optionPrice = realPrice.times(1.10).roundToInt().toDouble()
+            2 -> optionPrice = realPrice.times(1.15).roundToInt().toDouble()
+            3 -> optionPrice = realPrice.times(1.20).roundToInt().toDouble()
+            4 -> optionPrice = realPrice.times(1.25).roundToInt().toDouble()
+            5 -> optionPrice = realPrice.times(0.90).roundToInt().toDouble()
+            6 -> optionPrice = realPrice.times(0.85).roundToInt().toDouble()
+            7 -> optionPrice = realPrice.times(0.80).roundToInt().toDouble()
+            8 -> optionPrice = realPrice.times(0.85).roundToInt().toDouble()
+            else -> println("Out of bounds")
+        }
+        return optionPrice
     }
 }
