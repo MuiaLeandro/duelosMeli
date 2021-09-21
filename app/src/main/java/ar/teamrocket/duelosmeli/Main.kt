@@ -11,6 +11,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.random.Random
+import android.os.CountDownTimer
+
+
+
 
 fun main(args: Array<String>) {
     /*fun test(){
@@ -56,8 +60,35 @@ fun main(args: Array<String>) {
     * Entonces primero se busca una categoria, la guardo en un val y ese val entra en la de
     * buscar el item. */
     // Tambien meti la funcion de buscar item por su id para obtener la imagen
-    searchCategoryRandomAndItemFromCategoryRandom()
+    //searchCategoryRandomAndItemFromCategoryRandom()
+
+    //val numeroRandom = (1..3).random()
+    //println(numeroRandom)
+
+    var play = true
+    while (play == true){
+        println("Let's play")
+        play = false
+        println("Game over")
+    }
+
+    /*val timer = MiContador(30000, 1000)
+    timer.start()
+
+    class MiContador(millisInFuture: Long, countDownInterval: Long) :
+        CountDownTimer(millisInFuture, countDownInterval) {
+        override fun onFinish() {
+            //Lo que quieras hacer al finalizar
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            //texto a mostrar en cuenta regresiva en un textview
+            //countdownText.setText(millisUntilFinished / 1000.toString() + "")
+        }
+    }*/
 }
+
+
 
 fun searchCategoryRandomAndItemFromCategoryRandom() {
     fun searchCategories() {
