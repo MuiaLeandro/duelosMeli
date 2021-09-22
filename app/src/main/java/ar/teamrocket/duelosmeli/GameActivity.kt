@@ -34,6 +34,12 @@ class GameActivity : AppCompatActivity() {
         playGame(game)
     }
 
+    private fun viewGameOver(game: Game) {
+        val intent = Intent(this, GameOverActivity::class.java)
+        intent.putExtra("Points", game.points)
+        startActivity(intent)
+    }
+
     private fun timer(game: Game, randomNumber: Int) {
         var actualGame = game
 
@@ -97,11 +103,7 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    private fun viewGameOver(game: Game) {
-        val intent = Intent(this, GameOverActivity::class.java)
-        intent.putExtra("Points", game.points)
-        startActivity(intent)
-    }
+
 
     private fun playGame(game: Game): Game {
         var actualGame = game
@@ -136,7 +138,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun searchInfo(game: Game): Game {
-        var game = game
         if (game.state) {
             fun searchCategories() {
                 API().getCategories(object : Callback<List<Category>> {
@@ -145,76 +146,80 @@ class GameActivity : AppCompatActivity() {
                             val categories = response.body()!!
                             val category = categories[(categories.indices).random()].id
 
-                            fun searchItemFromCategory(id: String) {
-                                API().getArticlesFromCategory(id, object : Callback<Articles> {
-                                    override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                                        if (response.isSuccessful) {
-                                            response.body()!!.apply {
-                                                val itemsList: MutableList<Article> = mutableListOf()
-                                                itemsList.addAll(this.results)
-                                                val item = itemsList[(itemsList.indices).random()]
-                                                binding.tvProductName.text = item.title
-
-                                                val randomNumber1to3 = (1..3).random()
-                                                when (randomNumber1to3) {
-                                                    1 -> binding.btnOption1.text = item.price.toString()
-                                                    2 -> binding.btnOption2.text = item.price.toString()
-                                                    3 -> binding.btnOption3.text = item.price.toString()
-                                                    else -> println("Out of bounds")
-                                                }
-
-                                                fun searchItem(id: String) {
-                                                    API().getArticle(id, object : Callback<Article> {
-                                                            override fun onResponse(call: Call<Article>,response: Response<Article>) {
-                                                                if (response.isSuccessful) {response.body()!!.apply {
-                                                                        Picasso.get()
-                                                                            .load(this.pictures[0].secureUrl)
-                                                                            .into(binding.ivProductPicture)}
-                                                                } else {
-                                                                    println("Falló con código ${response.code()}")
-                                                                }
-                                                            }
-
-                                                            override fun onFailure(call: Call<Article>, t: Throwable) {
-                                                                Log.e("Main","Falló al obtener el artículo", t)
-                                                            }
-                                                        })
-                                                }
-                                                searchItem(item.id)
-                                                randomOptionsCalculator(item, randomNumber1to3)
-                                                game = successChecker(randomNumber1to3, game)
-
-                                                //continuePlayChecker(game)
-                                            }
-                                        } else {
-                                            println("Falló con código ${response.code()}")
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<Articles>, t: Throwable) {
-                                        Log.e("Main","Falló al obtener los articulos de la categoría", t)
-                                    }
-
-                                })
-                            }
-
-                            searchItemFromCategory(category)
-
+                            searchItemFromCategory(category, game)
                         } else {
                             println("Falló con código ${response.code()}")
                         }
                     }
-
                     override fun onFailure(call: Call<List<Category>>, t: Throwable) {
                         Log.e("Main", "Falló al obtener las categorias", t)
                     }
-
                 })
             }
             searchCategories()
         }
         return game
     }
+
+    fun searchItemFromCategory(id: String, currentGame: Game) {
+        var actualGame = currentGame
+        API().getArticlesFromCategory(id, object : Callback<Articles> {
+            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
+                if (response.isSuccessful) {
+                    response.body()!!.apply {
+                        val itemsList: MutableList<Article> = mutableListOf()
+                        itemsList.addAll(this.results)
+                        val item = itemsList[(itemsList.indices).random()]
+                        binding.tvProductName.text = item.title
+
+                        val randomNumber1to3 = (1..3).random()
+                        when (randomNumber1to3) {
+                            1 -> binding.btnOption1.text = item.price.toString()
+                            2 -> binding.btnOption2.text = item.price.toString()
+                            3 -> binding.btnOption3.text = item.price.toString()
+                            else -> println("Out of bounds")
+                        }
+
+                        searchItem(item.id)
+                        randomOptionsCalculator(item, randomNumber1to3)
+                        actualGame = successChecker(randomNumber1to3, actualGame)
+                    }
+                } else {
+                    println("Falló con código ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<Articles>, t: Throwable) {
+                Log.e("Main","Falló al obtener los articulos de la categoría", t)
+            }
+        })
+    }
+
+    fun searchItem(id: String) {
+        API().getArticle(id, object : Callback<Article> {
+            override fun onResponse(call: Call<Article>,response: Response<Article>) {
+                if (response.isSuccessful) {response.body()!!.apply {
+                    Picasso.get()
+                        .load(this.pictures[0].secureUrl)
+                        .into(binding.ivProductPicture)}
+                } else {
+                    println("Falló con código ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<Article>, t: Throwable) {
+                Log.e("Main","Falló al obtener el artículo", t)
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
 
     private fun oneGreen() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
