@@ -123,9 +123,9 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption3.text = ""
     }
     private fun colorResetter(){
-        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.purple_500, null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.purple_500, null))
-        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.purple_500, null))
+        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
+        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
     }
 
     private fun pointsCounter(game: Game){
