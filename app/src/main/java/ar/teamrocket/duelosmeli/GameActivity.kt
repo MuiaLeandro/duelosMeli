@@ -129,9 +129,9 @@ class GameActivity : AppCompatActivity() {
             CountDownTimer(millisInFuture, countDownInterval) {
             override fun onFinish() {
                 when (correctOption) {
-                    1 -> oneGreen()
-                    2 -> twoGreen()
-                    else -> threeGreen()
+                    1 -> oneCorrect()
+                    2 -> twoCorrect()
+                    else -> threeCorrect()
                 }
                 game.errorsCounter(actualGame)
                 Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
@@ -140,7 +140,7 @@ class GameActivity : AppCompatActivity() {
 
             override fun onTick(millisUntilFinished: Long) {
                 //se muestra el conteo en textview
-                binding.tvTime.setText((millisUntilFinished / 1000).toString() + "")
+                binding.tvTime.text = (millisUntilFinished / 1000).toString()
             }
         }
 
@@ -148,35 +148,35 @@ class GameActivity : AppCompatActivity() {
         timer.start()
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); oneGreen(); game.pointsCounter(actualGame)
+                binding.btnOption1.setOnClickListener { timer.cancel(); oneCorrect(); game.pointsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
-                binding.btnOption2.setOnClickListener { timer.cancel(); oneGreen(); game.errorsCounter(actualGame)
+                binding.btnOption2.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() }, 1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
-                binding.btnOption3.setOnClickListener { timer.cancel(); oneGreen(); game.errorsCounter(actualGame)
+                binding.btnOption3.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); twoGreen(); game.errorsCounter(actualGame)
+                binding.btnOption1.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
-                binding.btnOption2.setOnClickListener { timer.cancel(); twoGreen(); game.pointsCounter(actualGame)
+                binding.btnOption2.setOnClickListener { timer.cancel(); twoCorrect(); game.pointsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ continuePlayChecker(actualGame) },1500) }
-                binding.btnOption3.setOnClickListener { timer.cancel(); twoGreen(); game.errorsCounter(actualGame)
+                binding.btnOption3.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
             }
             else -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); threeGreen(); game.errorsCounter(actualGame)
+                binding.btnOption1.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
-                binding.btnOption2.setOnClickListener { timer.cancel(); threeGreen(); game.errorsCounter(actualGame)
+                binding.btnOption2.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
-                binding.btnOption3.setOnClickListener { timer.cancel(); threeGreen(); game.pointsCounter(actualGame)
+                binding.btnOption3.setOnClickListener { timer.cancel(); threeCorrect(); game.pointsCounter(actualGame)
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ continuePlayChecker(actualGame) },1500)
                 }
@@ -193,19 +193,19 @@ class GameActivity : AppCompatActivity() {
         return game
     }
 
-    private fun oneGreen() {
+    private fun oneCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
     }
 
-    private fun twoGreen() {
+    private fun twoCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
     }
 
-    private fun threeGreen() {
+    private fun threeCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
