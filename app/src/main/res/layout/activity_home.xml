@@ -26,5 +26,6 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic[1]"
+        android:contentDescription="@null" />
 </androidx.constraintlayout.widget.ConstraintLayout>

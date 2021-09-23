@@ -1,12 +1,12 @@
 package ar.teamrocket.duelosmeli
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.model.Article
@@ -17,7 +17,11 @@ import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.math.RoundingMode
 import kotlin.math.roundToInt
+import java.text.NumberFormat
+import java.util.*
+
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
@@ -56,8 +60,8 @@ class GameActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
                 if (response.isSuccessful) {
                     val categories = response.body()!!
-                    val category = categories[(categories.indices).random()].id
-                    searchItemFromCategory(category, game)
+                    val categoryId = categories[(categories.indices).random()].id
+                    searchItemFromCategory(categoryId, game)
                 } else {
                     println("Falló con código ${response.code()}")
                 }
@@ -79,11 +83,13 @@ class GameActivity : AppCompatActivity() {
                         val item = itemsList[(itemsList.indices).random()]
                         binding.tvProductName.text = item.title
 
+                        val price = numberRounder(item.price)
+
                         val randomNumber1to3 = (1..3).random()
                         when (randomNumber1to3) {
-                            1 -> binding.btnOption1.text = item.price.toString()
-                            2 -> binding.btnOption2.text = item.price.toString()
-                            3 -> binding.btnOption3.text = item.price.toString()
+                            1 -> binding.btnOption1.text = price
+                            2 -> binding.btnOption2.text = price
+                            3 -> binding.btnOption3.text = price
                             else -> println("Out of bounds")
                         }
                         searchItem(item.id)
@@ -211,6 +217,12 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
 
+    private fun numberRounder(numberDouble: Double): String {
+        val numberFormatter: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
+        numberFormatter.roundingMode = RoundingMode.FLOOR
+        return numberFormatter.format(numberDouble.toInt())
+    }
+
     private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
@@ -226,16 +238,16 @@ class GameActivity : AppCompatActivity() {
                                       randomCalculatedPrice2: Double) {
         when (correctOptionPosition) {
             1 -> {
-                binding.btnOption2.text = randomCalculatedPrice1.toString()
-                binding.btnOption3.text = randomCalculatedPrice2.toString()
+                binding.btnOption2.text = numberRounder(randomCalculatedPrice1)
+                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
             }
             2 -> {
-                binding.btnOption1.text = randomCalculatedPrice1.toString()
-                binding.btnOption3.text = randomCalculatedPrice2.toString()
+                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
+                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
             }
             3 -> {
-                binding.btnOption1.text = randomCalculatedPrice1.toString()
-                binding.btnOption2.text = randomCalculatedPrice2.toString()
+                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
+                binding.btnOption2.text = numberRounder(randomCalculatedPrice2)
             }
             else -> println("Out of bounds")
         }
@@ -244,20 +256,20 @@ class GameActivity : AppCompatActivity() {
     private fun randomPriceCalculator(item: Article): Double {
         val realPrice = item.price
         val randomNumber = (1..8).random()
-        var optionPrice = 0.0
+        var fakePrice = 0.0
 
         when (randomNumber) {
-            1 -> optionPrice = realPrice.times(1.10).roundToInt().toDouble()
-            2 -> optionPrice = realPrice.times(1.15).roundToInt().toDouble()
-            3 -> optionPrice = realPrice.times(1.20).roundToInt().toDouble()
-            4 -> optionPrice = realPrice.times(1.25).roundToInt().toDouble()
-            5 -> optionPrice = realPrice.times(0.90).roundToInt().toDouble()
-            6 -> optionPrice = realPrice.times(0.85).roundToInt().toDouble()
-            7 -> optionPrice = realPrice.times(0.80).roundToInt().toDouble()
-            8 -> optionPrice = realPrice.times(0.85).roundToInt().toDouble()
+            1 -> fakePrice = realPrice.times(1.10).roundToInt().toDouble()
+            2 -> fakePrice = realPrice.times(1.15).roundToInt().toDouble()
+            3 -> fakePrice = realPrice.times(1.20).roundToInt().toDouble()
+            4 -> fakePrice = realPrice.times(1.25).roundToInt().toDouble()
+            5 -> fakePrice = realPrice.times(0.90).roundToInt().toDouble()
+            6 -> fakePrice = realPrice.times(0.85).roundToInt().toDouble()
+            7 -> fakePrice = realPrice.times(0.80).roundToInt().toDouble()
+            8 -> fakePrice = realPrice.times(0.85).roundToInt().toDouble()
             else -> println("Out of bounds")
         }
-        return optionPrice
+        return fakePrice
     }
 
     private fun clearPrices() {
