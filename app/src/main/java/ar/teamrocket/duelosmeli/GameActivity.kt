@@ -155,34 +155,43 @@ class GameActivity : AppCompatActivity() {
         when (correctOption) {
             1 -> {
                 binding.btnOption1.setOnClickListener { timer.cancel(); oneCorrect(); game.pointsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
                 binding.btnOption2.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() }, 1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
                 binding.btnOption3.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
             }
             2 -> {
                 binding.btnOption1.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
                 binding.btnOption2.setOnClickListener { timer.cancel(); twoCorrect(); game.pointsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ continuePlayChecker(actualGame) },1500) }
                 binding.btnOption3.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
             }
             else -> {
                 binding.btnOption1.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
                 binding.btnOption2.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500) }
                 binding.btnOption3.setOnClickListener { timer.cancel(); threeCorrect(); game.pointsCounter(actualGame)
+                    binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false;
                     Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
                     Handler(Looper.getMainLooper()).postDelayed({ continuePlayChecker(actualGame) },1500)
                 }
