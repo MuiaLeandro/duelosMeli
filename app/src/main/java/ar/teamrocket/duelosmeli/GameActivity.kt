@@ -1,12 +1,18 @@
 package ar.teamrocket.duelosmeli
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.model.Article
@@ -122,10 +128,11 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption2.text = ""
         binding.btnOption3.text = ""
     }
+
     private fun colorResetter(){
-        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
-        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.yellow, null))
+        binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
+        binding.btnOption2.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
+        binding.btnOption3.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
     }
 
     private fun pointsCounter(game: Game){
@@ -320,5 +327,15 @@ class GameActivity : AppCompatActivity() {
             else -> println("Out of bounds")
         }
         return optionPrice
+    }
+
+    @ColorInt
+    fun Context.getColorFromAttr(
+        @AttrRes attrColor: Int,
+        typedValue: TypedValue = TypedValue(),
+        resolveRefs: Boolean = true
+    ): Int {
+        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
+        return typedValue.data
     }
 }
