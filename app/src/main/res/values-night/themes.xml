@@ -6,20 +6,19 @@
         <item name="colorPrimaryVariant">@color/light_purple</item>
         <item name="colorOnPrimary">@color/text_grey</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/yellow</item>
+        <item name="colorSecondaryVariant">@color/yellow</item>
         <item name="colorOnSecondary">@color/text_grey</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/background_grey</item>
         <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
         <item name="android:background">@color/background_grey</item>
-
     </style>
+
     <style name="Theme.DuelosMeli.GameActivityStyle">
         <item name="android:textColor">@color/text_grey</item>
         <item name="android:statusBarColor">@color/background_grey</item>
         <item name="android:windowLightStatusBar">false</item>
-
     </style>
 </resources>
