@@ -19,8 +19,15 @@ class GameOverActivity : AppCompatActivity() {
         binding.tvHigherScore.text = "Tu mayor puntaje: ${pointsAchieved.toString()}"
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, NewGameActivity::class.java)
+        startActivity(intent)
+    }
+
     fun viewNewGame() {
         val intent = Intent(this, NewGameActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
