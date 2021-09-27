@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
     fun viewNewGame() {
         val intent = Intent(this, NewGameActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

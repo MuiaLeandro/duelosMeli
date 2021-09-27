@@ -111,7 +111,15 @@ class GameActivity : AppCompatActivity() {
         val intent = Intent(this, GameOverActivity::class.java)
         intent.putExtra("Points",game.points)
         startActivity(intent)
+        finish()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
 
     private fun playGame(game: Game): Game {
         var actualGame = game
