@@ -22,8 +22,15 @@ class GameOverActivity : AppCompatActivity() {
         binding.tvHigherScore.text = pointsHighscore
     }
 
-    private fun viewNewGame() {
+    override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, NewGameActivity::class.java)
         startActivity(intent)
+    }
+
+    fun viewNewGame() {
+        val intent = Intent(this, NewGameActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

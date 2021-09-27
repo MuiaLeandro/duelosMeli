@@ -18,5 +18,11 @@ class NewGameActivity : AppCompatActivity() {
     private fun viewGame() {
         val intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
+        finish()
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }
