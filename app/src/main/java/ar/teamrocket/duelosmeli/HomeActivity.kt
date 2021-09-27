@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
-    lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,7 +15,7 @@ class HomeActivity : AppCompatActivity() {
         binding.btnPlayGame.setOnClickListener { viewNewGame() }
     }
 
-    fun viewNewGame() {
+    private fun viewNewGame() {
         val intent = Intent(this, NewGameActivity::class.java)
         startActivity(intent)
         finish()
