@@ -10,7 +10,7 @@ import ar.teamrocket.duelosmeli.database.Player
 import ar.teamrocket.duelosmeli.databinding.ActivityNewGameBinding
 
 class NewGameActivity : AppCompatActivity() {
-    lateinit var binding: ActivityNewGameBinding
+    private lateinit var binding: ActivityNewGameBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,14 @@ class NewGameActivity : AppCompatActivity() {
 
     }
 
-    fun viewGame() {
+    private fun viewGame() {
         val intent = Intent(this, GameActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
 
     }

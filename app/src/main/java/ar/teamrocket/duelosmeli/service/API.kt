@@ -2,7 +2,6 @@ package ar.teamrocket.duelosmeli.service
 
 import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Categories
 import ar.teamrocket.duelosmeli.model.Category
 import com.google.gson.Gson
 import retrofit2.Callback
