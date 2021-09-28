@@ -1,7 +1,7 @@
 package ar.teamrocket.duelosmeli
 
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ar.teamrocket.duelosmeli.database.Player
@@ -14,16 +14,18 @@ class PlayersAdapter(private val players:List<Player>): RecyclerView.Adapter<Pla
 
         fun bind(player: Player) {
             binding.tvNamePlayerItem.text = player.name
-            binding.btnPlayItem.setOnClickListener {
+            itemView.setOnClickListener {
                 playGame(player.id)
             }
         }
 
         private fun playGame(id:Long) {
-            TODO("Not yet implemented")
+            itemView.context
+                    .startActivity(Intent(binding.root.context,GameActivity::class.java)
+                    .putExtra("Id",id))
         }
-
     }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(players[position])
