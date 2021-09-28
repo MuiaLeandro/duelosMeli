@@ -36,7 +36,7 @@ class NewGameActivity : AppCompatActivity() {
         binding.btnStartGame.setOnClickListener {
             newPlayer.name = binding.etPlayerName.text.toString()
             playerDao.insertPlayer(newPlayer)
-            viewGame()
+            viewGame(newPlayer.id)
         }
 
         binding.rvSelectPlayer.layoutManager = LinearLayoutManager(this)
@@ -44,8 +44,9 @@ class NewGameActivity : AppCompatActivity() {
 
     }
 
-    private fun viewGame() {
+    private fun viewGame(id:Long) {
         val intent = Intent(this, GameActivity::class.java)
+        intent.putExtra("Id",id)
         startActivity(intent)
         finish()
     }

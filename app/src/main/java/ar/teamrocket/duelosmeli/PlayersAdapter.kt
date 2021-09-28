@@ -15,11 +15,11 @@ class PlayersAdapter(private val players:List<Player>): RecyclerView.Adapter<Pla
         fun bind(player: Player) {
             binding.tvNamePlayerItem.text = player.name
             binding.btnPlayItem.setOnClickListener {
-                playGame()
+                playGame(player.id)
             }
         }
 
-        private fun playGame() {
+        private fun playGame(id:Long) {
             TODO("Not yet implemented")
         }
 

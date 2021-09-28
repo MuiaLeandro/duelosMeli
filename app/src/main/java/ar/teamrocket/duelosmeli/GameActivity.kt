@@ -1,9 +1,7 @@
 package ar.teamrocket.duelosmeli
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -37,7 +35,8 @@ class GameActivity : AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val game = Game()
+        val playerId = intent.extras?.getLong("Id")
+        val game = Game(playerId!!)
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
@@ -47,6 +46,8 @@ class GameActivity : AppCompatActivity() {
     private fun viewGameOver(game: Game) {
         val intent = Intent(this, GameOverActivity::class.java)
         intent.putExtra("Points",game.points)
+        intent.putExtra("IdPlayer",game.playerId)
+
         startActivity(intent)
         finish()
     }
