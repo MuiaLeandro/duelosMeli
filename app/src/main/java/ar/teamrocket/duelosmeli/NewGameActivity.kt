@@ -35,11 +35,7 @@ class NewGameActivity : AppCompatActivity() {
     private fun injectDependencies() {
         this.database = buildDatabase(this.applicationContext)
         this.playerDao = this.database.playerDao()
-        //this.robotAdapter = RobotAdapter { }
     }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,26 +43,17 @@ class NewGameActivity : AppCompatActivity() {
         injectDependencies()
         setContentView(binding.root)
 
-/*
-        //Obtengo instancia de la base de datos
-        val database = Room.databaseBuilder(
-            applicationContext,
-            DuelosMeliDb::class.java,
-            "duelosmeli-db"
-        ).allowMainThreadQueries().build()
 
-        //Obtengo DAO
-        val playerDao = database.playerDao()
-*/
-        //ejecuto operacion
+        //Obtengo todos los jugadores guardados
         val allPlayers = playerDao.getAll()
 
-        val newPlayer = Player("",0) // como el id es autoincremental se le pone 0 y room ya sabe que id poner
+        val newPlayer = Player("",0) // como el id es autogenerado se le pone 0 y room ya sabe que id poner
 
         binding.btnStartGame.setOnClickListener {
             newPlayer.name = binding.etPlayerName.text.toString()
-            playerDao.insertPlayer(newPlayer)
-            val player = playerDao.getByName(newPlayer.name) // obtengo el nuevo jugador desde la DB buscandolo por el nombre porque no tengo forma de conocer el id, se queda en 0 pero se guarda bien.
+            playerDao.insertPlayer(newPlayer) //Guardo el nuevo jugador
+            val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
+            val player = playerDao.getById(idLastPlayer.toLong()) // obtengo el nuevo jugador desde la DB.
             viewGame(player)
         }
 
@@ -76,15 +63,13 @@ class NewGameActivity : AppCompatActivity() {
     }
 
 
-
-
-
     private fun viewGame(player: List<Player>) {
         val intent = Intent(this, GameActivity::class.java)
         intent.putExtra("Id",player[0].id)
         startActivity(intent)
         finish()
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, HomeActivity::class.java)
