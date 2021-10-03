@@ -195,8 +195,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun mistakeCounterUpdater(game: Game) {
-        var mistakeCounter = getString(R.string.mistakeCounter, game.errors)
-        binding.tvMistakeCounter.text = mistakeCounter
+        binding.tvMistakeCounter.text = getString(R.string.mistakeCounter, game.errors)
     }
 
     private fun continuePlayChecker(game: Game): Game {
