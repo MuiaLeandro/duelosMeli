@@ -13,4 +13,5 @@
     <string name="jugar">Jugar</string>
     <string name="puntosLogrados">Lograste %d puntos</string>
     <string name="puntosRecord">Tu mayor puntaje: %d</string>
+    <string name="mistakeCounter">Errores: %d/3</string>
 </resources>
