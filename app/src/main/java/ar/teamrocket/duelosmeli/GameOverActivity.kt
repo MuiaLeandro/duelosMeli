@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.database.DuelosMeliDb
+import ar.teamrocket.duelosmeli.database.Player
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
 
 class GameOverActivity : AppCompatActivity() {
@@ -25,14 +26,18 @@ class GameOverActivity : AppCompatActivity() {
         val playerDao = database.playerDao()
         val allPlayers = playerDao.getAll()
 
-        val idPlayer = intent.extras?.getLong("idPlayer")
+        val idPlayer = intent.extras!!.getLong("IdPlayer")
         //obtener jugador
         //val num: Long = 1
-        val player = playerDao.getById(idPlayer!!)
+        var player:List<Player> = emptyList()
 
-        val pointsAchieved = intent.extras?.getInt("Points")
+        if (idPlayer > 0) {
+            player = playerDao.getById(idPlayer)
+        }
+        //playerDao.updatePlayer(player[0])
+        val pointsAchieved = intent.extras!!.getInt("Points")
         val pointsAchievedString = getString(R.string.puntosLogrados, pointsAchieved)
-        val pointsHighscore = getString(R.string.puntosRecord, pointsAchieved)
+        val pointsHighscore = getString(R.string.puntosRecord, player[0].score)
 
         binding.tvScoreAchieved.text = pointsAchievedString
         binding.tvHigherScore.text = pointsHighscore

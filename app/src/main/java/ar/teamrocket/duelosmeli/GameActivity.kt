@@ -12,6 +12,9 @@ import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
+import androidx.room.Room
+import ar.teamrocket.duelosmeli.database.DuelosMeliDb
+import ar.teamrocket.duelosmeli.database.Player
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
@@ -35,8 +38,8 @@ class GameActivity : AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val playerId = intent.extras?.getLong("Id")
-        val game = Game(playerId!!)
+        val playerId = intent.extras!!.getLong("Id")
+        val game = Game(playerId)
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
@@ -192,9 +195,25 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun continuePlayChecker(game: Game): Game {
+
         if (game.state && game.errors < 3) searchInfo(game)
         if (game.errors == 3) {
             game.state = false
+
+            val database = Room.databaseBuilder(
+                applicationContext,
+                DuelosMeliDb::class.java,
+                "duelosmeli-db"
+            ).allowMainThreadQueries().build()
+            val playerDao = database.playerDao()
+
+            //actualizar el jugador:
+            var player = playerDao.getById(game.playerId)
+            if (player.isNotEmpty() && game.points > player[0].score ) {
+                player[0].score = game.points
+                playerDao.updatePlayer(player[0])
+            }
+            //ir a GameOver:
             Handler(Looper.getMainLooper()).postDelayed({ viewGameOver(game) }, 2000)
         }
         return game
