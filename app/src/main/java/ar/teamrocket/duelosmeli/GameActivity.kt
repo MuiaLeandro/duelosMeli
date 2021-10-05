@@ -43,6 +43,7 @@ class GameActivity : AppCompatActivity() {
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
+        mistakeCounterUpdater(game)
         playGame(game)
     }
 
@@ -192,6 +193,12 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
         Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
         Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
+
+        mistakeCounterUpdater(game)
+    }
+
+    private fun mistakeCounterUpdater(game: Game) {
+        binding.tvMistakeCounter.text = getString(R.string.mistakeCounter, game.errors)
     }
 
     private fun continuePlayChecker(game: Game): Game {
