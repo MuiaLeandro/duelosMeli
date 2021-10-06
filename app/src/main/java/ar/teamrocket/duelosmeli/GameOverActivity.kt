@@ -3,6 +3,7 @@ package ar.teamrocket.duelosmeli
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.database.Player
@@ -41,6 +42,10 @@ class GameOverActivity : AppCompatActivity() {
 
         binding.tvScoreAchieved.text = pointsAchievedString
         binding.tvHigherScore.text = pointsHighscore
+
+        //Highscore RecyclerView
+        binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
+        binding.rvScoreTable.adapter = HighScoreAdapter(allPlayers)
     }
 
     override fun onBackPressed() {
