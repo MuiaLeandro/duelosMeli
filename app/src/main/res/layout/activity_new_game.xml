@@ -65,7 +65,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSelectPlayer" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectPlayer"
+        tools:listitem="@layout/item_player" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
