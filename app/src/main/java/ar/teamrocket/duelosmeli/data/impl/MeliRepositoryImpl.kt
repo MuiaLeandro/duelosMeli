@@ -3,6 +3,8 @@ package ar.teamrocket.duelosmeli.data.impl
 import android.util.Log
 import ar.teamrocket.duelosmeli.Game
 import ar.teamrocket.duelosmeli.data.MeliRepository
+import ar.teamrocket.duelosmeli.model.Article
+import ar.teamrocket.duelosmeli.model.Articles
 import ar.teamrocket.duelosmeli.model.Category
 import ar.teamrocket.duelosmeli.service.API
 import retrofit2.Call
@@ -13,6 +15,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     val categoriesCache: MutableList<Category> = mutableListOf()
 
+    // Se obtiene una lista de categorías
     override fun searchCategories(
         game: Game,
         callback: (List<Category>) -> Unit,
@@ -41,5 +44,25 @@ class MeliRepositoryImpl : MeliRepository {
                 }
             })
         }
+    }
+
+    // Se obtiene un item de una categoría
+    override fun searchItemFromCategory(
+        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: () -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+        API().getArticlesFromCategory(id, object : Callback<Articles> {
+            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
+                if (response.isSuccessful) {
+                    callback(response.body()!!)
+                } else {
+                    println("Falló con código ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<Articles>, t: Throwable) {
+                onFailure(t)
+            }
+        })
     }
 }

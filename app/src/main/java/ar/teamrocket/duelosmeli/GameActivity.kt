@@ -90,37 +90,32 @@ class GameActivity : AppCompatActivity() {
                 })
     }
 
-    fun searchItemFromCategory(id: String, currentGame: Game) {
+    private fun searchItemFromCategory(id: String, currentGame: Game) {
         var actualGame = currentGame
-        API().getArticlesFromCategory(id, object : Callback<Articles> {
-            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                if (response.isSuccessful) {
-                    response.body()!!.apply {
-                        val itemsList: MutableList<Article> = mutableListOf()
-                        itemsList.addAll(this.results)
-                        val item = itemsList[(itemsList.indices).random()]
-                        binding.tvProductName.text = item.title
+        meliRepository.searchItemFromCategory(id, currentGame, {
+            apply {
+                val itemsList: MutableList<Article> = mutableListOf()
+                itemsList.addAll(it.results)
+                val item = itemsList[(itemsList.indices).random()]
+                binding.tvProductName.text = item.title
 
-                        val price = numberRounder(item.price)
+                val price = numberRounder(item.price)
 
-                        val randomNumber1to3 = (1..3).random()
-                        when (randomNumber1to3) {
-                            1 -> binding.btnOption1.text = price
-                            2 -> binding.btnOption2.text = price
-                            3 -> binding.btnOption3.text = price
-                            else -> println("Out of bounds")
-                        }
-                        searchItem(item.id)
-                        randomOptionsCalculator(item, randomNumber1to3)
-                        actualGame = successChecker(randomNumber1to3, actualGame)
-                    }
-                } else {
-                    println("Falló con código ${response.code()}")
+                val randomNumber1to3 = (1..3).random()
+                when (randomNumber1to3) {
+                    1 -> binding.btnOption1.text = price
+                    2 -> binding.btnOption2.text = price
+                    3 -> binding.btnOption3.text = price
+                    else -> println("Out of bounds")
                 }
+                searchItem(item.id)
+                randomOptionsCalculator(item, randomNumber1to3)
+                actualGame = successChecker(randomNumber1to3, actualGame)
             }
-            override fun onFailure(call: Call<Articles>, t: Throwable) {
-                Log.e("Main","Falló al obtener los articulos de la categoría", t)
-            }
+        }, {
+            println("Falló")
+        }, {
+            Log.e("Main","Falló al obtener los articulos de la categoría", it)
         })
     }
 
