@@ -15,6 +15,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     val categoriesCache: MutableList<Category> = mutableListOf()
     private val itemsCache = mutableMapOf<String, Articles>()
+    private val detailedItemsCache = mutableMapOf<String, Article>()
 
     // Se obtiene una lista de categorías
     override fun searchCategories(
@@ -78,18 +79,24 @@ class MeliRepositoryImpl : MeliRepository {
         id: String, callback: (Article) -> Unit, onError: () -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        API().getArticle(id, object : Callback<Article> {
-            override fun onResponse(call: Call<Article>, response: Response<Article>) {
-                if (response.isSuccessful) {
-                    callback(response.body()!!)
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
-            }
 
-            override fun onFailure(call: Call<Article>, t: Throwable) {
-                onFailure(t)
-            }
-        })
+        if (detailedItemsCache.containsKey(id)) {
+            callback(detailedItemsCache[id]!!)
+        } else {
+            API().getArticle(id, object : Callback<Article> {
+                override fun onResponse(call: Call<Article>, response: Response<Article>) {
+                    if (response.isSuccessful) {
+                        callback(response.body()!!)
+                        detailedItemsCache[id] = response.body()!!
+                    } else {
+                        println("Falló con código ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Article>, t: Throwable) {
+                    onFailure(t)
+                }
+            })
+        }
     }
 }
