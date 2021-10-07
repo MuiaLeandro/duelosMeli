@@ -23,6 +23,7 @@ import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
 import ar.teamrocket.duelosmeli.model.Category
 import ar.teamrocket.duelosmeli.service.API
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,8 +85,9 @@ class GameActivity : AppCompatActivity() {
             val categoryId = categories[(categories.indices).random()].id
             searchItemFromCategory(categoryId, game)
         }, {
-            println("Falló")
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
         }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener las categorias", it)
         })
     }
@@ -113,8 +115,9 @@ class GameActivity : AppCompatActivity() {
                 actualGame = successChecker(randomNumber1to3, actualGame)
             }
         }, {
-            println("Falló")
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
         }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener los articulos de la categoría", it)
         })
     }
@@ -132,8 +135,9 @@ class GameActivity : AppCompatActivity() {
                     .into(binding.ivProductPicture)
             }
         }, {
-            println("Falló")
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
         }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener el artículo", it)
         })
     }

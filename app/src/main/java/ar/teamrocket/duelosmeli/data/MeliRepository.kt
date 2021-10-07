@@ -10,17 +10,17 @@ interface MeliRepository {
     fun searchCategories(
         game: Game,
         callback: (List<Category>) -> Unit,
-        onError: () -> Unit,
+        onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     )
 
     fun searchItemFromCategory(
-        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: () -> Unit,
+        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     )
 
     fun searchItem(
-        id: String, callback: (Article) -> Unit, onError: () -> Unit,
+        id: String, callback: (Article) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     )
 }

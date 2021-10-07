@@ -1,7 +1,7 @@
 package ar.teamrocket.duelosmeli.data.impl
 
-import android.util.Log
 import ar.teamrocket.duelosmeli.Game
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.MeliRepository
 import ar.teamrocket.duelosmeli.model.Article
 import ar.teamrocket.duelosmeli.model.Articles
@@ -21,7 +21,7 @@ class MeliRepositoryImpl : MeliRepository {
     override fun searchCategories(
         game: Game,
         callback: (List<Category>) -> Unit,
-        onError: () -> Unit,
+        onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
 
@@ -33,11 +33,15 @@ class MeliRepositoryImpl : MeliRepository {
                     call: Call<List<Category>>,
                     response: Response<List<Category>>
                 ) {
-                    if (response.isSuccessful) {
-                        callback(response.body()!!)
-                        categoriesCache.addAll(response.body()!!)
-                    } else {
-                        println("Falló con código ${response.code()}")
+                    when (response.code()) {
+                        in 200..299 -> {
+                            callback(response.body()!!)
+                            categoriesCache.addAll(response.body()!!)
+                        }
+                        400 -> onError(R.string.bad_request)
+                        404 -> onError(R.string.resource_not_found)
+                        in 500..599 -> onError(R.string.server_error)
+                        else -> onError(R.string.unknown_error)
                     }
                 }
 
@@ -50,7 +54,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtiene un item de una categoría
     override fun searchItemFromCategory(
-        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: () -> Unit,
+        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
 
@@ -59,11 +63,15 @@ class MeliRepositoryImpl : MeliRepository {
         } else {
             API().getArticlesFromCategory(id, object : Callback<Articles> {
                 override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                    if (response.isSuccessful) {
-                        callback(response.body()!!)
-                        itemsCache[id] = response.body()!!
-                    } else {
-                        println("Falló con código ${response.code()}")
+                    when (response.code()) {
+                        in 200..299 -> {
+                            callback(response.body()!!)
+                            itemsCache[id] = response.body()!!
+                        }
+                        400 -> onError(R.string.bad_request)
+                        404 -> onError(R.string.resource_not_found)
+                        in 500..599 -> onError(R.string.server_error)
+                        else -> onError(R.string.unknown_error)
                     }
                 }
 
@@ -76,7 +84,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtienen los datos más detallados de un artículo, por ahora usamos solo una imágen
     override fun searchItem(
-        id: String, callback: (Article) -> Unit, onError: () -> Unit,
+        id: String, callback: (Article) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
 
@@ -85,11 +93,15 @@ class MeliRepositoryImpl : MeliRepository {
         } else {
             API().getArticle(id, object : Callback<Article> {
                 override fun onResponse(call: Call<Article>, response: Response<Article>) {
-                    if (response.isSuccessful) {
-                        callback(response.body()!!)
-                        detailedItemsCache[id] = response.body()!!
-                    } else {
-                        println("Falló con código ${response.code()}")
+                    when (response.code()) {
+                        in 200..299 -> {
+                            callback(response.body()!!)
+                            detailedItemsCache[id] = response.body()!!
+                        }
+                        400 -> onError(R.string.bad_request)
+                        404 -> onError(R.string.resource_not_found)
+                        in 500..599 -> onError(R.string.server_error)
+                        else -> onError(R.string.unknown_error)
                     }
                 }
 
