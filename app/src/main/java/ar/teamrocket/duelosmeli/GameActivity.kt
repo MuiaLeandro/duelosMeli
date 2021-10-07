@@ -9,10 +9,13 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
+import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.room.Room
+import ar.teamrocket.duelosmeli.data.MeliRepository
+import ar.teamrocket.duelosmeli.data.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.database.Player
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
@@ -32,6 +35,7 @@ import java.util.*
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
+    private var meliRepository: MeliRepository = MeliRepositoryImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,20 +79,15 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun searchCategories(game: Game) {
-        API().getCategories(object : Callback<List<Category>> {
-            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
-                if (response.isSuccessful) {
-                    val categories = response.body()!!
-                    val categoryId = categories[(categories.indices).random()].id
-                    searchItemFromCategory(categoryId, game)
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                Log.e("Main", "Falló al obtener las categorias", t)
-            }
-        })
+        meliRepository.searchCategories(game, {
+                val categories = it
+                val categoryId = categories[(categories.indices).random()].id
+                searchItemFromCategory(categoryId, game)
+                },{
+                    println("Falló")
+                },{
+                    Log.e("Main", "Falló al obtener las categorias", it)
+                })
     }
 
     fun searchItemFromCategory(id: String, currentGame: Game) {
