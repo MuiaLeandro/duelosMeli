@@ -18,4 +18,9 @@ interface MeliRepository {
         id: String, currentGame: Game, callback: (Articles) -> Unit, onError: () -> Unit,
         onFailure: (Throwable) -> Unit
     )
+
+    fun searchItem(
+        id: String, callback: (Article) -> Unit, onError: () -> Unit,
+        onFailure: (Throwable) -> Unit
+    )
 }

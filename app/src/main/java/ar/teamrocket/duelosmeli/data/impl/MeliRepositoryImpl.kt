@@ -72,4 +72,24 @@ class MeliRepositoryImpl : MeliRepository {
             })
         }
     }
+
+    // Se obtienen los datos más detallados de un artículo, por ahora usamos solo una imágen
+    override fun searchItem(
+        id: String, callback: (Article) -> Unit, onError: () -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+        API().getArticle(id, object : Callback<Article> {
+            override fun onResponse(call: Call<Article>, response: Response<Article>) {
+                if (response.isSuccessful) {
+                    callback(response.body()!!)
+                } else {
+                    println("Falló con código ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<Article>, t: Throwable) {
+                onFailure(t)
+            }
+        })
+    }
 }

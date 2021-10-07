@@ -80,14 +80,14 @@ class GameActivity : AppCompatActivity() {
 
     private fun searchCategories(game: Game) {
         meliRepository.searchCategories(game, {
-                val categories = it
-                val categoryId = categories[(categories.indices).random()].id
-                searchItemFromCategory(categoryId, game)
-                },{
-                    println("Falló")
-                },{
-                    Log.e("Main", "Falló al obtener las categorias", it)
-                })
+            val categories = it
+            val categoryId = categories[(categories.indices).random()].id
+            searchItemFromCategory(categoryId, game)
+        }, {
+            println("Falló")
+        }, {
+            Log.e("Main", "Falló al obtener las categorias", it)
+        })
     }
 
     private fun searchItemFromCategory(id: String, currentGame: Game) {
@@ -115,7 +115,7 @@ class GameActivity : AppCompatActivity() {
         }, {
             println("Falló")
         }, {
-            Log.e("Main","Falló al obtener los articulos de la categoría", it)
+            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
         })
     }
 
@@ -124,20 +124,17 @@ class GameActivity : AppCompatActivity() {
         return game
     }
 
-    fun searchItem(id: String) {
-        API().getArticle(id, object : Callback<Article> {
-            override fun onResponse(call: Call<Article>,response: Response<Article>) {
-                if (response.isSuccessful) {response.body()!!.apply {
-                    Picasso.get()
-                        .load(this.pictures[0].secureUrl)
-                        .into(binding.ivProductPicture)}
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
+    private fun searchItem(id: String) {
+        meliRepository.searchItem(id, {
+            apply {
+                Picasso.get()
+                    .load(it.pictures[0].secureUrl)
+                    .into(binding.ivProductPicture)
             }
-            override fun onFailure(call: Call<Article>, t: Throwable) {
-                Log.e("Main","Falló al obtener el artículo", t)
-            }
+        }, {
+            println("Falló")
+        }, {
+            Log.e("Main", "Falló al obtener el artículo", it)
         })
     }
 
