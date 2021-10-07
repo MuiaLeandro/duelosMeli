@@ -14,6 +14,7 @@ import retrofit2.Response
 class MeliRepositoryImpl : MeliRepository {
 
     val categoriesCache: MutableList<Category> = mutableListOf()
+    private val itemsCache = mutableMapOf<String, Articles>()
 
     // Se obtiene una lista de categorías
     override fun searchCategories(
@@ -51,18 +52,24 @@ class MeliRepositoryImpl : MeliRepository {
         id: String, currentGame: Game, callback: (Articles) -> Unit, onError: () -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
-        API().getArticlesFromCategory(id, object : Callback<Articles> {
-            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                if (response.isSuccessful) {
-                    callback(response.body()!!)
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
-            }
 
-            override fun onFailure(call: Call<Articles>, t: Throwable) {
-                onFailure(t)
-            }
-        })
+        if (itemsCache.containsKey(id)) {
+            callback(itemsCache[id]!!)
+        } else {
+            API().getArticlesFromCategory(id, object : Callback<Articles> {
+                override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
+                    if (response.isSuccessful) {
+                        callback(response.body()!!)
+                        itemsCache[id] = response.body()!!
+                    } else {
+                        println("Falló con código ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Articles>, t: Throwable) {
+                    onFailure(t)
+                }
+            })
+        }
     }
 }
