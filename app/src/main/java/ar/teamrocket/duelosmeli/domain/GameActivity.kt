@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.domain
 
 import android.content.Context
 import android.content.Intent
@@ -14,20 +14,16 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.room.Room
+import ar.teamrocket.duelosmeli.ui.HomeActivity
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.MeliRepository
 import ar.teamrocket.duelosmeli.data.impl.MeliRepositoryImpl
-import ar.teamrocket.duelosmeli.database.DuelosMeliDb
-import ar.teamrocket.duelosmeli.database.Player
+import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
-import ar.teamrocket.duelosmeli.model.Article
-import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Category
-import ar.teamrocket.duelosmeli.service.API
+import ar.teamrocket.duelosmeli.domain.model.Article
+import ar.teamrocket.duelosmeli.domain.model.Game
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.math.RoundingMode
 import kotlin.math.roundToInt
 import java.text.NumberFormat
@@ -229,7 +225,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun twoCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources,
+            R.color.green, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
     }
 

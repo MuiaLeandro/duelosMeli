@@ -1,19 +1,13 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.ui
 
 import android.util.Log
-import ar.teamrocket.duelosmeli.model.Article
-import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Categories
-import ar.teamrocket.duelosmeli.model.Category
-import ar.teamrocket.duelosmeli.service.API
-import com.squareup.picasso.Picasso
+import ar.teamrocket.duelosmeli.domain.model.Article
+import ar.teamrocket.duelosmeli.domain.model.Articles
+import ar.teamrocket.duelosmeli.domain.model.Category
+import ar.teamrocket.duelosmeli.data.service.API
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.random.Random
-import android.os.CountDownTimer
-
-
 
 
 fun main(args: Array<String>) {
@@ -25,6 +19,17 @@ fun main(args: Array<String>) {
     }
 
     test()*/
+
+    /*var lista: List<String> = listOf("1", "2", "3")
+    var listaMutable: MutableList<String> = mutableListOf()
+
+    listaMutable.add("Primero")
+    listaMutable.add("Segundo")
+    listaMutable.add("Tercero")
+
+    println(listaMutable[listaMutable.lastIndex])
+    println(lista[lista.lastIndex])*/
+
 
     //Hardcodeo una lista de categorias
     var categoria: MutableList<String> = mutableListOf()
@@ -65,6 +70,7 @@ fun main(args: Array<String>) {
     //val numeroRandom = (1..3).random()
     //println(numeroRandom)
 
+    println("")
     var play = true
     while (play == true){
         println("Let's play")

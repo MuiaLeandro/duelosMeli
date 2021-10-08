@@ -1,9 +1,9 @@
 package ar.teamrocket.duelosmeli.data
 
-import ar.teamrocket.duelosmeli.Game
-import ar.teamrocket.duelosmeli.model.Article
-import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Category
+import ar.teamrocket.duelosmeli.domain.model.Game
+import ar.teamrocket.duelosmeli.domain.model.Article
+import ar.teamrocket.duelosmeli.domain.model.Articles
+import ar.teamrocket.duelosmeli.domain.model.Category
 
 interface MeliRepository {
 

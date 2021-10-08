@@ -1,17 +1,23 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.ui
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ar.teamrocket.duelosmeli.domain.NewGameActivity
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val sound = MediaPlayer.create(this, R.raw.open)
+        sound.start()
         binding.btnPlayGame.setOnClickListener { viewNewGame() }
     }
 

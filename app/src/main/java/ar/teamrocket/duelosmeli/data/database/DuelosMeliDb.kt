@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.database
+package ar.teamrocket.duelosmeli.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

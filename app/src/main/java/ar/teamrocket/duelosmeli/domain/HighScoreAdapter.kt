@@ -1,9 +1,9 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.domain
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ar.teamrocket.duelosmeli.database.Player
+import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.databinding.ItemHighscoreBinding
 
 class HighScoreAdapter (private val players:List<Player>): RecyclerView.Adapter<HighScoreAdapter.HighScoreHolder>(){
