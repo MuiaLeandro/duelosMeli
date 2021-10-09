@@ -30,6 +30,7 @@ class GameOverActivity : AppCompatActivity() {
         ).allowMainThreadQueries().build()
         val playerDao = database.playerDao()
         val allPlayers = playerDao.getAll()
+        val topTenPlayers = playerDao.getTopTenOrderByScore()
 
         val idPlayer = intent.extras!!.getLong("IdPlayer")
         //obtener jugador
@@ -49,7 +50,7 @@ class GameOverActivity : AppCompatActivity() {
 
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
-        binding.rvScoreTable.adapter = HighScoreAdapter(allPlayers)
+        binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
     }
 
     override fun onBackPressed() {

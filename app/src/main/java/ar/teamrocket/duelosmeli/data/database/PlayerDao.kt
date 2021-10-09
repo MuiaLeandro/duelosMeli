@@ -7,6 +7,12 @@ interface PlayerDao {
     @Query("SELECT * FROM players")
     fun getAll(): List<Player>
 
+    @Query("SELECT * FROM players ORDER BY score DESC LIMIT 10")
+    fun getTopTenOrderByScore(): List<Player>
+
+    @Query("SELECT * FROM players ORDER BY name")
+    fun getAllOrderByName(): List<Player>
+
     @Query("SELECT * FROM players WHERE id = :id")
     fun getById(id: Long): List<Player>
 

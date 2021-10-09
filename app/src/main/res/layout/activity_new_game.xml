@@ -35,7 +35,8 @@
             android:ems="10"
             android:hint="@string/hint_nombre"
             android:inputType="textPersonName"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/btnStartGame"
@@ -61,7 +62,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSelectPlayer"
         android:layout_width="408dp"
-        android:layout_height="552dp"
+        android:layout_height="450dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
