@@ -2,6 +2,7 @@ package ar.teamrocket.duelosmeli.domain
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -38,6 +39,8 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
+        doorbellSound.start()
 
         val playerId = intent.extras!!.getLong("Id")
         val game = Game(playerId)
@@ -163,19 +166,19 @@ class GameActivity : AppCompatActivity() {
         timer.start()
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(true); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(true); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
             }
             else -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(true); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
             }
         }
     }
@@ -313,5 +316,18 @@ class GameActivity : AppCompatActivity() {
     ): Int {
         theme.resolveAttribute(attrColor, typedValue, resolveRefs)
         return typedValue.data
+    }
+
+    private fun optionsSounds(state: Boolean) {
+        when (state) {
+            true -> {
+                val correctSound = MediaPlayer.create(this, R.raw.correct)
+                correctSound.start()
+            }
+            false -> {
+                val incorrectSound = MediaPlayer.create(this, R.raw.incorrect)
+                incorrectSound.start()
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package ar.teamrocket.duelosmeli.domain
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,8 @@ class GameOverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val gameOverSound = MediaPlayer.create(this, R.raw.gameover)
+        gameOverSound.start()
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
 
         //ROOM

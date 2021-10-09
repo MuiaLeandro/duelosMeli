@@ -16,8 +16,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sound = MediaPlayer.create(this, R.raw.open)
-        sound.start()
+        val openSound = MediaPlayer.create(this, R.raw.open)
+        openSound.start()
         binding.btnPlayGame.setOnClickListener { viewNewGame() }
     }
 
