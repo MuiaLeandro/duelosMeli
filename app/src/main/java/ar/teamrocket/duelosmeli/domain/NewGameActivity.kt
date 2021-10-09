@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.domain
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import ar.teamrocket.duelosmeli.database.DuelosMeliDb
-import ar.teamrocket.duelosmeli.database.Player
-import ar.teamrocket.duelosmeli.database.PlayerDao
+import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
+import ar.teamrocket.duelosmeli.data.database.Player
+import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityNewGameBinding
+import ar.teamrocket.duelosmeli.ui.HomeActivity
 
 class NewGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewGameBinding

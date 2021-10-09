@@ -1,8 +1,8 @@
-package ar.teamrocket.duelosmeli.service
+package ar.teamrocket.duelosmeli.data.service
 
-import ar.teamrocket.duelosmeli.model.Article
-import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Category
+import ar.teamrocket.duelosmeli.domain.model.Article
+import ar.teamrocket.duelosmeli.domain.model.Articles
+import ar.teamrocket.duelosmeli.domain.model.Category
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

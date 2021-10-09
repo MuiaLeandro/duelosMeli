@@ -14,4 +14,9 @@
     <string name="puntosLogrados">Lograste %d puntos</string>
     <string name="puntosRecord">Tu mayor puntaje: %d</string>
     <string name="mistakeCounter">Errores: %d/3</string>
+    <string name="resource_not_found">No se encontró el recurso</string>
+    <string name="bad_request">Solicitud incorrecta</string>
+    <string name="server_error">Ocurrió un error en el servidor</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="no_internet">No hay conexión</string>
 </resources>

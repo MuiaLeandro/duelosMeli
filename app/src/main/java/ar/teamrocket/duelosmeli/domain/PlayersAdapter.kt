@@ -1,10 +1,10 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.domain
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ar.teamrocket.duelosmeli.database.Player
+import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.databinding.ItemPlayerBinding
 
 class PlayersAdapter(private val players:List<Player>): RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
@@ -21,7 +21,7 @@ class PlayersAdapter(private val players:List<Player>): RecyclerView.Adapter<Pla
 
         private fun playGame(id:Long) {
             itemView.context
-                    .startActivity(Intent(binding.root.context,GameActivity::class.java)
+                    .startActivity(Intent(binding.root.context, GameActivity::class.java)
                     .putExtra("Id",id))
         }
     }

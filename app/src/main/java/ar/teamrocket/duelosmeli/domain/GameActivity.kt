@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.domain
 
 import android.content.Context
 import android.content.Intent
@@ -9,21 +9,21 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
+import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.room.Room
-import ar.teamrocket.duelosmeli.database.DuelosMeliDb
-import ar.teamrocket.duelosmeli.database.Player
+import ar.teamrocket.duelosmeli.ui.HomeActivity
+import ar.teamrocket.duelosmeli.R
+import ar.teamrocket.duelosmeli.data.MeliRepository
+import ar.teamrocket.duelosmeli.data.impl.MeliRepositoryImpl
+import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
-import ar.teamrocket.duelosmeli.model.Article
-import ar.teamrocket.duelosmeli.model.Articles
-import ar.teamrocket.duelosmeli.model.Category
-import ar.teamrocket.duelosmeli.service.API
+import ar.teamrocket.duelosmeli.domain.model.Article
+import ar.teamrocket.duelosmeli.domain.model.Game
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.math.RoundingMode
 import kotlin.math.roundToInt
 import java.text.NumberFormat
@@ -32,6 +32,7 @@ import java.util.*
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
+    private var meliRepository: MeliRepository = MeliRepositoryImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,53 +76,45 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun searchCategories(game: Game) {
-        API().getCategories(object : Callback<List<Category>> {
-            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
-                if (response.isSuccessful) {
-                    val categories = response.body()!!
-                    val categoryId = categories[(categories.indices).random()].id
-                    searchItemFromCategory(categoryId, game)
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                Log.e("Main", "Falló al obtener las categorias", t)
-            }
+        meliRepository.searchCategories(game, {
+            val categories = it
+            val categoryId = categories[(categories.indices).random()].id
+            searchItemFromCategory(categoryId, game)
+        }, {
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
+        }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener las categorias", it)
         })
     }
 
-    fun searchItemFromCategory(id: String, currentGame: Game) {
+    private fun searchItemFromCategory(id: String, currentGame: Game) {
         var actualGame = currentGame
-        API().getArticlesFromCategory(id, object : Callback<Articles> {
-            override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                if (response.isSuccessful) {
-                    response.body()!!.apply {
-                        val itemsList: MutableList<Article> = mutableListOf()
-                        itemsList.addAll(this.results)
-                        val item = itemsList[(itemsList.indices).random()]
-                        binding.tvProductName.text = item.title
+        meliRepository.searchItemFromCategory(id, currentGame, {
+            apply {
+                val itemsList: MutableList<Article> = mutableListOf()
+                itemsList.addAll(it.results)
+                val item = itemsList[(itemsList.indices).random()]
+                binding.tvProductName.text = item.title
 
-                        val price = numberRounder(item.price)
+                val price = numberRounder(item.price)
 
-                        val randomNumber1to3 = (1..3).random()
-                        when (randomNumber1to3) {
-                            1 -> binding.btnOption1.text = price
-                            2 -> binding.btnOption2.text = price
-                            3 -> binding.btnOption3.text = price
-                            else -> println("Out of bounds")
-                        }
-                        searchItem(item.id)
-                        randomOptionsCalculator(item, randomNumber1to3)
-                        actualGame = successChecker(randomNumber1to3, actualGame)
-                    }
-                } else {
-                    println("Falló con código ${response.code()}")
+                val randomNumber1to3 = (1..3).random()
+                when (randomNumber1to3) {
+                    1 -> binding.btnOption1.text = price
+                    2 -> binding.btnOption2.text = price
+                    3 -> binding.btnOption3.text = price
+                    else -> println("Out of bounds")
                 }
+                searchItem(item.id)
+                randomOptionsCalculator(item, randomNumber1to3)
+                actualGame = successChecker(randomNumber1to3, actualGame)
             }
-            override fun onFailure(call: Call<Articles>, t: Throwable) {
-                Log.e("Main","Falló al obtener los articulos de la categoría", t)
-            }
+        }, {
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
+        }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
         })
     }
 
@@ -130,20 +123,18 @@ class GameActivity : AppCompatActivity() {
         return game
     }
 
-    fun searchItem(id: String) {
-        API().getArticle(id, object : Callback<Article> {
-            override fun onResponse(call: Call<Article>,response: Response<Article>) {
-                if (response.isSuccessful) {response.body()!!.apply {
-                    Picasso.get()
-                        .load(this.pictures[0].secureUrl)
-                        .into(binding.ivProductPicture)}
-                } else {
-                    println("Falló con código ${response.code()}")
-                }
+    private fun searchItem(id: String) {
+        meliRepository.searchItem(id, {
+            apply {
+                Picasso.get()
+                    .load(it.pictures[0].secureUrl)
+                    .into(binding.ivProductPicture)
             }
-            override fun onFailure(call: Call<Article>, t: Throwable) {
-                Log.e("Main","Falló al obtener el artículo", t)
-            }
+        }, {
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
+        }, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener el artículo", it)
         })
     }
 
@@ -234,7 +225,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun twoCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources,
+            R.color.green, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
     }
 

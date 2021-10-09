@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.model
+package ar.teamrocket.duelosmeli.domain.model
 
 data class Category(
     var id: String

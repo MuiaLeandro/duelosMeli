@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.model
+package ar.teamrocket.duelosmeli.domain.model
 
 import com.google.gson.annotations.SerializedName
 
