@@ -128,6 +128,8 @@ class GameActivity : AppCompatActivity() {
             apply {
                 Picasso.get()
                     .load(it.pictures[0].secureUrl)
+                    .placeholder(R.drawable.spinner)
+                    .error(R.drawable.no_image)
                     .into(binding.ivProductPicture)
             }
         }, {
@@ -157,7 +159,7 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        val timer = Timer(11000, 1000)
+        val timer = Timer(21000, 1000)
         timer.start()
         when (correctOption) {
             1 -> {
