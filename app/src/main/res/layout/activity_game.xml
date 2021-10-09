@@ -24,6 +24,7 @@
                 android:layout_height="69dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/que_precio_tiene"
+                android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +118,34 @@
                 android:text="@string/mistakeCounter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnOption3" />
+
+            <ImageView
+                android:id="@+id/ivLifeOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@+id/btnExitGame"
+                app:layout_constraintTop_toBottomOf="@+id/btnExitGame"
+                app:srcCompat="@drawable/ic_life_filled"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/ivLifeTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/ivLifeOne"
+                app:layout_constraintTop_toTopOf="@+id/ivLifeOne"
+                app:srcCompat="@drawable/ic_life_filled"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/ivLifeThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/ivLifeTwo"
+                app:layout_constraintTop_toTopOf="@+id/ivLifeTwo"
+                app:srcCompat="@drawable/ic_life_filled"
+                tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -195,6 +195,11 @@ class GameActivity : AppCompatActivity() {
 
     private fun mistakeCounterUpdater(game: Game) {
         binding.tvMistakeCounter.text = getString(R.string.mistakeCounter, game.errors)
+        when (game.errors){
+            1 -> binding.ivLifeThree.setImageResource(R.drawable.ic_life_not_filled)
+            2 -> binding.ivLifeTwo.setImageResource(R.drawable.ic_life_not_filled)
+            3 -> binding.ivLifeOne.setImageResource(R.drawable.ic_life_not_filled)
+        }
     }
 
     private fun continuePlayChecker(game: Game): Game {
