@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:ems="10"
-            android:hint="@string/hint_name"
+            android:hint="@string/nickname"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:importantForAutofill="no" />

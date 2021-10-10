@@ -3,7 +3,7 @@
     <string name="whats_the_price">¿Qué precio tiene este producto?</string>
     <string name="new_player">Nuevo jugador</string>
     <string name="select_player">o seleccioná un jugador</string>
-    <string name="hint_name">Apodo</string>
+    <string name="nickname">Apodo</string>
     <string name="ok">OK</string>
     <string name="game_over">¡Perdiste!</string>
     <string name="score_table">Tabla de puntajes</string>
