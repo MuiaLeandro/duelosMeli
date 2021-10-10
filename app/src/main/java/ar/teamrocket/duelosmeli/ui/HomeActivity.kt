@@ -11,13 +11,12 @@ import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sound = MediaPlayer.create(this, R.raw.open)
-        sound.start()
+        val openSound = MediaPlayer.create(this, R.raw.open)
+        openSound.start()
         binding.btnPlayGame.setOnClickListener { viewNewGame() }
     }
 

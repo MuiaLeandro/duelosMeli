@@ -1,6 +1,7 @@
 package ar.teamrocket.duelosmeli.domain
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,8 @@ class GameOverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val gameOverSound = MediaPlayer.create(this, R.raw.gameover)
+        gameOverSound.start()
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
 
         //ROOM
@@ -27,6 +30,7 @@ class GameOverActivity : AppCompatActivity() {
         ).allowMainThreadQueries().build()
         val playerDao = database.playerDao()
         val allPlayers = playerDao.getAll()
+        val topTenPlayers = playerDao.getTopTenOrderByScore()
 
         val idPlayer = intent.extras!!.getLong("IdPlayer")
         //obtener jugador
@@ -46,7 +50,7 @@ class GameOverActivity : AppCompatActivity() {
 
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
-        binding.rvScoreTable.adapter = HighScoreAdapter(allPlayers)
+        binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
     }
 
     override fun onBackPressed() {

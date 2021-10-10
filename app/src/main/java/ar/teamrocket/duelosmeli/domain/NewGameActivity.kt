@@ -47,6 +47,7 @@ class NewGameActivity : AppCompatActivity() {
 
         //Obtengo todos los jugadores guardados
         val allPlayers = playerDao.getAll()
+        val allPlayersOrderedByName = playerDao.getAllOrderByName()
 
         val newPlayer = Player("",0) // como el id es autogenerado se le pone 0 y room ya sabe que id poner
 
@@ -59,7 +60,7 @@ class NewGameActivity : AppCompatActivity() {
         }
 
         binding.rvSelectPlayer.layoutManager = LinearLayoutManager(this)
-        binding.rvSelectPlayer.adapter = PlayersAdapter(allPlayers)
+        binding.rvSelectPlayer.adapter = PlayersAdapter(allPlayersOrderedByName)
 
     }
 
