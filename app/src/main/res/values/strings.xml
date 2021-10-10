@@ -1,21 +1,23 @@
 <resources>
     <string name="app_name">duelosMeli</string>
-    <string name="que_precio_tiene">¿Qué precio tiene este producto?</string>
-    <string name="nuevo_jugador">Nuevo jugador</string>
-    <string name="seleccione_jugador">o seleccione un jugador</string>
-    <string name="hint_nombre">Nombre</string>
+    <string name="whats_the_price">¿Qué precio tiene este producto?</string>
+    <string name="new_player">Nuevo jugador</string>
+    <string name="select_player">o seleccioná un jugador</string>
+    <string name="hint_name">Apodo</string>
     <string name="ok">OK</string>
-    <string name="partida_finalizada">Partida finalizada</string>
-    <string name="tabla_de_puntajes">Tabla de puntajes</string>
-    <string name="volver_al_inicio">Volver al inicio</string>
-    <string name="siguiente">Siguiente</string>
-    <string name="salir">X</string>
-    <string name="jugar">Jugar</string>
-    <string name="puntosLogrados">Lograste %d puntos</string>
-    <string name="puntosRecord">Tu mayor puntaje: %d</string>
+    <string name="game_over">¡Perdiste!</string>
+    <string name="score_table">Tabla de puntajes</string>
+    <string name="back_to_the_start">Inicio</string>
+    <string name="next">Siguiente</string>
+    <string name="exit">X</string>
+    <string name="play">Jugar</string>
+    <string name="achieved_points">Hiciste %d puntos</string>
+    <string name="record_points">Tu record: %d</string>
     <string name="resource_not_found">No se encontró el recurso</string>
     <string name="bad_request">Solicitud incorrecta</string>
     <string name="server_error">Ocurrió un error en el servidor</string>
     <string name="unknown_error">Error desconocido</string>
     <string name="no_internet">No hay conexión</string>
+    <string name="player_name_already_exists">¡Ya existe un jugador con ese nombre!</string>
+    <string name="put_your_name">¡Poné tu nombre o apodo!</string>
 </resources>

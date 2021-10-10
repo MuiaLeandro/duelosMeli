@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
@@ -64,11 +65,11 @@ class NewGameActivity : AppCompatActivity() {
             }
             when {
                 playerNameAlreadyExists -> {
-                    Toast.makeText(this, "Ya existe un jugador con ese nombre!", Toast.LENGTH_LONG)
+                    Toast.makeText(this, R.string.player_name_already_exists, Toast.LENGTH_LONG)
                         .show()
                 }
                 newPlayer.name == "" -> {
-                    Toast.makeText(this, "Poné tu nombre!", Toast.LENGTH_LONG).show()}
+                    Toast.makeText(this, R.string.put_your_name, Toast.LENGTH_LONG).show()}
                 else -> {
                     playerDao.insertPlayer(newPlayer) //Guardo el nuevo jugador
                     val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
