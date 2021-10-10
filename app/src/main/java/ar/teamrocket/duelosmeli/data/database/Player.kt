@@ -3,6 +3,7 @@ package ar.teamrocket.duelosmeli.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
 
 
 @Entity (tableName = "Players")

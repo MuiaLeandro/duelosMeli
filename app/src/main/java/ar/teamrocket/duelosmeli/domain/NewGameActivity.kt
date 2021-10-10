@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
@@ -52,11 +53,29 @@ class NewGameActivity : AppCompatActivity() {
         val newPlayer = Player("",0) // como el id es autogenerado se le pone 0 y room ya sabe que id poner
 
         binding.btnStartGame.setOnClickListener {
-            newPlayer.name = binding.etPlayerName.text.toString()
-            playerDao.insertPlayer(newPlayer) //Guardo el nuevo jugador
-            val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
-            val player = playerDao.getById(idLastPlayer.toLong()) // obtengo el nuevo jugador desde la DB.
-            viewGame(player)
+            newPlayer.name = binding.etPlayerName.text.toString().replace(" ", "")
+
+            var playerNameAlreadyExists = false
+            for (player in allPlayers){
+                if (player.name == newPlayer.name){
+                    playerNameAlreadyExists = true
+                    break
+                }
+            }
+            when {
+                playerNameAlreadyExists -> {
+                    Toast.makeText(this, "Ya existe un jugador con ese nombre!", Toast.LENGTH_LONG)
+                        .show()
+                }
+                newPlayer.name == "" -> {
+                    Toast.makeText(this, "Poné tu nombre!", Toast.LENGTH_LONG).show()}
+                else -> {
+                    playerDao.insertPlayer(newPlayer) //Guardo el nuevo jugador
+                    val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
+                    val player = playerDao.getById(idLastPlayer.toLong()) // obtengo el nuevo jugador desde la DB.
+                    viewGame(player)
+                }
+            }
         }
 
         binding.rvSelectPlayer.layoutManager = LinearLayoutManager(this)
