@@ -18,4 +18,8 @@
     <string name="server_error">Ocurrió un error en el servidor</string>
     <string name="unknown_error">Error desconocido</string>
     <string name="no_internet">No hay conexión</string>
+    <string name="un_jugador">Un jugador</string>
+    <string name="multi_jugador">Multijugador</string>
+    <string name="nuevo_juego">Nuevo juego</string>
+    <string name="participantes">Participantes</string>
 </resources>
