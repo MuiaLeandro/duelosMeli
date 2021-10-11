@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
         <activity
+            android:name=".MultiplayerGamePartialResultActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MultiplayerGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MultiplayerGameReadyActivity"
+            android:exported="true" />
+        <activity
             android:name=".NewMultiplayerGameActivity"
             android:exported="true" />
         <activity
