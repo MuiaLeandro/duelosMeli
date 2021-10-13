@@ -42,8 +42,8 @@ class GameOverActivity : AppCompatActivity() {
         }
         //playerDao.updatePlayer(player[0])
         val pointsAchieved = intent.extras!!.getInt("Points")
-        val pointsAchievedString = getString(R.string.puntosLogrados, pointsAchieved)
-        val pointsHighscore = getString(R.string.puntosRecord, player[0].score)
+        val pointsAchievedString = getString(R.string.achieved_points, pointsAchieved)
+        val pointsHighscore = getString(R.string.record_points, player[0].score)
 
         binding.tvScoreAchieved.text = pointsAchievedString
         binding.tvHigherScore.text = pointsHighscore
