@@ -1,10 +1,10 @@
 package ar.teamrocket.duelosmeli.ui
 
 import android.util.Log
-import ar.teamrocket.duelosmeli.domain.model.Article
-import ar.teamrocket.duelosmeli.domain.model.Articles
-import ar.teamrocket.duelosmeli.domain.model.Category
-import ar.teamrocket.duelosmeli.data.service.API
+import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.data.model.Articles
+import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.retrofit.API
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

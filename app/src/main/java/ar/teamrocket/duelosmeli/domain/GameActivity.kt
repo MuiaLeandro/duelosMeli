@@ -11,18 +11,20 @@ import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.R
-import ar.teamrocket.duelosmeli.data.MeliRepository
-import ar.teamrocket.duelosmeli.data.impl.MeliRepositoryImpl
+import ar.teamrocket.duelosmeli.data.repository.MeliRepository
+import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
-import ar.teamrocket.duelosmeli.domain.model.Article
-import ar.teamrocket.duelosmeli.domain.model.Game
+import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
+import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import java.math.RoundingMode
@@ -34,6 +36,8 @@ import java.util.*
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
+    private var gameFunctions: GameFunctions = GameFunctionsImpl()
+    val vm: GameViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +51,20 @@ class GameActivity : AppCompatActivity() {
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
-        mistakeCounterUpdater(game)
+        gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
         playGame(game)
+    }
+
+    fun setListeners(){
+        TODO()
+    }
+
+    fun setObservers(){
+        vm.itemNameMutable.observe(this, {
+            if (it != null){
+                binding.tvProductName.text = it
+            }
+        })
     }
 
     private fun viewGameOver(game: Game) {
@@ -78,7 +94,7 @@ class GameActivity : AppCompatActivity() {
         return game
     }
 
-    private fun searchCategories(game: Game) {
+    private fun searchCategories(game: Game) {          // YA ESTARÍA **************************
         meliRepository.searchCategories(game, {
             val categories = it
             val categoryId = categories[(categories.indices).random()].id
@@ -91,7 +107,7 @@ class GameActivity : AppCompatActivity() {
         })
     }
 
-    private fun searchItemFromCategory(id: String, currentGame: Game) {
+    private fun searchItemFromCategory(id: String, currentGame: Game) {// YA ESTARÍA **************************
         var actualGame = currentGame
         meliRepository.searchItemFromCategory(id, currentGame, {
             apply {
@@ -121,12 +137,12 @@ class GameActivity : AppCompatActivity() {
         })
     }
 
-    private fun successChecker(correctOption: Int, game: Game): Game {
+    private fun successChecker(correctOption: Int, game: Game): Game { // YA ESTARÍA **************************
         timer(game, correctOption)
         return game
     }
 
-    private fun searchItem(id: String) {
+    private fun searchItem(id: String) {        // YA ESTARÍA **************************
         meliRepository.searchItem(id, {
             apply {
                 Picasso.get()
@@ -166,19 +182,19 @@ class GameActivity : AppCompatActivity() {
         timer.start()
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(true); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(true); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
             }
             else -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); optionsSounds(false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); optionsSounds(false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); optionsSounds(true); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
             }
         }
     }
@@ -190,15 +206,7 @@ class GameActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1000)
         Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
 
-        mistakeCounterUpdater(game)
-    }
-
-    private fun mistakeCounterUpdater(game: Game) {
-        when (game.errors){
-            1 -> binding.ivLifeThree.setImageResource(R.drawable.ic_life_not_filled)
-            2 -> binding.ivLifeTwo.setImageResource(R.drawable.ic_life_not_filled)
-            3 -> binding.ivLifeOne.setImageResource(R.drawable.ic_life_not_filled)
-        }
+        gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
     }
 
     private fun continuePlayChecker(game: Game): Game {
@@ -234,8 +242,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun twoCorrect() {
         binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources,
-            R.color.green, null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
     }
 
@@ -245,13 +252,13 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
 
-    private fun numberRounder(numberDouble: Double): String {
+    private fun numberRounder(numberDouble: Double): String {       // YA EESTARÍA **************************
         val numberFormatter: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
         numberFormatter.roundingMode = RoundingMode.FLOOR
         return numberFormatter.format(numberDouble.toInt())
     }
 
-    private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {
+    private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {// YA ESTARÍA **************************
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
 
@@ -263,7 +270,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun randomOptionsPosition(correctOptionPosition: Int,
                                       randomCalculatedPrice1: Double,
-                                      randomCalculatedPrice2: Double) {
+                                      randomCalculatedPrice2: Double) {// YA ESTARÍA **************************
         when (correctOptionPosition) {
             1 -> {
                 binding.btnOption2.text = numberRounder(randomCalculatedPrice1)
@@ -281,7 +288,7 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun randomPriceCalculator(item: Article): Double {
+    private fun randomPriceCalculator(item: Article): Double {// YA ESTARÍA **************************
         val realPrice = item.price
         val randomNumber = (1..8).random()
         var fakePrice = 0.0
@@ -300,12 +307,6 @@ class GameActivity : AppCompatActivity() {
         return fakePrice
     }
 
-    /*private fun clearPrices(){
-        binding.btnOption1.text = ""
-        binding.btnOption2.text = ""
-        binding.btnOption3.text = ""
-    }*/
-
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
         binding.btnOption2.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
@@ -320,18 +321,5 @@ class GameActivity : AppCompatActivity() {
     ): Int {
         theme.resolveAttribute(attrColor, typedValue, resolveRefs)
         return typedValue.data
-    }
-
-    private fun optionsSounds(state: Boolean) {
-        when (state) {
-            true -> {
-                val correctSound = MediaPlayer.create(this, R.raw.correct)
-                correctSound.start()
-            }
-            false -> {
-                val incorrectSound = MediaPlayer.create(this, R.raw.incorrect)
-                incorrectSound.start()
-            }
-        }
     }
 }
