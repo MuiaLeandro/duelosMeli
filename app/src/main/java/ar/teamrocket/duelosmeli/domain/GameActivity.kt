@@ -187,7 +187,7 @@ class GameActivity : AppCompatActivity() {
     private fun timerFunctions(game: Game){
         var actualGame = game
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
-        Handler(Looper.getMainLooper()).postDelayed({ colorResetter(); clearPrices() },1000)
+        Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1000)
         Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
 
         mistakeCounterUpdater(game)
@@ -300,11 +300,11 @@ class GameActivity : AppCompatActivity() {
         return fakePrice
     }
 
-    private fun clearPrices(){
+    /*private fun clearPrices(){
         binding.btnOption1.text = ""
         binding.btnOption2.text = ""
         binding.btnOption3.text = ""
-    }
+    }*/
 
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
