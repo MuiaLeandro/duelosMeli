@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 
 @Database(
-    entities = [Player::class],
+    entities = [Player::class,Multiplayer::class],
     version = 1
 )
 abstract class DuelosMeliDb: RoomDatabase() {
