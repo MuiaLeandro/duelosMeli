@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.util.TypedValue
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -22,15 +20,9 @@ import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
-import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import java.math.RoundingMode
-import kotlin.math.roundToInt
-import java.text.NumberFormat
-import java.util.*
 
 
 class GameActivity : AppCompatActivity() {
@@ -38,6 +30,7 @@ class GameActivity : AppCompatActivity() {
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
     private var gameFunctions: GameFunctions = GameFunctionsImpl()
     val vm: GameViewModel by viewModels()
+    var correctProcePosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,17 +46,65 @@ class GameActivity : AppCompatActivity() {
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
         playGame(game)
+        //setListeners()
+        setObservers(game)
     }
 
     fun setListeners(){
         TODO()
     }
 
-    fun setObservers(){
+    fun setObservers(game: Game){
         vm.itemNameMutable.observe(this, {
             if (it != null){
                 binding.tvProductName.text = it
             }
+        })
+        vm.picture.observe(this, {
+            if (it != null){
+                Picasso.get()
+                    .load(it)
+                    .placeholder(R.drawable.spinner)
+                    .error(R.drawable.no_image)
+                    .into(binding.ivProductPicture)
+            }
+        })
+        vm.randomNumber1to3Mutable.observe(this, {
+            correctProcePosition = it
+        })
+        vm.itemPriceString.observe(this, { price ->
+            //val correctPricePosition = (1..3).random()
+            when (correctProcePosition) {
+                1 -> {
+                    binding.btnOption1.text = price
+                    vm.fakePrice1.observe(this, {
+                        binding.btnOption2.text = it
+                    })
+                    vm.fakePrice2.observe(this, {
+                        binding.btnOption3.text = it
+                    })
+                }
+                2 -> {
+                    binding.btnOption2.text = price
+                    vm.fakePrice1.observe(this, {
+                        binding.btnOption1.text = it
+                    })
+                    vm.fakePrice2.observe(this, {
+                        binding.btnOption3.text = it
+                    })
+                }
+                3 -> {
+                    binding.btnOption3.text = price
+                    vm.fakePrice1.observe(this, {
+                        binding.btnOption1.text = it
+                    })
+                    vm.fakePrice2.observe(this, {
+                        binding.btnOption2.text = it
+                    })
+                }
+                else -> println("Out of bounds")
+            }
+            successChecker(correctProcePosition, game)
         })
     }
 
@@ -84,17 +125,18 @@ class GameActivity : AppCompatActivity() {
 
 
     private fun playGame(game: Game): Game {
-        var actualGame = game
-        if (actualGame.state) actualGame = searchInfo(game)
-        return actualGame
-    }
-
-    private fun searchInfo(game: Game): Game {
-        if (game.state) searchCategories(game)
+        //var actualGame = game
+        //if (actualGame.state) actualGame = searchInfo(game)
+        if (game.state) vm.findCategories(game, this, binding.root)
         return game
     }
 
-    private fun searchCategories(game: Game) {          // YA ESTARÍA **************************
+    private fun searchInfo(game: Game): Game {
+        if (game.state) vm.findCategories(game, this, binding.root)
+        return game
+    }
+
+    /*private fun searchCategories(game: Game) {
         meliRepository.searchCategories(game, {
             val categories = it
             val categoryId = categories[(categories.indices).random()].id
@@ -105,9 +147,9 @@ class GameActivity : AppCompatActivity() {
             Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener las categorias", it)
         })
-    }
+    }*/
 
-    private fun searchItemFromCategory(id: String, currentGame: Game) {// YA ESTARÍA **************************
+    /*private fun searchItemFromCategory(id: String, currentGame: Game) {
         var actualGame = currentGame
         meliRepository.searchItemFromCategory(id, currentGame, {
             apply {
@@ -135,14 +177,13 @@ class GameActivity : AppCompatActivity() {
             Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener los articulos de la categoría", it)
         })
-    }
+    }*/
 
-    private fun successChecker(correctOption: Int, game: Game): Game { // YA ESTARÍA **************************
+    private fun successChecker(correctOption: Int, game: Game) { // YA ESTARÍA **************************
         timer(game, correctOption)
-        return game
     }
 
-    private fun searchItem(id: String) {        // YA ESTARÍA **************************
+    /*private fun searchItem(id: String) {
         meliRepository.searchItem(id, {
             apply {
                 Picasso.get()
@@ -157,7 +198,7 @@ class GameActivity : AppCompatActivity() {
             Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener el artículo", it)
         })
-    }
+    }*/
 
     private fun timer(game: Game, correctOption: Int) {
         var actualGame = game
@@ -252,13 +293,13 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
 
-    private fun numberRounder(numberDouble: Double): String {       // YA EESTARÍA **************************
+    /*private fun numberRounder(numberDouble: Double): String {
         val numberFormatter: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
         numberFormatter.roundingMode = RoundingMode.FLOOR
         return numberFormatter.format(numberDouble.toInt())
-    }
+    }*/
 
-    private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {// YA ESTARÍA **************************
+    /*private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
 
@@ -266,11 +307,11 @@ class GameActivity : AppCompatActivity() {
             randomPrice2 = randomPriceCalculator(item)
         }
         randomOptionsPosition(correctOptionPosition, randomPrice1, randomPrice2)
-    }
+    }*/
 
-    private fun randomOptionsPosition(correctOptionPosition: Int,
+    /*private fun randomOptionsPosition(correctOptionPosition: Int,
                                       randomCalculatedPrice1: Double,
-                                      randomCalculatedPrice2: Double) {// YA ESTARÍA **************************
+                                      randomCalculatedPrice2: Double) {
         when (correctOptionPosition) {
             1 -> {
                 binding.btnOption2.text = numberRounder(randomCalculatedPrice1)
@@ -286,9 +327,9 @@ class GameActivity : AppCompatActivity() {
             }
             else -> println("Out of bounds")
         }
-    }
+    }*/
 
-    private fun randomPriceCalculator(item: Article): Double {// YA ESTARÍA **************************
+    /*private fun randomPriceCalculator(item: Article): Double {
         val realPrice = item.price
         val randomNumber = (1..8).random()
         var fakePrice = 0.0
@@ -305,7 +346,7 @@ class GameActivity : AppCompatActivity() {
             else -> println("Out of bounds")
         }
         return fakePrice
-    }
+    }*/
 
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))

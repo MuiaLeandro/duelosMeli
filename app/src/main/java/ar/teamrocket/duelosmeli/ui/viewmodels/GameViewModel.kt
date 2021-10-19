@@ -21,6 +21,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
@@ -31,21 +32,30 @@ import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
 class GameViewModel : ViewModel() {
-    private val meliRepositoryImpl = MeliRepositoryImpl()
+    private val meliRepositoryImpl: MeliRepository = MeliRepositoryImpl()
 
+    //var randomPrice1 by Delegates.notNull<Double>()
+    //var randomPrice2 by Delegates.notNull<Double>()
     private var gameFunctions: GameFunctions = GameFunctionsImpl()
-    //val categories = MutableLiveData<List<Category>>()
     val itemNameMutable = MutableLiveData<String>()
+    val picture = MutableLiveData<String>()
+    val itemPriceString = MutableLiveData<String>()
+    val randomNumber1to3Mutable = MutableLiveData<Int>()
+    val fakePrice1 = MutableLiveData<String>()
+    val fakePrice2 = MutableLiveData<String>()
 
     fun findCategories(
-        game: Game, context: Context, viewRoot: View, itemName: TextView, option1: Button, option2: Button,
-        option3: Button, ivPicture: ImageView) {
+        game: Game, context: Context, viewRoot: View) {
         meliRepositoryImpl.searchCategories(game, {
             val categories = it
             val categoryId = categories[(categories.indices).random()].id
-            findItemFromCategory(categoryId, game, itemName, option1, option2, option3, context, viewRoot, ivPicture)
+            findItemFromCategory(categoryId, game, context, viewRoot)
+
+            //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
+            randomNumber1to3Mutable.value = (1..3).random()
         }, {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }, {
@@ -54,9 +64,7 @@ class GameViewModel : ViewModel() {
         })
     }
 
-    fun findItemFromCategory(categoryId: String, currentGame: Game, itemName: TextView,
-        option1: Button, option2: Button, option3: Button, context: Context,
-                             viewRoot: View, ivPicture: ImageView) {
+    fun findItemFromCategory(categoryId: String, currentGame: Game, context: Context, viewRoot: View) {
         var actualGame = currentGame
         meliRepositoryImpl.searchItemFromCategory(categoryId, currentGame, {
             apply {
@@ -64,20 +72,11 @@ class GameViewModel : ViewModel() {
                 itemsList.addAll(it.results)
                 val item = itemsList[(itemsList.indices).random()]
                 itemNameMutable.value = item.title
-                //itemName.text = item.title
 
-                val price = numberRounder(item.price)
+                itemPriceString.value = numberRounder(item.price)
 
-                val randomNumber1to3 = (1..3).random()
-                when (randomNumber1to3) {
-                    1 -> option1.text = price
-                    2 -> option2.text = price
-                    3 -> option3.text = price
-                    else -> println("Out of bounds")
-                }
-                searchItem(item.id, ivPicture, context, viewRoot)
-                randomOptionsCalculator(item, randomNumber1to3, option1, option2, option3)
-                actualGame = successChecker(randomNumber1to3, actualGame)
+                searchItem(item.id, context, viewRoot)
+                randomOptionsCalculator(item)
             }
         }, {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
@@ -93,14 +92,10 @@ class GameViewModel : ViewModel() {
         return numberFormatter.format(numberDouble.toInt())
     }
 
-    fun searchItem(id: String, ivPicture: ImageView, context: Context, viewRoot: View) {
+    fun searchItem(id: String, context: Context, viewRoot: View) {
         meliRepositoryImpl.searchItem(id, {
             apply {
-                Picasso.get()
-                    .load(it.pictures[0].secureUrl)
-                    .placeholder(R.drawable.spinner)
-                    .error(R.drawable.no_image)
-                    .into(ivPicture)
+                picture.value = it.pictures[0].secureUrl
             }
         }, {
             Toast.makeText(context, it,Toast.LENGTH_LONG).show()
@@ -110,16 +105,14 @@ class GameViewModel : ViewModel() {
         })
     }
 
-    fun randomOptionsCalculator(item: Article, correctOptionPosition: Int, option1: Button,
-                                option2: Button,
-                                option3: Button) {
+    fun randomOptionsCalculator(item: Article) {
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
 
         while (randomPrice1.equals(randomPrice2)) {
             randomPrice2 = randomPriceCalculator(item)
         }
-        randomOptionsPosition(correctOptionPosition, randomPrice1, randomPrice2, option1, option2, option3)
+        randomOptionsPosition(randomPrice1, randomPrice2)
     }
 
     private fun randomPriceCalculator(item: Article): Double {
@@ -141,29 +134,13 @@ class GameViewModel : ViewModel() {
         return fakePrice
     }
 
-    private fun randomOptionsPosition(correctOptionPosition: Int,
-                                      randomCalculatedPrice1: Double,
-                                      randomCalculatedPrice2: Double, option1: Button,
-                                      option2: Button,
-                                      option3: Button) {
-        when (correctOptionPosition) {
-            1 -> {
-                option2.text = numberRounder(randomCalculatedPrice1)
-                option3.text = numberRounder(randomCalculatedPrice2)
-            }
-            2 -> {
-                option1.text = numberRounder(randomCalculatedPrice1)
-                option3.text = numberRounder(randomCalculatedPrice2)
-            }
-            3 -> {
-                option1.text = numberRounder(randomCalculatedPrice1)
-                option2.text = numberRounder(randomCalculatedPrice2)
-            }
-            else -> println("Out of bounds")
-        }
+    private fun randomOptionsPosition(randomCalculatedPrice1: Double,
+                                      randomCalculatedPrice2: Double) {
+        fakePrice1.value = numberRounder(randomCalculatedPrice1)
+        fakePrice2.value = numberRounder(randomCalculatedPrice2)
     }
 
-    fun successChecker(correctOption: Int, game: Game): Game {
+    /*fun successChecker(correctOption: Int, game: Game): Game {
         timer(game, correctOption)
         return game
     }
@@ -274,5 +251,5 @@ class GameViewModel : ViewModel() {
     ): Int {
         theme.resolveAttribute(attrColor, typedValue, resolveRefs)
         return typedValue.data
-    }
+    }*/
 }
