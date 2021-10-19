@@ -3,13 +3,13 @@ package ar.teamrocket.duelosmeli.domain
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ar.teamrocket.duelosmeli.data.database.Player
+import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ItemPlayerBinding
 
-class PlayersTeamsAdapter(private val players:List<Player>): RecyclerView.Adapter<PlayersTeamsAdapter.ViewHolder>() {
+class PlayersTeamsAdapter(private val players:List<Multiplayer>): RecyclerView.Adapter<PlayersTeamsAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemPlayerBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(player: Player) {
+        fun bind(player: Multiplayer) {
             binding.tvNamePlayerItem.text = player.name
         }
     }

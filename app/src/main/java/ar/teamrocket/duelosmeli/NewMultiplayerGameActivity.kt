@@ -12,6 +12,7 @@ import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.PlayersTeamsAdapter
+import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 
 class NewMultiplayerGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewMultiplayerGameBinding
@@ -61,7 +62,12 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
     }
 
     private fun viewMultiplayerGameReadyActivity() {
+        val playersId = playerDao.getAllMultiplayerId().toTypedArray()
+        val newGame = GameMultiplayer()
+
         val intent = Intent(this, MultiplayerGameReadyActivity::class.java)
+        intent.putExtra("Game",newGame)
+        intent.putExtra("Players",playersId)
         startActivity(intent)
         finish()
     }
