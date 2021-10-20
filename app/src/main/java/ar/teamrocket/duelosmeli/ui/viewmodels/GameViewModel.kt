@@ -109,10 +109,14 @@ class GameViewModel : ViewModel() {
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
 
-        while (randomPrice1.equals(randomPrice2)) {
-            randomPrice2 = randomPriceCalculator(item)
-        }
-        randomOptionsPosition(randomPrice1, randomPrice2)
+        if (randomPrice1.equals(randomPrice2)){
+            while (randomPrice1.equals(randomPrice2)) {
+                randomPrice2 = randomPriceCalculator(item)
+                if (randomPrice1 != randomPrice2) randomOptionsPosition(randomPrice1, randomPrice2)
+            }
+        } else randomOptionsPosition(randomPrice1, randomPrice2)
+
+        //randomOptionsPosition(randomPrice1, randomPrice2)
     }
 
     private fun randomPriceCalculator(item: Article): Double {

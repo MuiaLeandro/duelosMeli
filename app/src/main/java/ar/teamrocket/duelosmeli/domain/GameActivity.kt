@@ -29,8 +29,10 @@ class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
     private var gameFunctions: GameFunctions = GameFunctionsImpl()
-    val vm: GameViewModel by viewModels()
-    var correctProcePosition: Int = 0
+    private val vm: GameViewModel by viewModels()
+    var correctPricePosition: Int = 0
+    lateinit var fake1: String
+    lateinit var fake2: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,41 +72,35 @@ class GameActivity : AppCompatActivity() {
             }
         })
         vm.randomNumber1to3Mutable.observe(this, {
-            correctProcePosition = it
+            correctPricePosition = it
         })
+
         vm.itemPriceString.observe(this, { price ->
-            //val correctPricePosition = (1..3).random()
-            when (correctProcePosition) {
-                1 -> {
-                    binding.btnOption1.text = price
-                    vm.fakePrice1.observe(this, {
-                        binding.btnOption2.text = it
-                    })
-                    vm.fakePrice2.observe(this, {
-                        binding.btnOption3.text = it
-                    })
-                }
-                2 -> {
-                    binding.btnOption2.text = price
-                    vm.fakePrice1.observe(this, {
-                        binding.btnOption1.text = it
-                    })
-                    vm.fakePrice2.observe(this, {
-                        binding.btnOption3.text = it
-                    })
-                }
-                3 -> {
-                    binding.btnOption3.text = price
-                    vm.fakePrice1.observe(this, {
-                        binding.btnOption1.text = it
-                    })
-                    vm.fakePrice2.observe(this, {
-                        binding.btnOption2.text = it
-                    })
-                }
+            when (correctPricePosition) {
+                1 -> binding.btnOption1.text = price
+                2 -> binding.btnOption2.text = price
+                3 -> binding.btnOption3.text = price
                 else -> println("Out of bounds")
             }
-            successChecker(correctProcePosition, game)
+            vm.fakePrice1.observe(this, {
+                fake1 = it
+                when (correctPricePosition) {
+                    1 -> binding.btnOption2.text = fake1
+                    2 -> binding.btnOption1.text = fake1
+                    3 -> binding.btnOption1.text = fake1
+                    else -> println("Out of bounds")
+                }
+            })
+            vm.fakePrice2.observe(this, {
+                fake2 = it
+                when (correctPricePosition) {
+                    1 -> binding.btnOption3.text = fake2
+                    2 -> binding.btnOption3.text = fake2
+                    3 -> binding.btnOption2.text = fake2
+                    else -> println("Out of bounds")
+                }
+            })
+            successChecker(correctPricePosition, game)
         })
     }
 
