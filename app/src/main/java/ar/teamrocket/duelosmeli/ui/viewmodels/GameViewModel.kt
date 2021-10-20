@@ -48,11 +48,11 @@ class GameViewModel : ViewModel() {
     val fakePrice2 = MutableLiveData<String>()
 
     fun findCategories(
-        game: Game, context: Context, viewRoot: View) {
-        meliRepositoryImpl.searchCategories(game, {
+        context: Context, viewRoot: View) {
+        meliRepositoryImpl.searchCategories({
             val categories = it
             val categoryId = categories[(categories.indices).random()].id
-            findItemFromCategory(categoryId, game, context, viewRoot)
+            findItemFromCategory(categoryId, context, viewRoot)
 
             //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
             randomNumber1to3Mutable.value = (1..3).random()
@@ -64,9 +64,8 @@ class GameViewModel : ViewModel() {
         })
     }
 
-    fun findItemFromCategory(categoryId: String, currentGame: Game, context: Context, viewRoot: View) {
-        var actualGame = currentGame
-        meliRepositoryImpl.searchItemFromCategory(categoryId, currentGame, {
+    fun findItemFromCategory(categoryId: String, context: Context, viewRoot: View) {
+        meliRepositoryImpl.searchItemFromCategory(categoryId, {
             apply {
                 val itemsList: MutableList<Article> = mutableListOf()
                 itemsList.addAll(it.results)

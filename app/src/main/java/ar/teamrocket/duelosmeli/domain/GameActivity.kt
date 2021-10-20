@@ -53,7 +53,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun setListeners(game: Game){
-        vm.findCategories(game, this, binding.root)
+        vm.findCategories(this, binding.root)
     }
 
     fun setObservers(game: Game){
