@@ -47,13 +47,13 @@ class GameActivity : AppCompatActivity() {
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
-        playGame(game)
-        //setListeners()
+        //playGame(game)
+        setListeners(game)
         setObservers(game)
     }
 
-    fun setListeners(){
-        TODO()
+    fun setListeners(game: Game){
+        vm.findCategories(game, this, binding.root)
     }
 
     fun setObservers(game: Game){
@@ -120,9 +120,9 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    private fun playGame(game: Game): Game {
-        //var actualGame = game
-        //if (actualGame.state) actualGame = searchInfo(game)
+    /*private fun playGame(game: Game): Game {
+        var actualGame = game
+        if (actualGame.state) actualGame = searchInfo(game)
         if (game.state) vm.findCategories(game, this, binding.root)
         return game
     }
@@ -130,7 +130,7 @@ class GameActivity : AppCompatActivity() {
     private fun searchInfo(game: Game): Game {
         if (game.state) vm.findCategories(game, this, binding.root)
         return game
-    }
+    }*/
 
     /*private fun searchCategories(game: Game) {
         meliRepository.searchCategories(game, {
@@ -248,7 +248,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun continuePlayChecker(game: Game): Game {
 
-        if (game.state && game.errors < 3) searchInfo(game)
+        if (game.state && game.errors < 3) setListeners(game) /*searchInfo(game)*/
         if (game.errors == 3) {
             game.state = false
 
