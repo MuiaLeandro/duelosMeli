@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
-import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.PlayersTeamsAdapter
@@ -48,6 +47,10 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
         val newPlayer = Multiplayer("",0) // como el id es autogenerado no se le pone y room ya sabe que id poner
 
         val players = playerDao.getAllMultiplayer()
+        initializeScores(players)
+
+        //inicializar puntajes a 0
+
         binding.rvPlayers.layoutManager = LinearLayoutManager(this)
         binding.rvPlayers.adapter = PlayersTeamsAdapter(players)
 
@@ -55,10 +58,18 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener { viewMultiplayerGameReadyActivity() }
     }
 
+    private fun initializeScores(players: List<Multiplayer>) {
+        if (players.isNotEmpty()) {
+            for (player in players){
+                player.score = 0
+            }
+            playerDao.updateMultiplayers(players)
+        }
+    }
+
     private fun addPlayer(newPlayer:Multiplayer) {
         newPlayer.name = binding.etPlayerName.text.toString().replace(" ", "")
         playerDao.insertMultiplayer(newPlayer) //Guardo el nuevo jugador
-
     }
 
     private fun viewMultiplayerGameReadyActivity() {
@@ -71,11 +82,11 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
-
     }
 
 }

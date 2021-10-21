@@ -46,4 +46,6 @@ interface PlayerDao {
     @Update
     fun updateMultiplayer(multiplayer: Multiplayer)
 
+    @Update
+    fun updateMultiplayers(multiplayer: List<Multiplayer>)
 }
