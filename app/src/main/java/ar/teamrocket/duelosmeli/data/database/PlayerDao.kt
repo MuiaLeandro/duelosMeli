@@ -34,6 +34,9 @@ interface PlayerDao {
     @Query("SELECT * FROM multiplayers")
     fun getAllMultiplayer(): List<Multiplayer>
 
+    @Query("SELECT * FROM multiplayers ORDER BY score DESC")
+    fun getAllMultiplayerOrderByScore(): List<Multiplayer>
+
     @Query("SELECT id FROM multiplayers")
     fun getAllMultiplayerId(): List<Long>
 

@@ -29,4 +29,6 @@
     <string name="que_es">¿Qué producto es?</string>
     <string name="adivino">Adivinó</string>
     <string name="puntajes_actuales">Puntajes actuales</string>
+    <string name="won_the_game">Ganó el juego</string>
+    <string name="finalize">Finalizar</string>
 </resources>

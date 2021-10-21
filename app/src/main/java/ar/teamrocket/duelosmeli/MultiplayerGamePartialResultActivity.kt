@@ -46,6 +46,7 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
 
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
         val addPoint = intent.extras!!.getBoolean("AddPoint")
+        val playersOrderByScore = playerDao.getAllMultiplayerOrderByScore()
         val players = playerDao.getAllMultiplayer()
         val currentPlayer = players[game.currentPlayer]
 
@@ -53,11 +54,11 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
         binding.tvCurrentNamePlayer.text = currentPlayer.name
 
         binding.rvScoreTableMultiplayer.layoutManager = LinearLayoutManager(this)
-        binding.rvScoreTableMultiplayer.adapter = MultiplayerScoreAdapter(players)
-        binding.btnNext.setOnClickListener { nextView(game, players.lastIndex) }
+        binding.rvScoreTableMultiplayer.adapter = MultiplayerScoreAdapter(playersOrderByScore)
+        binding.btnNext.setOnClickListener { nextView(game, players.lastIndex,playersOrderByScore[0]) }
     }
 
-    private fun nextView(game: GameMultiplayer, lastIndex: Int) {
+    private fun nextView(game: GameMultiplayer, lastIndex: Int, playerFirst: Multiplayer) {
         if (game.currentPlayer < lastIndex){
             game.currentPlayer++
         } else {
@@ -67,9 +68,18 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
         if (game.round < 3) {
             viewMultiplayerGameReadyActivity(game)
         } else {
-            //TODO: Termina el juego. -> Pantalla de FIN de Juego (con los puntajes)
+            binding.tvCurrentNamePlayer.text = playerFirst.name
+            binding.tvPlayerSituation.text = getString(R.string.won_the_game)
+            binding.btnNext.text = getString(R.string.finalize)
+            binding.btnNext.setOnClickListener { viewNewMultiplayerGameActivity() }
         }
 
+    }
+
+    private fun viewNewMultiplayerGameActivity() {
+        val intent = Intent(this, NewMultiplayerGameActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun viewMultiplayerGameReadyActivity(game: GameMultiplayer) {
