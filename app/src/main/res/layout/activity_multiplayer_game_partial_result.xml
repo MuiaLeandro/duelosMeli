@@ -27,10 +27,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentNamePlayer"
-        tools:text="Adivinó" />
+        android:text="Adivinó" />
 
     <TextView
-        android:id="@+id/tvPlayerSituation2"
+        android:id="@+id/tvCurrentScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlayerSituation2"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentScore"
         tools:listitem="@layout/item_highscore" />
 
     <Button

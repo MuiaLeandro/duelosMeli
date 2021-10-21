@@ -19,7 +19,6 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtiene una lista de categorías
     override fun searchCategories(
-        game: Game,
         callback: (List<Category>) -> Unit,
         onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
@@ -54,7 +53,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtiene un item de una categoría
     override fun searchItemFromCategory(
-        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: (Int) -> Unit,
+        id: String, callback: (Articles) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
 

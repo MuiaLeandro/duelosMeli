@@ -79,7 +79,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun searchCategories(game: Game) {
-        meliRepository.searchCategories(game, {
+        meliRepository.searchCategories({
             val categories = it
             val categoryId = categories[(categories.indices).random()].id
             searchItemFromCategory(categoryId, game)
@@ -93,7 +93,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun searchItemFromCategory(id: String, currentGame: Game) {
         var actualGame = currentGame
-        meliRepository.searchItemFromCategory(id, currentGame, {
+        meliRepository.searchItemFromCategory(id, {
             apply {
                 val itemsList: MutableList<Article> = mutableListOf()
                 itemsList.addAll(it.results)

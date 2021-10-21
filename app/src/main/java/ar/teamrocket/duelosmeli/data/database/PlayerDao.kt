@@ -40,4 +40,7 @@ interface PlayerDao {
     @Query("SELECT * FROM multiplayers WHERE id = :id")
     fun getMultiplayerById(id: Long): List<Multiplayer>
 
+    @Update
+    fun updateMultiplayer(multiplayer: Multiplayer)
+
 }

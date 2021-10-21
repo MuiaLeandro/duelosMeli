@@ -45,17 +45,18 @@ class MultiplayerGameReadyActivity : AppCompatActivity() {
 
         // recuperamos el objeto Game
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
-        //val players = intent.extras?.getLongArray("Players")
-        val players = playerDao.getAllMultiplayer()
 
+        val players = playerDao.getAllMultiplayer()
         val currentPlayer = players[game.currentPlayer]
 
         binding.tvNamePlayer.text = currentPlayer.name
-        binding.btnMultiplayer.setOnClickListener { viewMultiplayerGameActivity() }
+        binding.btnMultiplayer.setOnClickListener { viewMultiplayerGameActivity(game) }
     }
 
-    private fun viewMultiplayerGameActivity() {
+    private fun viewMultiplayerGameActivity(game: GameMultiplayer) {
         val intent = Intent(this, MultiplayerGameActivity::class.java)
+        intent.putExtra("Game",game)
+
         startActivity(intent)
         finish()
     }
