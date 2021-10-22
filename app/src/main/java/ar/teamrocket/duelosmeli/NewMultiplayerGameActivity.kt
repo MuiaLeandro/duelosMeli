@@ -45,15 +45,11 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val newPlayer = Multiplayer("",0) // como el id es autogenerado no se le pone y room ya sabe que id poner
-
         val players = playerDao.getAllMultiplayer()
         initializeScores(players)
 
-        //inicializar puntajes a 0
-
         binding.rvPlayers.layoutManager = LinearLayoutManager(this)
         binding.rvPlayers.adapter = PlayersTeamsAdapter(players)
-
         binding.btnAddPlayer.setOnClickListener { addPlayer(newPlayer) }
         binding.btnNext.setOnClickListener { viewMultiplayerGameReadyActivity() }
     }
@@ -70,6 +66,7 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
     private fun addPlayer(newPlayer:Multiplayer) {
         newPlayer.name = binding.etPlayerName.text.toString().replace(" ", "")
         playerDao.insertMultiplayer(newPlayer) //Guardo el nuevo jugador
+        binding.etPlayerName.text.clear()
     }
 
     private fun viewMultiplayerGameReadyActivity() {

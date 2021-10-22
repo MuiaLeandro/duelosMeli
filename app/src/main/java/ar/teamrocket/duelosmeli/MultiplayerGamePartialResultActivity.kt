@@ -50,7 +50,12 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
         val players = playerDao.getAllMultiplayer()
         val currentPlayer = players[game.currentPlayer]
 
-        if (addPoint) {addPointToThePlayer(currentPlayer)}
+        if (addPoint) {
+            addPointToThePlayer(currentPlayer)
+            binding.tvPlayerSituation.text = "Adivinó"
+        } else {
+            binding.tvPlayerSituation.text = "No adivinó"
+        }
         binding.tvCurrentNamePlayer.text = currentPlayer.name
 
         binding.rvScoreTableMultiplayer.layoutManager = LinearLayoutManager(this)

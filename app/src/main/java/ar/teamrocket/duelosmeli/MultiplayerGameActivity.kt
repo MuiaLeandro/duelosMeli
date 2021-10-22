@@ -3,6 +3,7 @@ package ar.teamrocket.duelosmeli
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import ar.teamrocket.duelosmeli.data.MeliRepository
@@ -16,8 +17,12 @@ import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.ui.searchCategories
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import kotlin.concurrent.timer
 
 class MultiplayerGameActivity : AppCompatActivity() {
+    val start = 6000L
+    var timer = start
+    lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
 
@@ -25,15 +30,43 @@ class MultiplayerGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
-
-
-        binding.btnGuessed.setOnClickListener { guessed(game) }
         playGame(game)
+        startTimer(game)
+        binding.btnGuessed.setOnClickListener { guessed(game) }
     }
 
+
+    private fun startTimer(game: GameMultiplayer) {
+        countDownTimer = object : CountDownTimer(timer,1000){
+            //            end of timer
+            override fun onFinish() {
+                viewMultiplayerGamePartialResultActivity(game, false)
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                timer = millisUntilFinished
+                setTextTimer()
+            }
+
+        }.start()
+    }
+    private fun pauseTimer() {
+        countDownTimer.cancel()
+    }
+
+    private fun setTextTimer() {
+        val m = (timer / 1000) / 60
+        val s = (timer / 1000) % 60
+
+        val format = String.format("%02d:%02d", m, s)
+
+        binding.tvTime.text = format
+    }
+
+
     private fun guessed(game: GameMultiplayer) {
+        pauseTimer()
         viewMultiplayerGamePartialResultActivity(game, true)
     }
 
