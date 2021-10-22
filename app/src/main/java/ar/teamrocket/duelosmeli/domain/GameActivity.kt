@@ -47,16 +47,16 @@ class GameActivity : AppCompatActivity() {
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
-        //playGame(game)
-        setListeners(game)
+
+        setListeners()
         setObservers(game)
     }
 
-    fun setListeners(game: Game){
+    private fun setListeners(){
         vm.findCategories(this, binding.root)
     }
 
-    fun setObservers(game: Game){
+    private fun setObservers(game: Game){
         vm.itemNameMutable.observe(this, {
             if (it != null){
                 binding.tvProductName.text = it
@@ -120,81 +120,10 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    /*private fun playGame(game: Game): Game {
-        var actualGame = game
-        if (actualGame.state) actualGame = searchInfo(game)
-        if (game.state) vm.findCategories(game, this, binding.root)
-        return game
-    }
-
-    private fun searchInfo(game: Game): Game {
-        if (game.state) vm.findCategories(game, this, binding.root)
-        return game
-    }*/
-
-    /*private fun searchCategories(game: Game) {
-        meliRepository.searchCategories(game, {
-            val categories = it
-            val categoryId = categories[(categories.indices).random()].id
-            searchItemFromCategory(categoryId, game)
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener las categorias", it)
-        })
-    }*/
-
-    /*private fun searchItemFromCategory(id: String, currentGame: Game) {
-        var actualGame = currentGame
-        meliRepository.searchItemFromCategory(id, currentGame, {
-            apply {
-                val itemsList: MutableList<Article> = mutableListOf()
-                itemsList.addAll(it.results)
-                val item = itemsList[(itemsList.indices).random()]
-                binding.tvProductName.text = item.title
-
-                val price = numberRounder(item.price)
-
-                val randomNumber1to3 = (1..3).random()
-                when (randomNumber1to3) {
-                    1 -> binding.btnOption1.text = price
-                    2 -> binding.btnOption2.text = price
-                    3 -> binding.btnOption3.text = price
-                    else -> println("Out of bounds")
-                }
-                searchItem(item.id)
-                randomOptionsCalculator(item, randomNumber1to3)
-                actualGame = successChecker(randomNumber1to3, actualGame)
-            }
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
-        })
-    }*/
-
     private fun successChecker(correctOption: Int, game: Game) { // YA ESTARÍA **************************
         timer(game, correctOption)
     }
 
-    /*private fun searchItem(id: String) {
-        meliRepository.searchItem(id, {
-            apply {
-                Picasso.get()
-                    .load(it.pictures[0].secureUrl)
-                    .placeholder(R.drawable.spinner)
-                    .error(R.drawable.no_image)
-                    .into(binding.ivProductPicture)
-            }
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener el artículo", it)
-        })
-    }*/
 
     private fun timer(game: Game, correctOption: Int) {
         var actualGame = game
@@ -248,7 +177,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun continuePlayChecker(game: Game): Game {
 
-        if (game.state && game.errors < 3) setListeners(game) /*searchInfo(game)*/
+        if (game.state && game.errors < 3) setListeners()
         if (game.errors == 3) {
             game.state = false
 
@@ -289,60 +218,6 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
 
-    /*private fun numberRounder(numberDouble: Double): String {
-        val numberFormatter: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
-        numberFormatter.roundingMode = RoundingMode.FLOOR
-        return numberFormatter.format(numberDouble.toInt())
-    }*/
-
-    /*private fun randomOptionsCalculator(item: Article, correctOptionPosition: Int) {
-        val randomPrice1 = randomPriceCalculator(item)
-        var randomPrice2 = randomPriceCalculator(item)
-
-        while (randomPrice1.equals(randomPrice2)) {
-            randomPrice2 = randomPriceCalculator(item)
-        }
-        randomOptionsPosition(correctOptionPosition, randomPrice1, randomPrice2)
-    }*/
-
-    /*private fun randomOptionsPosition(correctOptionPosition: Int,
-                                      randomCalculatedPrice1: Double,
-                                      randomCalculatedPrice2: Double) {
-        when (correctOptionPosition) {
-            1 -> {
-                binding.btnOption2.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
-            }
-            2 -> {
-                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
-            }
-            3 -> {
-                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption2.text = numberRounder(randomCalculatedPrice2)
-            }
-            else -> println("Out of bounds")
-        }
-    }*/
-
-    /*private fun randomPriceCalculator(item: Article): Double {
-        val realPrice = item.price
-        val randomNumber = (1..8).random()
-        var fakePrice = 0.0
-
-        when (randomNumber) {
-            1 -> fakePrice = realPrice.times(1.10).roundToInt().toDouble()
-            2 -> fakePrice = realPrice.times(1.15).roundToInt().toDouble()
-            3 -> fakePrice = realPrice.times(1.20).roundToInt().toDouble()
-            4 -> fakePrice = realPrice.times(1.25).roundToInt().toDouble()
-            5 -> fakePrice = realPrice.times(0.90).roundToInt().toDouble()
-            6 -> fakePrice = realPrice.times(0.85).roundToInt().toDouble()
-            7 -> fakePrice = realPrice.times(0.80).roundToInt().toDouble()
-            8 -> fakePrice = realPrice.times(0.75).roundToInt().toDouble()
-            else -> println("Out of bounds")
-        }
-        return fakePrice
-    }*/
 
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
