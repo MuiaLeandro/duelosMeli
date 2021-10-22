@@ -46,9 +46,11 @@ class GameViewModel : ViewModel() {
     val randomNumber1to3Mutable = MutableLiveData<Int>()
     val fakePrice1 = MutableLiveData<String>()
     val fakePrice2 = MutableLiveData<String>()
+    val starGame = MutableLiveData(true)
 
     fun findCategories(
         context: Context, viewRoot: View) {
+        starGame.value = false
         meliRepositoryImpl.searchCategories({
             val categories = it
             val categoryId = categories[(categories.indices).random()].id

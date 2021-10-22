@@ -52,8 +52,14 @@ class GameActivity : AppCompatActivity() {
         setObservers(game)
     }
 
-    private fun setListeners(){
+    private fun continueGame(){
         vm.findCategories(this, binding.root)
+    }
+
+    private fun setListeners(){
+        vm.starGame.observe(this, {
+            if (it) vm.findCategories(this, binding.root)
+        })
     }
 
     private fun setObservers(game: Game){
@@ -177,7 +183,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun continuePlayChecker(game: Game): Game {
 
-        if (game.state && game.errors < 3) setListeners()
+        if (game.state && game.errors < 3) continueGame()
         if (game.errors == 3) {
             game.state = false
 
