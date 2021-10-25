@@ -104,9 +104,9 @@ class GameActivity : AppCompatActivity() {
 
                 val randomNumber1to3 = (1..3).random()
                 when (randomNumber1to3) {
-                    1 -> binding.btnOption1.text = price
-                    2 -> binding.btnOption2.text = price
-                    3 -> binding.btnOption3.text = price
+                    1 -> binding.btnOption1.text = "$".plus(price)
+                    2 -> binding.btnOption2.text = "$".plus(price)
+                    3 -> binding.btnOption3.text = "$".plus(price)
                     else -> println("Out of bounds")
                 }
                 searchItem(item.id)
@@ -266,16 +266,16 @@ class GameActivity : AppCompatActivity() {
                                       randomCalculatedPrice2: Double) {
         when (correctOptionPosition) {
             1 -> {
-                binding.btnOption2.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
+                binding.btnOption2.text = "$".plus(numberRounder(randomCalculatedPrice1))
+                binding.btnOption3.text = "$".plus(numberRounder(randomCalculatedPrice2))
             }
             2 -> {
-                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption3.text = numberRounder(randomCalculatedPrice2)
+                binding.btnOption1.text = "$".plus(numberRounder(randomCalculatedPrice1))
+                binding.btnOption3.text = "$".plus(numberRounder(randomCalculatedPrice2))
             }
             3 -> {
-                binding.btnOption1.text = numberRounder(randomCalculatedPrice1)
-                binding.btnOption2.text = numberRounder(randomCalculatedPrice2)
+                binding.btnOption1.text = "$".plus(numberRounder(randomCalculatedPrice1))
+                binding.btnOption2.text = "$".plus(numberRounder(randomCalculatedPrice2))
             }
             else -> println("Out of bounds")
         }
