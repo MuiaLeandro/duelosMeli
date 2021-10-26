@@ -83,26 +83,26 @@ class GameActivity : AppCompatActivity() {
 
         vm.itemPriceString.observe(this, { price ->
             when (correctPricePosition) {
-                1 -> binding.btnOption1.text = price
-                2 -> binding.btnOption2.text = price
-                3 -> binding.btnOption3.text = price
+                1 -> binding.btnOption1.text = getString(R.string.money_sign).plus(price)
+                2 -> binding.btnOption2.text = getString(R.string.money_sign).plus(price)
+                3 -> binding.btnOption3.text = getString(R.string.money_sign).plus(price)
                 else -> println("Out of bounds")
             }
             vm.fakePrice1.observe(this, {
                 fake1 = it
                 when (correctPricePosition) {
-                    1 -> binding.btnOption2.text = fake1
-                    2 -> binding.btnOption1.text = fake1
-                    3 -> binding.btnOption1.text = fake1
+                    1 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake1)
+                    2 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
+                    3 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
                     else -> println("Out of bounds")
                 }
             })
             vm.fakePrice2.observe(this, {
                 fake2 = it
                 when (correctPricePosition) {
-                    1 -> binding.btnOption3.text = fake2
-                    2 -> binding.btnOption3.text = fake2
-                    3 -> binding.btnOption2.text = fake2
+                    1 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
+                    2 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
+                    3 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake2)
                     else -> println("Out of bounds")
                 }
             })
@@ -125,7 +125,7 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
+    
     private fun successChecker(correctOption: Int, game: Game) { // YA ESTARÍA **************************
         timer(game, correctOption)
     }
@@ -223,7 +223,7 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
-
+    
 
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
