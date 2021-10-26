@@ -20,4 +20,5 @@
     <string name="no_internet">No hay conexión</string>
     <string name="player_name_already_exists">¡Ya existe un jugador con ese nombre!</string>
     <string name="put_your_name">¡Poné tu nombre o apodo!</string>
+    <string name="money_sign">$</string>
 </resources>
