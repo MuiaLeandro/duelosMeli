@@ -1,12 +1,12 @@
-package ar.teamrocket.duelosmeli.data.impl
+package ar.teamrocket.duelosmeli.data.repository.impl
 
-import ar.teamrocket.duelosmeli.domain.model.Game
+import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.R
-import ar.teamrocket.duelosmeli.data.MeliRepository
-import ar.teamrocket.duelosmeli.domain.model.Article
-import ar.teamrocket.duelosmeli.domain.model.Articles
-import ar.teamrocket.duelosmeli.domain.model.Category
-import ar.teamrocket.duelosmeli.data.service.API
+import ar.teamrocket.duelosmeli.data.repository.MeliRepository
+import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.data.model.Articles
+import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.retrofit.API
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,7 +19,6 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtiene una lista de categorías
     override fun searchCategories(
-        game: Game,
         callback: (List<Category>) -> Unit,
         onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
@@ -54,7 +53,7 @@ class MeliRepositoryImpl : MeliRepository {
 
     // Se obtiene un item de una categoría
     override fun searchItemFromCategory(
-        id: String, currentGame: Game, callback: (Articles) -> Unit, onError: (Int) -> Unit,
+        id: String, callback: (Articles) -> Unit, onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
 

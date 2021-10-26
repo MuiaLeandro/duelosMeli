@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.model
+package ar.teamrocket.duelosmeli.domain
 
 class Game(idPlayer: Long){
     var playerId: Long = idPlayer
