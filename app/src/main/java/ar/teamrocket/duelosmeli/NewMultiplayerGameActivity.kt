@@ -51,7 +51,12 @@ class NewMultiplayerGameActivity : AppCompatActivity() {
         binding.rvPlayers.layoutManager = LinearLayoutManager(this)
         binding.rvPlayers.adapter = PlayersTeamsAdapter(players)
         binding.btnAddPlayer.setOnClickListener { addPlayer(newPlayer) }
+        binding.btnDelete.setOnClickListener { deleteAllPlayers(players) }
         binding.btnNext.setOnClickListener { viewMultiplayerGameReadyActivity() }
+    }
+
+    private fun deleteAllPlayers(players: List<Multiplayer>) {
+        playerDao.deleteAllMultiplayers(players)
     }
 
     private fun initializeScores(players: List<Multiplayer>) {

@@ -52,9 +52,9 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
 
         if (addPoint) {
             addPointToThePlayer(currentPlayer)
-            binding.tvPlayerSituation.text = "Adivinó"
+            binding.tvPlayerSituation.text = getString(R.string.guessed)
         } else {
-            binding.tvPlayerSituation.text = "No adivinó"
+            binding.tvPlayerSituation.text = getString(R.string.did_not_guessed)
         }
         binding.tvCurrentNamePlayer.text = currentPlayer.name
 

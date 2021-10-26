@@ -48,4 +48,8 @@ interface PlayerDao {
 
     @Update
     fun updateMultiplayers(multiplayer: List<Multiplayer>)
+
+    @Delete
+    fun deleteAllMultiplayers(multiplayer: List<Multiplayer>)
+
 }

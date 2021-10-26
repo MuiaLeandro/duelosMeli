@@ -31,4 +31,6 @@
     <string name="puntajes_actuales">Puntajes actuales</string>
     <string name="won_the_game">Ganó el juego</string>
     <string name="finalize">Finalizar</string>
+    <string name="guessed">Adivinó</string>
+    <string name="did_not_guessed">No adivinó</string>
 </resources>
