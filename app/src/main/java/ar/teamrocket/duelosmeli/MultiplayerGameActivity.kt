@@ -6,18 +6,13 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
-import ar.teamrocket.duelosmeli.data.MeliRepository
-import ar.teamrocket.duelosmeli.data.impl.MeliRepositoryImpl
+import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.data.repository.MeliRepository
+import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
-import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
-import ar.teamrocket.duelosmeli.domain.model.Article
-import ar.teamrocket.duelosmeli.domain.model.Game
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
-import ar.teamrocket.duelosmeli.ui.HomeActivity
-import ar.teamrocket.duelosmeli.ui.searchCategories
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlin.concurrent.timer
 
 class MultiplayerGameActivity : AppCompatActivity() {
     val start = 6000L
