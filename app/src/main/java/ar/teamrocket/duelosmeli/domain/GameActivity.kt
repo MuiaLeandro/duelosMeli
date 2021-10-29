@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.TypedValue
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -22,6 +24,7 @@ import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 
@@ -53,12 +56,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun continueGame(){
-        vm.findCategories(this, binding.root)
+        vm.findCategories()
     }
 
     private fun setListeners(){
         vm.starGame.observe(this, {
-            if (it) vm.findCategories(this, binding.root)
+            if (it) vm.findCategories()
         })
     }
 
@@ -107,6 +110,27 @@ class GameActivity : AppCompatActivity() {
                 }
             })
             successChecker(correctPricePosition, game)
+        })
+        vm.toastCategory.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureCategory.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener las categorias", it)
+        })
+        vm.toastItemFromCategory.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureItemFromCategory.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
+        })
+        vm.toastItem.observe(this, {
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureItem.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener el artículo", it)
         })
     }
 
