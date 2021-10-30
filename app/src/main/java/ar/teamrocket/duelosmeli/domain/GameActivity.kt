@@ -30,6 +30,9 @@ import com.squareup.picasso.Picasso
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
+    private val start = 21000L
+    var timer = start
+    lateinit var countDownTimer: CountDownTimer
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
     private var gameFunctions: GameFunctions = GameFunctionsImpl()
     private val vm: GameViewModel by viewModels()
@@ -150,47 +153,60 @@ class GameActivity : AppCompatActivity() {
     }
 
     
-    private fun successChecker(correctOption: Int, game: Game) { // YA ESTARÍA **************************
-        timer(game, correctOption)
+    private fun successChecker(correctOption: Int, game: Game) {
+        startTimer(game, correctOption)
+        //timer(game, correctOption)
     }
 
-
-    private fun timer(game: Game, correctOption: Int) {
-        var actualGame = game
-
-        class Timer(millisInFuture: Long, countDownInterval: Long) :
-            CountDownTimer(millisInFuture, countDownInterval) {
+    private fun startTimer(game: Game, correctOption: Int) {
+        countDownTimer = object : CountDownTimer(timer,1000){
+            //            end of timer
             override fun onFinish() {
                 when (correctOption) {
                     1 -> oneCorrect()
                     2 -> twoCorrect()
                     else -> threeCorrect()
                 }
-                game.errorsCounter(actualGame); timerFunctions(actualGame)
+                game.errorsCounter(game); timerFunctions(game)
             }
-            override fun onTick(millisUntilFinished: Long) {
-                //se muestra el conteo en textview
-                binding.tvTime.text = (millisUntilFinished / 1000).toString()
-            }
-        }
 
-        val timer = Timer(21000, 1000)
-        timer.start()
+            override fun onTick(millisUntilFinished: Long) {
+                timer = millisUntilFinished
+                setTextTimer()
+            }
+
+        }.start()
+        optionsButtons(game, correctOption)
+    }
+    private fun pauseTimer() {
+        countDownTimer.cancel()
+    }
+
+    private fun setTextTimer() {
+        val m = (timer / 1000) / 60
+        val s = (timer / 1000) % 60
+
+        val format = String.format("%02d:%02d", m, s)
+
+        binding.tvTime.text = format
+    }
+
+    private fun optionsButtons(game: Game, correctOption: Int){
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
             }
             else -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(game); timerFunctions(game)}
             }
         }
     }
