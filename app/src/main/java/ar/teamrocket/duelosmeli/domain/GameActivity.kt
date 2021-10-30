@@ -155,7 +155,6 @@ class GameActivity : AppCompatActivity() {
     
     private fun successChecker(correctOption: Int, game: Game) {
         startTimer(game, correctOption)
-        //timer(game, correctOption)
     }
 
     private fun startTimer(game: Game, correctOption: Int) {

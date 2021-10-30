@@ -1,6 +1,7 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,7 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
@@ -28,6 +30,7 @@ import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
@@ -54,40 +57,49 @@ class GameViewModel : ViewModel() {
     val toastItem = MutableLiveData<String>()
     val onFailureItem = MutableLiveData<Throwable>()
 
-    fun findCategories() {
-        starGame.value = false
-        meliRepositoryImpl.searchCategories({
-            val categories = it
-            val categoryId = categories[(categories.indices).random()].id
-            findItemFromCategory(categoryId)
+    fun startSound(context: Context){
+        val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
+        doorbellSound.start()
+    }
 
-            //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
-            randomNumber1to3Mutable.value = (1..3).random()
-        }, {
-            toastCategory.value = it.toString()
-        }, {
-            onFailureCategory.value = it
-        })
+    fun findCategories() {
+        viewModelScope.launch {
+            starGame.value = false
+            meliRepositoryImpl.searchCategories({
+                val categories = it
+                val categoryId = categories[(categories.indices).random()].id
+                findItemFromCategory(categoryId)
+
+                //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
+                randomNumber1to3Mutable.value = (1..3).random()
+            }, {
+                toastCategory.value = it.toString()
+            }, {
+                onFailureCategory.value = it
+            })
+        }
     }
 
     fun findItemFromCategory(categoryId: String) {
-        meliRepositoryImpl.searchItemFromCategory(categoryId, {
-            apply {
-                val itemsList: MutableList<Article> = mutableListOf()
-                itemsList.addAll(it.results)
-                val item = itemsList[(itemsList.indices).random()]
-                itemNameMutable.value = item.title
+        viewModelScope.launch {
+            meliRepositoryImpl.searchItemFromCategory(categoryId, {
+                apply {
+                    val itemsList: MutableList<Article> = mutableListOf()
+                    itemsList.addAll(it.results)
+                    val item = itemsList[(itemsList.indices).random()]
+                    itemNameMutable.value = item.title
 
-                itemPriceString.value = numberRounder(item.price)
+                    itemPriceString.value = numberRounder(item.price)
 
-                searchItem(item.id)
-                randomOptionsCalculator(item)
-            }
-        }, {
-            toastItemFromCategory.value = it.toString()
-        }, {
-            onFailureItemFromCategory.value = it
-        })
+                    searchItem(item.id)
+                    randomOptionsCalculator(item)
+                }
+            }, {
+                toastItemFromCategory.value = it.toString()
+            }, {
+                onFailureItemFromCategory.value = it
+            })
+        }
     }
 
     fun numberRounder(numberDouble: Double): String {
@@ -97,15 +109,17 @@ class GameViewModel : ViewModel() {
     }
 
     fun searchItem(id: String) {
-        meliRepositoryImpl.searchItem(id, {
-            apply {
-                picture.value = it.pictures[0].secureUrl
-            }
-        }, {
-            toastItem.value = it.toString()
-        }, {
-            onFailureItem.value = it
-        })
+        viewModelScope.launch {
+            meliRepositoryImpl.searchItem(id, {
+                apply {
+                    picture.value = it.pictures[0].secureUrl
+                }
+            }, {
+                toastItem.value = it.toString()
+            }, {
+                onFailureItem.value = it
+            })
+        }
     }
 
     fun randomOptionsCalculator(item: Article) {
