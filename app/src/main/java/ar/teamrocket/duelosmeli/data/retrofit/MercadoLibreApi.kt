@@ -20,9 +20,6 @@ interface MercadoLibreApi {
     @GET("sites/${ARGENTINA}/categories")
     fun getCategories(): Call<List<Category>>
 
-    /*@GET("items/{categoryId}")
-    fun getArticlesFromCategory(@Path("categoryId")id: String): Call<Articles>*/
-
     @GET("sites/${ARGENTINA}/search")
     fun getArticlesFromCategory(@Query("category")id: String): Call<Articles>
 }
