@@ -8,6 +8,8 @@
     <color name="light_yellow">#FFFAE815</color>
     <color name="purple">#FF4A0072</color>
     <color name="light_purple">#765887</color>
+    <color name="blue">#3483fa</color>
+    <color name="light_blue">#e3edfb</color>
     <color name="green">#4CAF50</color>
     <color name="red">#B10000</color>
 </resources>
