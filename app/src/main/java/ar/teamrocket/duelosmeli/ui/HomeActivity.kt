@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ar.teamrocket.duelosmeli.MainMenuActivity
 import ar.teamrocket.duelosmeli.domain.NewGameActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
@@ -25,11 +26,11 @@ class HomeActivity : AppCompatActivity() {
         // Se instancia una clase que implementa una interfaz con funciones para esta Activity
         homeFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)
         homeFunctions.showImage(this, R.drawable.duelosmeli, binding.ivTitle)
-        binding.btnPlayGame.setOnClickListener { viewNewGame() }
+        binding.btnPlayGame.setOnClickListener { viewMainMenu() }
     }
 
-    private fun viewNewGame() {
-        val intent = Intent(this, NewGameActivity::class.java)
+    private fun viewMainMenu() {
+        val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
         finish()
     }

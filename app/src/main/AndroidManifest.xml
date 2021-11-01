@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.teamrocket.duelosmeli">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
+        <activity
+            android:name=".MultiplayerGamePartialResultActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MultiplayerGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MultiplayerGameReadyActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NewMultiplayerGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="true" />
         <activity
             android:name=".domain.GameOverActivity"
             android:exported="true" />
@@ -29,7 +46,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

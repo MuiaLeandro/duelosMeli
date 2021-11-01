@@ -27,4 +27,29 @@ interface PlayerDao {
 
     @Delete
     fun deletePlayer(player: Player)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertMultiplayer(multiplayer: Multiplayer)
+
+    @Query("SELECT * FROM multiplayers")
+    fun getAllMultiplayer(): List<Multiplayer>
+
+    @Query("SELECT * FROM multiplayers ORDER BY score DESC")
+    fun getAllMultiplayerOrderByScore(): List<Multiplayer>
+
+    @Query("SELECT id FROM multiplayers")
+    fun getAllMultiplayerId(): List<Long>
+
+    @Query("SELECT * FROM multiplayers WHERE id = :id")
+    fun getMultiplayerById(id: Long): List<Multiplayer>
+
+    @Update
+    fun updateMultiplayer(multiplayer: Multiplayer)
+
+    @Update
+    fun updateMultiplayers(multiplayer: List<Multiplayer>)
+
+    @Delete
+    fun deleteAllMultiplayers(multiplayer: List<Multiplayer>)
+
 }
