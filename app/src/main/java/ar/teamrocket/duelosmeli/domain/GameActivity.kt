@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.TypedValue
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -22,11 +24,15 @@ import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
+    private val start = 21000L
+    var timer = start
+    lateinit var countDownTimer: CountDownTimer
     private var meliRepository: MeliRepository = MeliRepositoryImpl()
     private var gameFunctions: GameFunctions = GameFunctionsImpl()
     private val vm: GameViewModel by viewModels()
@@ -53,12 +59,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun continueGame(){
-        vm.findCategories(this, binding.root)
+        vm.findCategories()
     }
 
     private fun setListeners(){
         vm.starGame.observe(this, {
-            if (it) vm.findCategories(this, binding.root)
+            if (it) vm.findCategories()
         })
     }
 
@@ -108,6 +114,27 @@ class GameActivity : AppCompatActivity() {
             })
             successChecker(correctPricePosition, game)
         })
+        vm.toastCategory.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureCategory.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener las categorias", it)
+        })
+        vm.toastItemFromCategory.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureItemFromCategory.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
+        })
+        vm.toastItem.observe(this, {
+            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
+        })
+        vm.onFailureItem.observe(this, {
+            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+            Log.e("Main", "Falló al obtener el artículo", it)
+        })
     }
 
     private fun viewGameOver(game: Game) {
@@ -126,47 +153,59 @@ class GameActivity : AppCompatActivity() {
     }
 
     
-    private fun successChecker(correctOption: Int, game: Game) { // YA ESTARÍA **************************
-        timer(game, correctOption)
+    private fun successChecker(correctOption: Int, game: Game) {
+        startTimer(game, correctOption)
     }
 
-
-    private fun timer(game: Game, correctOption: Int) {
-        var actualGame = game
-
-        class Timer(millisInFuture: Long, countDownInterval: Long) :
-            CountDownTimer(millisInFuture, countDownInterval) {
+    private fun startTimer(game: Game, correctOption: Int) {
+        countDownTimer = object : CountDownTimer(timer,1000){
+            //            end of timer
             override fun onFinish() {
                 when (correctOption) {
                     1 -> oneCorrect()
                     2 -> twoCorrect()
                     else -> threeCorrect()
                 }
-                game.errorsCounter(actualGame); timerFunctions(actualGame)
+                game.errorsCounter(game); timerFunctions(game)
             }
-            override fun onTick(millisUntilFinished: Long) {
-                //se muestra el conteo en textview
-                binding.tvTime.text = (millisUntilFinished / 1000).toString()
-            }
-        }
 
-        val timer = Timer(21000, 1000)
-        timer.start()
+            override fun onTick(millisUntilFinished: Long) {
+                timer = millisUntilFinished
+                setTextTimer()
+            }
+
+        }.start()
+        optionsButtons(game, correctOption)
+    }
+    private fun pauseTimer() {
+        countDownTimer.cancel()
+    }
+
+    private fun setTextTimer() {
+        val m = (timer / 1000) / 60
+        val s = (timer / 1000) % 60
+
+        val format = String.format("%02d:%02d", m, s)
+
+        binding.tvTime.text = format
+    }
+
+    private fun optionsButtons(game: Game, correctOption: Int){
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
             }
             else -> {
-                binding.btnOption1.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption2.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(actualGame); timerFunctions(actualGame)}
-                binding.btnOption3.setOnClickListener { timer.cancel(); gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(actualGame); timerFunctions(actualGame)}
+                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(game); timerFunctions(game)}
             }
         }
     }
