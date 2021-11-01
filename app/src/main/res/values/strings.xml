@@ -20,5 +20,18 @@
     <string name="no_internet">No hay conexión</string>
     <string name="player_name_already_exists">¡Ya existe un jugador con ese nombre!</string>
     <string name="put_your_name">¡Poné tu nombre o apodo!</string>
+    <string name="un_jugador">Un jugador</string>
+    <string name="multi_jugador">Multijugador</string>
+    <string name="nuevo_juego">Nuevo juego</string>
+    <string name="participantes">Participantes</string>
+    <string name="estas_listo">¿Estás listo?</string>
+    <string name="comenzar">Comenzar</string>
+    <string name="que_es">¿Qué producto es?</string>
+    <string name="adivino">Adivinó</string>
+    <string name="puntajes_actuales">Puntajes actuales</string>
+    <string name="won_the_game">Ganó el juego</string>
+    <string name="finalize">Finalizar</string>
+    <string name="guessed">Adivinó</string>
+    <string name="did_not_guessed">No adivinó</string>
     <string name="money_sign">$</string>
 </resources>
