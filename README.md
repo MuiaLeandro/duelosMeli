@@ -18,8 +18,6 @@ _Si adivina, suma un punto, de lo contrario termina su turno sin registrarse nin
 ![22](https://user-images.githubusercontent.com/74152144/140199725-bb40f5da-00b7-4c4d-8b97-a1f6d6558121.jpg)
 ![33](https://user-images.githubusercontent.com/74152144/140199734-26cee177-05fa-444a-b96b-3c4a6a3f0ae4.jpg)
 ![44](https://user-images.githubusercontent.com/74152144/140199739-c3bd8557-483f-4926-8e92-b5bf6e9f7d5a.jpg)
-
-
 ![1](https://user-images.githubusercontent.com/74152144/140199956-d711c805-f2f7-4344-99e4-e14e19e13318.jpg)
 ![2](https://user-images.githubusercontent.com/74152144/140199978-ad59a77d-aafc-4c09-9f7c-634630924cd8.jpg)
 ![3](https://user-images.githubusercontent.com/74152144/140199988-df17c44a-7638-4c29-b6ff-7e0c69004f70.jpg)
