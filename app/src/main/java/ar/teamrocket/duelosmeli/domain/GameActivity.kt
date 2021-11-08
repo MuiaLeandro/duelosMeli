@@ -114,12 +114,8 @@ class GameActivity : AppCompatActivity() {
             })
             successChecker(correctPricePosition, game)
         })
-        vm.toastCategory.observe(this, {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureCategory.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener las categorias", it)
+        vm.categoriesException.observe(this, {
+            Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
         })
         vm.toastItemFromCategory.observe(this, {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
@@ -128,12 +124,8 @@ class GameActivity : AppCompatActivity() {
             Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
             Log.e("Main", "Falló al obtener los articulos de la categoría", it)
         })
-        vm.toastItem.observe(this, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureItem.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener el artículo", it)
+        vm.itemException.observe(this, {
+            Toast.makeText(this, it.toString(),Toast.LENGTH_LONG).show()
         })
     }
 

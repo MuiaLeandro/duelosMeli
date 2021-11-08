@@ -24,8 +24,8 @@ class API {
         return getAPI().getArticle(id)
     }
 
-    fun getCategories(callback: Callback<List<Category>>){
-        getAPI().getCategories().enqueue(callback)
+    suspend fun getCategories(): Response<List<Category>>{
+        return getAPI().getCategories()
     }
 
     fun getArticlesFromCategory(id: String, callback: Callback<Articles>){

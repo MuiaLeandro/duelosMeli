@@ -19,7 +19,7 @@ interface MercadoLibreApi {
     suspend fun getArticle(@Path("itemId") id: String): Response<Article>
 
     @GET("sites/${ARGENTINA}/categories")
-    fun getCategories(): Call<List<Category>>
+    suspend fun getCategories(): Response<List<Category>>
 
     @GET("sites/${ARGENTINA}/search")
     fun getArticlesFromCategory(@Query("category")id: String): Call<Articles>

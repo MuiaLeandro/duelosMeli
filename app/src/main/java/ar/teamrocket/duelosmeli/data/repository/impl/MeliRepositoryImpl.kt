@@ -18,37 +18,17 @@ class MeliRepositoryImpl : MeliRepository {
     private val detailedItemsCache = mutableMapOf<String, Article>()
 
     // Se obtiene una lista de categorías
-    override suspend fun searchCategories(
-        callback: (List<Category>) -> Unit,
-        onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
+    override suspend fun searchCategories(): List<Category> {
 
-        if (categoriesCache.isNotEmpty()) {
-            callback(categoriesCache)
-        } else {
-            API().getCategories(object : Callback<List<Category>> {
-                override fun onResponse(
-                    call: Call<List<Category>>,
-                    response: Response<List<Category>>
-                ) {
-                    when (response.code()) {
-                        in 200..299 -> {
-                            callback(response.body()!!)
-                            categoriesCache.addAll(response.body()!!)
-                        }
-                        400 -> onError(R.string.bad_request)
-                        404 -> onError(R.string.resource_not_found)
-                        in 500..599 -> onError(R.string.server_error)
-                        else -> onError(R.string.unknown_error)
-                    }
-                }
+        val response = API().getCategories()
 
-                override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                    onFailure(t)
-                }
-            })
-        }
+            when (response.code()) {
+                in 200..299 -> return response.body()!!
+                400 -> throw BadRequestException(R.string.bad_request.toString())
+                404 -> throw NotFoundException(R.string.resource_not_found.toString())
+                in 500..599 -> throw InternalServerErrorException(R.string.server_error.toString())
+                else -> throw UnknownException(R.string.unknown_error.toString())
+            }
     }
 
     // Se obtiene un item de una categoría
@@ -87,17 +67,11 @@ class MeliRepositoryImpl : MeliRepository {
         val response = API().getArticle(id)
 
             when (response.code()) {
-                in 200..299 -> {
-                    return response.body()!!
-                }
-                400 -> //onError(R.string.bad_request)
-                throw BadRequestException(R.string.bad_request.toString())
-                404 -> //onError(R.string.resource_not_found)
-                throw NotFoundException(R.string.resource_not_found.toString())
-                in 500..599 -> //onError(R.string.server_error)
-                throw InternalServerErrorException(R.string.server_error.toString())
-                else -> //onError(R.string.unknown_error)
-                throw UnknownException(R.string.unknown_error.toString())
+                in 200..299 -> return response.body()!!
+                400 -> throw BadRequestException(R.string.bad_request.toString())
+                404 -> throw NotFoundException(R.string.resource_not_found.toString())
+                in 500..599 -> throw InternalServerErrorException(R.string.server_error.toString())
+                else -> throw UnknownException(R.string.unknown_error.toString())
             }
     }
 }

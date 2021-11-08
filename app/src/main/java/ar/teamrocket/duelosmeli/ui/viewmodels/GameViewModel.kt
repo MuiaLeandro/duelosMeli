@@ -50,12 +50,9 @@ class GameViewModel : ViewModel() {
     val fakePrice1 = MutableLiveData<String>()
     val fakePrice2 = MutableLiveData<String>()
     val starGame = MutableLiveData(true)
-    val toastCategory = MutableLiveData<String>()
-    val onFailureCategory = MutableLiveData<Throwable>()
     val toastItemFromCategory = MutableLiveData<String>()
     val onFailureItemFromCategory = MutableLiveData<Throwable>()
-    val toastItem = MutableLiveData<String>()
-    val onFailureItem = MutableLiveData<Throwable>()
+    val categoriesException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
 
     fun startSound(context: Context){
@@ -66,18 +63,16 @@ class GameViewModel : ViewModel() {
     fun findCategories() {
         viewModelScope.launch {
             starGame.value = false
-            meliRepositoryImpl.searchCategories({
-                val categories = it
+            try {
+                val categories = meliRepositoryImpl.searchCategories()
                 val categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
                 //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
                 randomNumber1to3Mutable.value = (1..3).random()
-            }, {
-                toastCategory.value = it.toString()
-            }, {
-                onFailureCategory.value = it
-            })
+            } catch (e: Exception){
+                categoriesException.value = e
+            }
         }
     }
 
