@@ -13,10 +13,6 @@ import retrofit2.Response
 
 class MeliRepositoryImpl : MeliRepository {
 
-    val categoriesCache: MutableList<Category> = mutableListOf()
-    private val itemsCache = mutableMapOf<String, Articles>()
-    private val detailedItemsCache = mutableMapOf<String, Article>()
-
     // Se obtiene una lista de categorías
     override suspend fun searchCategories(): List<Category> {
 

@@ -50,8 +50,6 @@ class GameViewModel : ViewModel() {
     val fakePrice1 = MutableLiveData<String>()
     val fakePrice2 = MutableLiveData<String>()
     val starGame = MutableLiveData(true)
-    val toastItemFromCategory = MutableLiveData<String>()
-    val onFailureItemFromCategory = MutableLiveData<Throwable>()
     val categoriesException = MutableLiveData<Throwable>()
     val itemFromCategoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
