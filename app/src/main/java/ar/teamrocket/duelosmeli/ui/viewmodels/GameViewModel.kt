@@ -56,6 +56,7 @@ class GameViewModel : ViewModel() {
     val onFailureItemFromCategory = MutableLiveData<Throwable>()
     val toastItem = MutableLiveData<String>()
     val onFailureItem = MutableLiveData<Throwable>()
+    val itemException = MutableLiveData<Throwable>()
 
     fun startSound(context: Context){
         val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
@@ -110,15 +111,12 @@ class GameViewModel : ViewModel() {
 
     fun searchItem(id: String) {
         viewModelScope.launch {
-            meliRepositoryImpl.searchItem(id, {
-                apply {
-                    picture.value = it.pictures[0].secureUrl
-                }
-            }, {
-                toastItem.value = it.toString()
-            }, {
-                onFailureItem.value = it
-            })
+            try {
+                val article = meliRepositoryImpl.searchItem(id)
+                picture.value = article.pictures[0].secureUrl
+            } catch (e: Exception){
+                itemException.value = e
+            }
         }
     }
 

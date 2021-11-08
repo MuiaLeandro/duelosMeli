@@ -5,6 +5,7 @@ import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
 import com.google.gson.Gson
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,8 +20,8 @@ class API {
         return retrofit.create(MercadoLibreApi::class.java)
     }
 
-    fun getArticle(id: String, callback: Callback<Article>) {
-        getAPI().getArticle(id).enqueue(callback)
+    suspend fun getArticle(id: String): Response<Article> {
+        return getAPI().getArticle(id)
     }
 
     fun getCategories(callback: Callback<List<Category>>){

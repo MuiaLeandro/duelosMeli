@@ -18,8 +18,5 @@ interface MeliRepository {
         onFailure: (Throwable) -> Unit
     )
 
-    fun searchItem(
-        id: String, callback: (Article) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    )
+    suspend fun searchItem(id: String): Article
 }

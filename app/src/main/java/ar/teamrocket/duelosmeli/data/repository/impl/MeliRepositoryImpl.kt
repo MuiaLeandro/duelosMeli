@@ -1,7 +1,7 @@
 package ar.teamrocket.duelosmeli.data.repository.impl
 
+import ar.teamrocket.duelosmeli.*
 import ar.teamrocket.duelosmeli.domain.Game
-import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
@@ -18,7 +18,7 @@ class MeliRepositoryImpl : MeliRepository {
     private val detailedItemsCache = mutableMapOf<String, Article>()
 
     // Se obtiene una lista de categorías
-    override fun searchCategories(
+    override suspend fun searchCategories(
         callback: (List<Category>) -> Unit,
         onError: (Int) -> Unit,
         onFailure: (Throwable) -> Unit
@@ -82,32 +82,22 @@ class MeliRepositoryImpl : MeliRepository {
     }
 
     // Se obtienen los datos más detallados de un artículo, por ahora usamos solo una imágen
-    override fun searchItem(
-        id: String, callback: (Article) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
+    override suspend fun searchItem(id: String): Article {
 
-        if (detailedItemsCache.containsKey(id)) {
-            callback(detailedItemsCache[id]!!)
-        } else {
-            API().getArticle(id, object : Callback<Article> {
-                override fun onResponse(call: Call<Article>, response: Response<Article>) {
-                    when (response.code()) {
-                        in 200..299 -> {
-                            callback(response.body()!!)
-                            detailedItemsCache[id] = response.body()!!
-                        }
-                        400 -> onError(R.string.bad_request)
-                        404 -> onError(R.string.resource_not_found)
-                        in 500..599 -> onError(R.string.server_error)
-                        else -> onError(R.string.unknown_error)
-                    }
-                }
+        val response = API().getArticle(id)
 
-                override fun onFailure(call: Call<Article>, t: Throwable) {
-                    onFailure(t)
+            when (response.code()) {
+                in 200..299 -> {
+                    return response.body()!!
                 }
-            })
-        }
+                400 -> //onError(R.string.bad_request)
+                throw BadRequestException(R.string.bad_request.toString())
+                404 -> //onError(R.string.resource_not_found)
+                throw NotFoundException(R.string.resource_not_found.toString())
+                in 500..599 -> //onError(R.string.server_error)
+                throw InternalServerErrorException(R.string.server_error.toString())
+                else -> //onError(R.string.unknown_error)
+                throw UnknownException(R.string.unknown_error.toString())
+            }
     }
 }
