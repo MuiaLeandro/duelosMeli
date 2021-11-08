@@ -9,10 +9,7 @@ interface MeliRepository {
 
     suspend fun searchCategories(): List<Category>
 
-    fun searchItemFromCategory(
-        id: String, callback: (Articles) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    )
+    suspend fun searchItemFromCategory(id: String): Articles
 
     suspend fun searchItem(id: String): Article
 }

@@ -32,33 +32,17 @@ class MeliRepositoryImpl : MeliRepository {
     }
 
     // Se obtiene un item de una categoría
-    override fun searchItemFromCategory(
-        id: String, callback: (Articles) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
+    override suspend fun searchItemFromCategory(id: String): Articles {
 
-        if (itemsCache.containsKey(id)) {
-            callback(itemsCache[id]!!)
-        } else {
-            API().getArticlesFromCategory(id, object : Callback<Articles> {
-                override fun onResponse(call: Call<Articles>, response: Response<Articles>) {
-                    when (response.code()) {
-                        in 200..299 -> {
-                            callback(response.body()!!)
-                            itemsCache[id] = response.body()!!
-                        }
-                        400 -> onError(R.string.bad_request)
-                        404 -> onError(R.string.resource_not_found)
-                        in 500..599 -> onError(R.string.server_error)
-                        else -> onError(R.string.unknown_error)
-                    }
-                }
+        val response = API().getArticlesFromCategory(id)
 
-                override fun onFailure(call: Call<Articles>, t: Throwable) {
-                    onFailure(t)
-                }
-            })
-        }
+            when (response.code()) {
+                in 200..299 -> return response.body()!!
+                400 -> throw BadRequestException(R.string.bad_request.toString())
+                404 -> throw NotFoundException(R.string.resource_not_found.toString())
+                in 500..599 -> throw InternalServerErrorException(R.string.server_error.toString())
+                else -> throw UnknownException(R.string.unknown_error.toString())
+            }
     }
 
     // Se obtienen los datos más detallados de un artículo, por ahora usamos solo una imágen

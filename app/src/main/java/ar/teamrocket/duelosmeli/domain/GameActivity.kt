@@ -117,15 +117,15 @@ class GameActivity : AppCompatActivity() {
         vm.categoriesException.observe(this, {
             Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
         })
-        vm.toastItemFromCategory.observe(this, {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureItemFromCategory.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
+        vm.itemFromCategoryException.observe(this, {
+            Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
         })
         vm.itemException.observe(this, {
             Toast.makeText(this, it.toString(),Toast.LENGTH_LONG).show()
+        })
+        // Para probar un snackbar y ver diferencia con Toast
+        vm.itemException.observe(this, {
+            Snackbar.make(binding.root, it.toString(), Snackbar.LENGTH_LONG).show()
         })
     }
 
