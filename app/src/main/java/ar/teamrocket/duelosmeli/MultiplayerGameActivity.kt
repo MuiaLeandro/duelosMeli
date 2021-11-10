@@ -29,6 +29,17 @@ class MultiplayerGameActivity : AppCompatActivity() {
         playGame(game)
         startTimer(game)
         binding.btnGuessed.setOnClickListener { guessed(game) }
+        setListeners()
+        setObservers()
+
+    }
+
+    private fun setObservers() {
+        TODO("Not yet implemented")
+    }
+
+    private fun setListeners() {
+        TODO("Not yet implemented")
     }
 
 

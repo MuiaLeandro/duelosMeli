@@ -47,20 +47,20 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
         val addPoint = intent.extras!!.getBoolean("AddPoint")
         val playersOrderByScore = playerDao.getAllMultiplayerOrderByScore()
-        val players = playerDao.getAllMultiplayer()
-        val currentPlayer = players[game.currentPlayer]
+        //val players = playerDao.getAllMultiplayer()
+        //val currentPlayer = players[game.currentPlayer]
 
         if (addPoint) {
-            addPointToThePlayer(currentPlayer)
+//            addPointToThePlayer(currentPlayer)
             binding.tvPlayerSituation.text = getString(R.string.guessed)
         } else {
             binding.tvPlayerSituation.text = getString(R.string.did_not_guessed)
         }
-        binding.tvCurrentNamePlayer.text = currentPlayer.name
+        //binding.tvCurrentNamePlayer.text = currentPlayer.name
 
         binding.rvScoreTableMultiplayer.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTableMultiplayer.adapter = MultiplayerScoreAdapter(playersOrderByScore)
-        binding.btnNext.setOnClickListener { nextView(game, players.lastIndex,playersOrderByScore[0]) }
+        //binding.btnNext.setOnClickListener { nextView(game, players.lastIndex,playersOrderByScore[0]) }
     }
 
     private fun nextView(game: GameMultiplayer, lastIndex: Int, playerFirst: Multiplayer) {
