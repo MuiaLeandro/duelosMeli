@@ -46,7 +46,7 @@ interface PlayerDao {
     fun getAllMultiplayerOrderByScore(): List<Multiplayer>
 
     @Query("SELECT id FROM multiplayers")
-    fun getAllMultiplayerId(): List<Long>
+    suspend fun getAllMultiplayerId(): List<Long>
 
     @Query("SELECT * FROM multiplayers WHERE id = :id")
     fun getMultiplayerById(id: Long): List<Multiplayer>

@@ -48,4 +48,8 @@ class PlayersRepository(application: Application) {
         playerDao.insertMultiplayer(multiplayer)
     }
 
+    suspend fun getAllMultiplayersId(): List<Long> {
+        return playerDao.getAllMultiplayerId()
+    }
+
 }

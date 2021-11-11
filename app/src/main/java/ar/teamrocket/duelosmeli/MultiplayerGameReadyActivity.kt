@@ -1,56 +1,58 @@
 package ar.teamrocket.duelosmeli
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.room.Room
-import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
-import ar.teamrocket.duelosmeli.data.database.PlayerDao
-import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
+import androidx.activity.viewModels
+import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameReadyBinding
-import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
-import ar.teamrocket.duelosmeli.ui.HomeActivity
+import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameReadyViewModel
 
 class MultiplayerGameReadyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMultiplayerGameReadyBinding
-    private lateinit var database: DuelosMeliDb
-    private lateinit var playerDao: PlayerDao
-
-    companion object {
-        private fun buildDatabase(context: Context): DuelosMeliDb {
-            return Room.databaseBuilder(
-                context,
-                DuelosMeliDb::class.java,
-                "duelosmeli-db"
-            ).allowMainThreadQueries().build()
-        }
-    }
-
-
-    /**
-     * Manual dependency injection
-     */
-    private fun injectDependencies() {
-        this.database = buildDatabase(this.applicationContext)
-        this.playerDao = this.database.playerDao()
-    }
+    private val vm: MultiplayerGameReadyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGameReadyBinding.inflate(layoutInflater)
-        injectDependencies()
         setContentView(binding.root)
 
         // recuperamos el objeto Game
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
 
-        //val players = playerDao.getAllMultiplayer()
-//        val currentPlayer = players[game.currentPlayer]
+        vm.setListMultiplayers()
+        vm.setListMultiplayersId()
 
-//        binding.tvNamePlayer.text = currentPlayer.name
+        var players = emptyList<Multiplayer>()
+        vm.getListMultiplayersLiveData().value.also {
+            if (it != null) {
+                players = it
+                val currentPlayer = players[game.currentPlayer]
+                binding.tvNamePlayer.text = currentPlayer.name
+            }
+        }
+
+        setListeners(game)
+        setObservers(game)
+    }
+
+    fun setListeners(game: GameMultiplayer){
+        vm.setListMultiplayers()
+        vm.setListMultiplayersId()
         binding.btnMultiplayer.setOnClickListener { viewMultiplayerGameActivity(game) }
+    }
+
+    fun setObservers(game: GameMultiplayer) {
+        vm.team.observe(this,  {
+            if (it != null) {
+                changeTextView(game)
+            }
+        })
+    }
+
+    private fun changeTextView(game: GameMultiplayer) {
+        binding.tvNamePlayer.text= vm.team.value!![game.currentPlayer].name
     }
 
     private fun viewMultiplayerGameActivity(game: GameMultiplayer) {
@@ -60,6 +62,7 @@ class MultiplayerGameReadyActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, NewMultiplayerGameActivity::class.java)

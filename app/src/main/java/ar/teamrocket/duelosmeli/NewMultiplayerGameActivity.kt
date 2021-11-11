@@ -9,6 +9,7 @@ import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.IPlayersTeamsAdapter
 import ar.teamrocket.duelosmeli.domain.PlayersTeamsAdapter
+import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.NewMultiplayerGameViewModel
 
 class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
@@ -38,11 +39,15 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
 
     fun setListeners(){
         vm.setListMultiplayers()
+        vm.setListMultiplayersId()
         binding.btnAddPlayer.setOnClickListener {
             addPlayer()
         }
         binding.btnDelete.setOnClickListener {
             deleteAllMultiplayer()
+        }
+        binding.btnNext.setOnClickListener {
+            viewMultiplayerGameReadyActivity()
         }
     }
 
@@ -69,6 +74,19 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
     private fun deleteAllMultiplayer() {
         if (vm.team.value != null ){
             vm.deleteAllMultiplayer(vm.team.value!!)
+        }
+    }
+
+    private fun viewMultiplayerGameReadyActivity() {
+        if (vm.allPlayersId.value != null) {
+            val playersId: LongArray = vm.allPlayersId.value!!.toLongArray()
+            val newGame = GameMultiplayer()
+
+            val intent = Intent(this, MultiplayerGameReadyActivity::class.java)
+            intent.putExtra("Game", newGame)
+            intent.putExtra("Players", playersId)
+            startActivity(intent)
+            finish()
         }
     }
 
