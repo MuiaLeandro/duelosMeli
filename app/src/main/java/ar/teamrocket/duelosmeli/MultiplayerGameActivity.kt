@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class MultiplayerGameActivity : AppCompatActivity() {
-    val start = 6000L
+    val start = 61000L
     var timer = start
     lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
