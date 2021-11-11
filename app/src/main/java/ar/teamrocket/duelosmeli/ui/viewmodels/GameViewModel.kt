@@ -50,12 +50,9 @@ class GameViewModel : ViewModel() {
     val fakePrice1 = MutableLiveData<String>()
     val fakePrice2 = MutableLiveData<String>()
     val starGame = MutableLiveData(true)
-    val toastCategory = MutableLiveData<String>()
-    val onFailureCategory = MutableLiveData<Throwable>()
-    val toastItemFromCategory = MutableLiveData<String>()
-    val onFailureItemFromCategory = MutableLiveData<Throwable>()
-    val toastItem = MutableLiveData<String>()
-    val onFailureItem = MutableLiveData<Throwable>()
+    val categoriesException = MutableLiveData<Throwable>()
+    val itemFromCategoryException = MutableLiveData<Throwable>()
+    val itemException = MutableLiveData<Throwable>()
 
     fun startSound(context: Context){
         val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
@@ -65,40 +62,37 @@ class GameViewModel : ViewModel() {
     fun findCategories() {
         viewModelScope.launch {
             starGame.value = false
-            meliRepositoryImpl.searchCategories({
-                val categories = it
+            try {
+                val categories = meliRepositoryImpl.searchCategories()
                 val categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
                 //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
                 randomNumber1to3Mutable.value = (1..3).random()
-            }, {
-                toastCategory.value = it.toString()
-            }, {
-                onFailureCategory.value = it
-            })
+            } catch (e: Exception){
+                categoriesException.value = e
+            }
         }
     }
 
     fun findItemFromCategory(categoryId: String) {
         viewModelScope.launch {
-            meliRepositoryImpl.searchItemFromCategory(categoryId, {
-                apply {
-                    val itemsList: MutableList<Article> = mutableListOf()
-                    itemsList.addAll(it.results)
-                    val item = itemsList[(itemsList.indices).random()]
-                    itemNameMutable.value = item.title
+            try {
+                val items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+                val itemsList: MutableList<Article> = mutableListOf()
+                itemsList.addAll(items.results)
 
-                    itemPriceString.value = numberRounder(item.price)
+                val item = itemsList[(itemsList.indices).random()]
 
-                    searchItem(item.id)
-                    randomOptionsCalculator(item)
-                }
-            }, {
-                toastItemFromCategory.value = it.toString()
-            }, {
-                onFailureItemFromCategory.value = it
-            })
+                itemNameMutable.value = item.title
+
+                itemPriceString.value = numberRounder(item.price)
+
+                searchItem(item.id)
+                randomOptionsCalculator(item)
+            } catch (e: Exception) {
+                itemFromCategoryException.value = e
+            }
         }
     }
 
@@ -110,15 +104,12 @@ class GameViewModel : ViewModel() {
 
     fun searchItem(id: String) {
         viewModelScope.launch {
-            meliRepositoryImpl.searchItem(id, {
-                apply {
-                    picture.value = it.pictures[0].secureUrl
-                }
-            }, {
-                toastItem.value = it.toString()
-            }, {
-                onFailureItem.value = it
-            })
+            try {
+                val article = meliRepositoryImpl.searchItem(id)
+                picture.value = article.pictures[0].secureUrl
+            } catch (e: Exception){
+                itemException.value = e
+            }
         }
     }
 

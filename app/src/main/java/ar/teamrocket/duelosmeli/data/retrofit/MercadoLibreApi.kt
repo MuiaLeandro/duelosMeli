@@ -4,6 +4,7 @@ import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,11 +16,11 @@ interface MercadoLibreApi {
     }
 
     @GET("items/{itemId}")
-    fun getArticle(@Path("itemId") id: String): Call<Article>
+    suspend fun getArticle(@Path("itemId") id: String): Response<Article>
 
     @GET("sites/${ARGENTINA}/categories")
-    fun getCategories(): Call<List<Category>>
+    suspend fun getCategories(): Response<List<Category>>
 
     @GET("sites/${ARGENTINA}/search")
-    fun getArticlesFromCategory(@Query("category")id: String): Call<Articles>
+    suspend fun getArticlesFromCategory(@Query("category")id: String): Response<Articles>
 }
