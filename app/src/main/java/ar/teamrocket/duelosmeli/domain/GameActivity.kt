@@ -26,6 +26,7 @@ import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import retrofit2.HttpException
 
 
 class GameActivity : AppCompatActivity() {
@@ -114,27 +115,23 @@ class GameActivity : AppCompatActivity() {
             })
             successChecker(correctPricePosition, game)
         })
-        vm.toastCategory.observe(this, {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureCategory.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener las categorias", it)
-        })
-        vm.toastItemFromCategory.observe(this, {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureItemFromCategory.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
-        })
-        vm.toastItem.observe(this, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        })
-        vm.onFailureItem.observe(this, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener el artículo", it)
-        })
+        vm.categoriesException.observe(this, this::handleException)
+        vm.itemFromCategoryException.observe(this, this::handleException)
+        vm.itemException.observe(this, this::handleException)
+        // Para probar un snackbar y ver diferencia con Toast
+        /*vm.itemException.observe(this, {
+            Snackbar.make(binding.root, it.toString(), Snackbar.LENGTH_LONG).show()
+        })*/
+    }
+
+    private fun handleException(exception: Throwable?) {
+        if (exception is HttpException)
+            when (exception.code()) {
+                400 -> Toast.makeText(this, R.string.bad_request.toString(), Toast.LENGTH_LONG).show()
+                404 -> Toast.makeText(this, R.string.resource_not_found.toString(), Toast.LENGTH_LONG).show()
+                in 500..599 -> Toast.makeText(this, R.string.server_error.toString(), Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(this, R.string.unknown_error.toString(), Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun viewGameOver(game: Game) {

@@ -7,19 +7,9 @@ import ar.teamrocket.duelosmeli.data.model.Category
 
 interface MeliRepository {
 
-    fun searchCategories(
-        callback: (List<Category>) -> Unit,
-        onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    )
+    suspend fun searchCategories(): List<Category>
 
-    fun searchItemFromCategory(
-        id: String, callback: (Articles) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    )
+    suspend fun searchItemFromCategory(id: String): Articles
 
-    fun searchItem(
-        id: String, callback: (Article) -> Unit, onError: (Int) -> Unit,
-        onFailure: (Throwable) -> Unit
-    )
+    suspend fun searchItem(id: String): Article
 }

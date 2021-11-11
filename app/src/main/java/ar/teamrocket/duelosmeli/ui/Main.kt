@@ -5,6 +5,10 @@ import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
 import ar.teamrocket.duelosmeli.data.retrofit.API
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,10 +96,13 @@ fun main(args: Array<String>) {
             //countdownText.setText(millisUntilFinished / 1000.toString() + "")
         }
     }*/
+
 }
 
 
 
+
+/*
 fun searchCategoryRandomAndItemFromCategoryRandom() {
     fun searchCategories() {
         API().getCategories(object : Callback<List<Category>> {
@@ -231,3 +238,4 @@ private fun searchItem() {
 
     })
 }
+*/
