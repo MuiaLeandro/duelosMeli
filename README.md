@@ -40,4 +40,4 @@ _Si adivina, suma un punto, de lo contrario termina su turno sin registrarse nin
 También puedes mirar la lista de todos los [contribuyentes](https://github.com/MuiaLeandro/duelosMeli/graphs/contributors) quíenes han participado en este proyecto. 
 
 ---
-⌨️ con ❤️ por [Brenda Rodriguez](https://github.com/BrenMiRo) 😊
+⌨️ con ❤️ por [Lean A](https://github.com/learanda), [Lean M](https://github.com/MuiaLeandro) y [Bren](https://github.com/BrenMiRo) 😊
