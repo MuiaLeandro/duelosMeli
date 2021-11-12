@@ -7,7 +7,7 @@ import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.databinding.ItemHighscoreBinding
 
-class MultiplayerScoreAdapter (private val players:List<Multiplayer>): RecyclerView.Adapter<MultiplayerScoreAdapter.HighScoreHolder>(){
+class MultiplayerScoreAdapter (private var players:List<Multiplayer>): RecyclerView.Adapter<MultiplayerScoreAdapter.HighScoreHolder>(){
 
     class HighScoreHolder(val binding: ItemHighscoreBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -29,5 +29,11 @@ class MultiplayerScoreAdapter (private val players:List<Multiplayer>): RecyclerV
 
     override fun getItemCount(): Int {
         return players.size
+    }
+
+    fun setListData(data: List<Multiplayer>) {
+        this.players = data
+        this.notifyDataSetChanged()
+
     }
 }

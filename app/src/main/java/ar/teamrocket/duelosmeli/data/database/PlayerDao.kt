@@ -43,7 +43,7 @@ interface PlayerDao {
     fun deleteAllMultiplayers(multiplayers: List<Multiplayer>)
 
     @Query("SELECT * FROM multiplayers ORDER BY score DESC")
-    fun getAllMultiplayerOrderByScore(): List<Multiplayer>
+    suspend fun getAllMultiplayerOrderByScore(): List<Multiplayer>
 
     @Query("SELECT id FROM multiplayers")
     suspend fun getAllMultiplayerId(): List<Long>

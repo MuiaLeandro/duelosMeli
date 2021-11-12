@@ -1,82 +1,100 @@
 package ar.teamrocket.duelosmeli
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
-import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGamePartialResultBinding
 import ar.teamrocket.duelosmeli.domain.MultiplayerScoreAdapter
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
+import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGamePartialResultActivityViewModel
 
 class MultiplayerGamePartialResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMultiplayerGamePartialResultBinding
-    private lateinit var database: DuelosMeliDb
-    private lateinit var playerDao: PlayerDao
+    private val vm: MultiplayerGamePartialResultActivityViewModel by viewModels()
 
-    companion object {
-        private fun buildDatabase(context: Context): DuelosMeliDb {
-            return Room.databaseBuilder(
-                context,
-                DuelosMeliDb::class.java,
-                "duelosmeli-db"
-            ).allowMainThreadQueries().build()
-        }
-    }
-
-
-    /**
-     * Manual dependency injection
-     */
-    private fun injectDependencies() {
-        this.database = buildDatabase(this.applicationContext)
-        this.playerDao = this.database.playerDao()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGamePartialResultBinding.inflate(layoutInflater)
-        injectDependencies()
         setContentView(binding.root)
 
+var playersOrderByScore = emptyList<Multiplayer>()
+        if (vm.getAllMultiplayerOrderByScore().value != null) {
+            playersOrderByScore = vm.getAllMultiplayerOrderByScore().value!!
+        }
 
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
         val addPoint = intent.extras!!.getBoolean("AddPoint")
-        val playersOrderByScore = playerDao.getAllMultiplayerOrderByScore()
-        //val players = playerDao.getAllMultiplayer()
-        //val currentPlayer = players[game.currentPlayer]
 
-        if (addPoint) {
-//            addPointToThePlayer(currentPlayer)
-            binding.tvPlayerSituation.text = getString(R.string.guessed)
-        } else {
-            binding.tvPlayerSituation.text = getString(R.string.did_not_guessed)
-        }
-        //binding.tvCurrentNamePlayer.text = currentPlayer.name
+        vm.setGame(game)
+        vm.setListMultiplayers()
+        vm.setAllMultiplayerOrderByScore()
+        vm.setAddPoint(addPoint)
 
+        val adapter = MultiplayerScoreAdapter(playersOrderByScore)
         binding.rvScoreTableMultiplayer.layoutManager = LinearLayoutManager(this)
-        binding.rvScoreTableMultiplayer.adapter = MultiplayerScoreAdapter(playersOrderByScore)
-        //binding.btnNext.setOnClickListener { nextView(game, players.lastIndex,playersOrderByScore[0]) }
+        binding.rvScoreTableMultiplayer.adapter = adapter
+
+        setListeners(/*game, players.lastIndex,playersOrderByScore*/)
+        setObservers(adapter)
+
     }
 
-    private fun nextView(game: GameMultiplayer, lastIndex: Int, playerFirst: Multiplayer) {
-        if (game.currentPlayer < lastIndex){
-            game.currentPlayer++
-        } else {
-            game.round++
-            game.currentPlayer = 0
+    private fun setObservers(adapter: MultiplayerScoreAdapter) {
+        vm.playersOrderByScore.observe(this, {
+            if (it != null) {
+                adapter.setListData(it)
+//                players = vm.getAllMultiplayer().value!!
+//                currentPlayer = players[game.currentPlayer]
+
+
+                binding.tvCurrentNamePlayer.text = vm.currentPlayer.value?.name?:""
+            }
+        })
+
+        if (vm.addPoint.value == true) {
+            if (vm.currentPlayer.value != null) {
+                addPointToThePlayer(vm.currentPlayer.value!!)
+            }
         }
-        if (game.round < 3) {
-            viewMultiplayerGameReadyActivity(game)
-        } else {
-            binding.tvCurrentNamePlayer.text = playerFirst.name
-            binding.tvPlayerSituation.text = getString(R.string.won_the_game)
-            binding.btnNext.text = getString(R.string.finalize)
-            binding.btnNext.setOnClickListener { viewNewMultiplayerGameActivity() }
+
+
+    }
+
+    private fun setListeners(/*game: GameMultiplayer, lastIndex: Int, playerFirst: List<Multiplayer>*/) {
+        vm.setAllMultiplayerOrderByScore()
+        vm.setListMultiplayers()
+        vm.setCurrentPlayer()
+        binding.btnNext.setOnClickListener {
+            nextView()
+        }
+    }
+
+    private fun nextView() {
+        var game1: GameMultiplayer? = vm.game.value
+        if (game1 != null) {
+            if (game1.currentPlayer < vm.getAllMultiplayerOrderByScore().value!!.lastIndex) {
+                game1.currentPlayer++
+                vm.setGame(game1)
+                //game.currentPlayer++
+            } else {
+                game1.round++
+                game1.currentPlayer = 0
+                vm.setGame(game1)
+            }
+            if (game1.round < 3) {
+                viewMultiplayerGameReadyActivity(game1)
+            } else {
+                //binding.tvCurrentNamePlayer.text = playerFirst.name
+
+                binding.tvCurrentNamePlayer.text = vm.playersOrderByScore.value?.get(0)?.name ?: ""
+                binding.tvPlayerSituation.text = getString(R.string.won_the_game)
+                binding.btnNext.text = getString(R.string.finalize)
+                binding.btnNext.setOnClickListener { viewNewMultiplayerGameActivity() }
+            }
         }
 
     }
@@ -96,8 +114,9 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
     }
 
     private fun addPointToThePlayer(currentPlayer: Multiplayer) {
-        currentPlayer.score++
-        playerDao.updateMultiplayer(currentPlayer)
+        vm.addPointToThePlayer(currentPlayer)
+        vm.setAllMultiplayerOrderByScore()
+        vm.setCurrentPlayer()
     }
 
     override fun onBackPressed() {

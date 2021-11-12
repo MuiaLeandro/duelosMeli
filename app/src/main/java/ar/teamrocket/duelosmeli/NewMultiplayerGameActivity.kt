@@ -84,7 +84,7 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
 
             val intent = Intent(this, MultiplayerGameReadyActivity::class.java)
             intent.putExtra("Game", newGame)
-            intent.putExtra("Players", playersId)
+            //intent.putExtra("Players", playersId)
             startActivity(intent)
             finish()
         }

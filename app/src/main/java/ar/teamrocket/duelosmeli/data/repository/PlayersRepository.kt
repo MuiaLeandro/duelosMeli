@@ -52,4 +52,11 @@ class PlayersRepository(application: Application) {
         return playerDao.getAllMultiplayerId()
     }
 
+    suspend fun getAllMultiplayersOrderByScore(): List<Multiplayer> {
+        return playerDao.getAllMultiplayerOrderByScore()
+    }
+    suspend fun updateMultiplayer(multiplayer: Multiplayer){
+        playerDao.updateMultiplayer(multiplayer)
+    }
+
 }
