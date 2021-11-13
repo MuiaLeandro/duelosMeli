@@ -43,8 +43,6 @@ class MultiplayerGameViewModel(application: Application) : AndroidViewModel(appl
                 val categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
-                //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
-                //randomNumber1to3Mutable.value = (1..3).random()
             } catch (e: Exception){
                 categoriesException.value = e
             }
@@ -82,8 +80,10 @@ class MultiplayerGameViewModel(application: Application) : AndroidViewModel(appl
 
     fun setCurrentPlayer() {
         val indexCurrentPlayer = game.value?.currentPlayer
-        if (indexCurrentPlayer != null && playersOrderByScore.value != null) {
-            currentPlayer.value = playersOrderByScore.value!![indexCurrentPlayer]
+        val team = team.value
+        if (indexCurrentPlayer != null && team != null) {
+            currentPlayer.postValue(team[indexCurrentPlayer])
+            //currentPlayer.value = team[indexCurrentPlayer]
         }
     }
     fun addPointToThePlayer(currentPlayer: Multiplayer) {
@@ -113,7 +113,9 @@ class MultiplayerGameViewModel(application: Application) : AndroidViewModel(appl
         return team
     }
 
-
+    fun setGame(game: GameMultiplayer) {
+        this.game.value = game
+    }
 
 
 }
