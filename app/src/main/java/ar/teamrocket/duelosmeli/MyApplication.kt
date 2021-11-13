@@ -17,7 +17,7 @@ import org.koin.dsl.module
 class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
-        viewModel<ViewModel> { GameViewModel() }
+        viewModel { GameViewModel() }
 
     }
 
@@ -29,7 +29,6 @@ class MyApplication : Application() {
             modules(appModule)
         }
     }
-
 
     private fun getDatabase(context: Context) = Room.databaseBuilder(
         context,

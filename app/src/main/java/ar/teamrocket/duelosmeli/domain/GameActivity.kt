@@ -228,14 +228,6 @@ class GameActivity : AppCompatActivity() {
         if (game.errors == 3) {
             game.state = false
 
-
-//            val database = Room.databaseBuilder(
-//                applicationContext,
-//                DuelosMeliDb::class.java,
-//                "duelosmeli-db"
-//            ).allowMainThreadQueries().build()
-//            val playerDao = database.playerDao()
-
             //actualizar el jugador:
             val player = playerDao.getById(game.playerId)
             if (player.isNotEmpty() && game.points > player[0].score ) {

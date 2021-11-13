@@ -12,39 +12,20 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
+import org.koin.android.ext.android.inject
 import ar.teamrocket.duelosmeli.databinding.ActivityNewGameBinding
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 
 class NewGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewGameBinding
 
-    private lateinit var database: DuelosMeliDb
-    private lateinit var playerDao: PlayerDao
+    private val playerDao: PlayerDao by inject()
     //private lateinit var robotAdapter: RobotAdapter
 
-    companion object {
-        private fun buildDatabase(context: Context): DuelosMeliDb {
-            return Room.databaseBuilder(
-                context,
-                DuelosMeliDb::class.java,
-                "duelosmeli-db"
-            ).allowMainThreadQueries().build()
-        }
-    }
-
-
-    /**
-     * Manual dependency injection
-     */
-    private fun injectDependencies() {
-        this.database = buildDatabase(this.applicationContext)
-        this.playerDao = this.database.playerDao()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewGameBinding.inflate(layoutInflater)
-        injectDependencies()
         setContentView(binding.root)
 
 
