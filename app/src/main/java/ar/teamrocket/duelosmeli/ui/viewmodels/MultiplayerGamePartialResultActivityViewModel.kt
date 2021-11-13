@@ -58,7 +58,7 @@ class MultiplayerGamePartialResultActivityViewModel(application: Application) : 
     fun setCurrentPlayer() {
         val indexCurrentPlayer = game.value?.currentPlayer
         if (indexCurrentPlayer != null && playersOrderByScore.value != null) {
-            currentPlayer.value = playersOrderByScore.value!![indexCurrentPlayer]
+            currentPlayer.postValue(playersOrderByScore.value!![indexCurrentPlayer])
         }
     }
 

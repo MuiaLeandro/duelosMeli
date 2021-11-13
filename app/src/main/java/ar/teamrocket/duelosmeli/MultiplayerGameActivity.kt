@@ -31,6 +31,10 @@ class MultiplayerGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
+        vm.setGame(game)
+        vm.setListMultiplayers()
+        vm.setAllMultiplayerOrderByScore()
+        vm.setCurrentPlayer()
 
         playGame(game)
         startTimer(game)
@@ -57,6 +61,14 @@ class MultiplayerGameActivity : AppCompatActivity() {
                     .into(binding.ivProductPicture)
             }
         })
+        vm.team.observe(this,{
+            if (it != null){
+                vm.setListMultiplayers()
+                vm.setAllMultiplayerOrderByScore()
+                vm.setCurrentPlayer()
+                binding.btnGuessed.setOnClickListener { guessed() }
+            }
+        })
         vm.categoriesException.observe(this, this::handleException)
         vm.itemFromCategoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)
@@ -64,10 +76,11 @@ class MultiplayerGameActivity : AppCompatActivity() {
     }
 
     private fun setListeners(game:GameMultiplayer) {
-        vm.setCurrentPlayer()
+        vm.setGame(game)
         vm.setListMultiplayers()
         vm.setAllMultiplayerOrderByScore()
-        binding.btnGuessed.setOnClickListener { guessed(game) }
+        vm.setCurrentPlayer()
+        binding.btnGuessed.setOnClickListener { guessed() }
     }
 
 
@@ -99,12 +112,16 @@ class MultiplayerGameActivity : AppCompatActivity() {
     }
 
 
-    private fun guessed(game: GameMultiplayer) {
+    private fun guessed() {
         pauseTimer()
+        vm.setListMultiplayers()
+        vm.setCurrentPlayer()
         if (vm.currentPlayer.value != null) {
             vm.addPointToThePlayer(vm.currentPlayer.value!!)
         }
-        viewMultiplayerGamePartialResultActivity(game, true)
+        if (vm.game.value != null) {
+            viewMultiplayerGamePartialResultActivity(vm.game.value!!, true)
+        }
     }
 
     private fun playGame(game: GameMultiplayer): GameMultiplayer {
