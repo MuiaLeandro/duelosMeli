@@ -4,17 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import ar.teamrocket.duelosmeli.data.model.Article
-import ar.teamrocket.duelosmeli.data.repository.MeliRepository
-import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
-import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 
@@ -31,10 +25,13 @@ class MultiplayerGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
+        vm.setGame(game)
+        vm.setListMultiplayers()
+        vm.setAllMultiplayerOrderByScore()
+        vm.setCurrentPlayer()
 
         playGame(game)
         startTimer(game)
-        //binding.btnGuessed.setOnClickListener { guessed(game) }
         setListeners(game)
         setObservers()
     }
@@ -57,19 +54,25 @@ class MultiplayerGameActivity : AppCompatActivity() {
                     .into(binding.ivProductPicture)
             }
         })
+        vm.team.observe(this,{
+            if (it != null){
+                vm.setListMultiplayers()
+                vm.setCurrentPlayer()
+                binding.btnGuessed.setOnClickListener { guessed() }
+            }
+        })
         vm.categoriesException.observe(this, this::handleException)
         vm.itemFromCategoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)
-
     }
 
     private fun setListeners(game:GameMultiplayer) {
-        vm.setCurrentPlayer()
+        vm.setGame(game)
         vm.setListMultiplayers()
         vm.setAllMultiplayerOrderByScore()
-        binding.btnGuessed.setOnClickListener { guessed(game) }
+        vm.setCurrentPlayer()
+        binding.btnGuessed.setOnClickListener { guessed() }
     }
-
 
     private fun startTimer(game: GameMultiplayer) {
         countDownTimer = object : CountDownTimer(timer,1000){
@@ -98,23 +101,24 @@ class MultiplayerGameActivity : AppCompatActivity() {
         binding.tvTime.text = format
     }
 
-
-    private fun guessed(game: GameMultiplayer) {
+    private fun guessed() {
         pauseTimer()
+        vm.setListMultiplayers()
+        vm.setCurrentPlayer()
         if (vm.currentPlayer.value != null) {
             vm.addPointToThePlayer(vm.currentPlayer.value!!)
         }
-        viewMultiplayerGamePartialResultActivity(game, true)
+        if (vm.game.value != null) {
+            viewMultiplayerGamePartialResultActivity(vm.game.value!!, true)
+        }
     }
 
     private fun playGame(game: GameMultiplayer): GameMultiplayer {
-        val actualGame = game
-        if (actualGame.state) {
+        if (game.state) {
             vm.findCategories()
         }
-        return actualGame
+        return game
     }
-
 
     private fun viewMultiplayerGamePartialResultActivity(game: GameMultiplayer, addPoint: Boolean) {
         val intent = Intent(this, MultiplayerGamePartialResultActivity::class.java)
@@ -127,9 +131,7 @@ class MultiplayerGameActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
-
         startActivity(intent)
-
     }
 
     private fun handleException(exception: Throwable?) {
@@ -141,6 +143,4 @@ class MultiplayerGameActivity : AppCompatActivity() {
                 else -> Toast.makeText(this, R.string.unknown_error.toString(), Toast.LENGTH_LONG).show()
             }
     }
-
-
 }

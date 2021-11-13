@@ -19,9 +19,6 @@ class MultiplayerGamePartialResultActivityViewModel(application: Application) : 
     var currentPlayer = MutableLiveData<Multiplayer>()
     var addPoint = MutableLiveData<Boolean>()
 
-
-
-
     fun setAllMultiplayerOrderByScore() {
         viewModelScope.launch {
             playersOrderByScore.value = repository.getAllMultiplayersOrderByScore()
@@ -57,8 +54,8 @@ class MultiplayerGamePartialResultActivityViewModel(application: Application) : 
 
     fun setCurrentPlayer() {
         val indexCurrentPlayer = game.value?.currentPlayer
-        if (indexCurrentPlayer != null && playersOrderByScore.value != null) {
-            currentPlayer.value = playersOrderByScore.value!![indexCurrentPlayer]
+        if (indexCurrentPlayer != null && team.value != null) {
+            currentPlayer.postValue(team.value!![indexCurrentPlayer])
         }
     }
 
