@@ -6,35 +6,74 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
+import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
+import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import retrofit2.HttpException
 
 class MultiplayerGameActivity : AppCompatActivity() {
     val start = 61000L
     var timer = start
     lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
-    private var meliRepository: MeliRepository = MeliRepositoryImpl()
+    private val vm: MultiplayerGameViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
+
         playGame(game)
         startTimer(game)
+        //binding.btnGuessed.setOnClickListener { guessed(game) }
+        setListeners(game)
+        setObservers()
+    }
+
+    private fun setObservers() {
+        vm.starGame.observe(this, {
+            if (it) vm.findCategories()
+        })
+        vm.itemNameMutable.observe(this, {
+            if (it != null){
+                binding.tvProductName.text = it
+            }
+        })
+        vm.picture.observe(this, {
+            if (it != null){
+                Picasso.get()
+                    .load(it)
+                    .placeholder(R.drawable.spinner)
+                    .error(R.drawable.no_image)
+                    .into(binding.ivProductPicture)
+            }
+        })
+        vm.categoriesException.observe(this, this::handleException)
+        vm.itemFromCategoryException.observe(this, this::handleException)
+        vm.itemException.observe(this, this::handleException)
+
+    }
+
+    private fun setListeners(game:GameMultiplayer) {
+        vm.setCurrentPlayer()
+        vm.setListMultiplayers()
+        vm.setAllMultiplayerOrderByScore()
         binding.btnGuessed.setOnClickListener { guessed(game) }
     }
 
 
     private fun startTimer(game: GameMultiplayer) {
         countDownTimer = object : CountDownTimer(timer,1000){
-            //            end of timer
+
             override fun onFinish() {
                 viewMultiplayerGamePartialResultActivity(game, false)
             }
@@ -62,69 +101,20 @@ class MultiplayerGameActivity : AppCompatActivity() {
 
     private fun guessed(game: GameMultiplayer) {
         pauseTimer()
+        if (vm.currentPlayer.value != null) {
+            vm.addPointToThePlayer(vm.currentPlayer.value!!)
+        }
         viewMultiplayerGamePartialResultActivity(game, true)
     }
 
     private fun playGame(game: GameMultiplayer): GameMultiplayer {
-        var actualGame = game
+        val actualGame = game
         if (actualGame.state) {
-            actualGame = searchInfo(game)
+            vm.findCategories()
         }
         return actualGame
     }
 
-    private fun searchInfo(game: GameMultiplayer): GameMultiplayer {
-        if (game.state) searchCategories()
-        return game
-    }
-
-    private fun searchCategories() {
-        meliRepository.searchCategories({
-            val categories = it
-            val categoryId = categories[(categories.indices).random()].id
-            searchItemFromCategory(categoryId)
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener las categorias", it)
-        })
-    }
-
-    private fun searchItemFromCategory(id: String) {
-        meliRepository.searchItemFromCategory(id, {
-            apply {
-                val itemsList: MutableList<Article> = mutableListOf()
-                itemsList.addAll(it.results)
-                val item = itemsList[(itemsList.indices).random()]
-                binding.tvProductName.text = item.title
-
-                searchItem(item.id)
-            }
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener los articulos de la categoría", it)
-        })
-    }
-
-    private fun searchItem(id: String) {
-        meliRepository.searchItem(id, {
-            apply {
-                Picasso.get()
-                    .load(it.pictures[0].secureUrl)
-                    .placeholder(R.drawable.spinner)
-                    .error(R.drawable.no_image)
-                    .into(binding.ivProductPicture)
-            }
-        }, {
-            Toast.makeText(this, it,Toast.LENGTH_LONG).show()
-        }, {
-            Snackbar.make(binding.root, R.string.no_internet, Snackbar.LENGTH_LONG).show()
-            Log.e("Main", "Falló al obtener el artículo", it)
-        })
-    }
 
     private fun viewMultiplayerGamePartialResultActivity(game: GameMultiplayer, addPoint: Boolean) {
         val intent = Intent(this, MultiplayerGamePartialResultActivity::class.java)
@@ -141,5 +131,16 @@ class MultiplayerGameActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
+
+    private fun handleException(exception: Throwable?) {
+        if (exception is HttpException)
+            when (exception.code()) {
+                400 -> Toast.makeText(this, R.string.bad_request.toString(), Toast.LENGTH_LONG).show()
+                404 -> Toast.makeText(this, R.string.resource_not_found.toString(), Toast.LENGTH_LONG).show()
+                in 500..599 -> Toast.makeText(this, R.string.server_error.toString(), Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(this, R.string.unknown_error.toString(), Toast.LENGTH_LONG).show()
+            }
+    }
+
 
 }
