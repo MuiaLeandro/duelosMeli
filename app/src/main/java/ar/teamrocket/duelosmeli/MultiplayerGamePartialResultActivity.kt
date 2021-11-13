@@ -15,13 +15,12 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMultiplayerGamePartialResultBinding
     private val vm: MultiplayerGamePartialResultActivityViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGamePartialResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-var playersOrderByScore = emptyList<Multiplayer>()
+        var playersOrderByScore = emptyList<Multiplayer>()
         if (vm.getAllMultiplayerOrderByScore().value != null) {
             playersOrderByScore = vm.getAllMultiplayerOrderByScore().value!!
         }
@@ -32,42 +31,49 @@ var playersOrderByScore = emptyList<Multiplayer>()
         vm.setGame(game)
         vm.setListMultiplayers()
         vm.setAllMultiplayerOrderByScore()
+        vm.setCurrentPlayer()
         vm.setAddPoint(addPoint)
+        if (vm.currentPlayer.value != null) {
+            binding.tvCurrentNamePlayer.text = vm.currentPlayer.value!!.name
+        }
 
         val adapter = MultiplayerScoreAdapter(playersOrderByScore)
         binding.rvScoreTableMultiplayer.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTableMultiplayer.adapter = adapter
 
-        setListeners(/*game, players.lastIndex,playersOrderByScore*/)
-        setObservers(adapter)
+        setListeners(addPoint)
+        setObservers(adapter, game)
 
     }
 
-    private fun setObservers(adapter: MultiplayerScoreAdapter) {
+    private fun setObservers(adapter: MultiplayerScoreAdapter, game: GameMultiplayer) {
         vm.playersOrderByScore.observe(this, {
             if (it != null) {
                 adapter.setListData(it)
-//                players = vm.getAllMultiplayer().value!!
-//                currentPlayer = players[game.currentPlayer]
-
-
-                binding.tvCurrentNamePlayer.text = vm.currentPlayer.value?.name?:""
             }
         })
 
-        if (vm.addPoint.value == true) {
-            if (vm.currentPlayer.value != null) {
-                addPointToThePlayer(vm.currentPlayer.value!!)
+        vm.team.observe(this,  {
+            if (it != null) {
+                binding.tvCurrentNamePlayer.text= vm.team.value!![game.currentPlayer].name
             }
-        }
+        })
 
 
+        vm.addPoint.observe(this, {
+            if (it == true) {
+                binding.tvPlayerSituation.text = getString(R.string.guessed)
+            } else if (it == false) {
+                binding.tvPlayerSituation.text = getString(R.string.did_not_guessed)
+            }
+        })
     }
 
-    private fun setListeners(/*game: GameMultiplayer, lastIndex: Int, playerFirst: List<Multiplayer>*/) {
+    private fun setListeners(addPoint:Boolean) {
         vm.setAllMultiplayerOrderByScore()
         vm.setListMultiplayers()
         vm.setCurrentPlayer()
+        vm.setAddPoint(addPoint)
         binding.btnNext.setOnClickListener {
             nextView()
         }
@@ -79,7 +85,6 @@ var playersOrderByScore = emptyList<Multiplayer>()
             if (game1.currentPlayer < vm.getAllMultiplayerOrderByScore().value!!.lastIndex) {
                 game1.currentPlayer++
                 vm.setGame(game1)
-                //game.currentPlayer++
             } else {
                 game1.round++
                 game1.currentPlayer = 0
@@ -96,7 +101,6 @@ var playersOrderByScore = emptyList<Multiplayer>()
                 binding.btnNext.setOnClickListener { viewNewMultiplayerGameActivity() }
             }
         }
-
     }
 
     private fun viewNewMultiplayerGameActivity() {
@@ -110,7 +114,6 @@ var playersOrderByScore = emptyList<Multiplayer>()
         intent.putExtra("Game",game)
         startActivity(intent)
         finish()
-
     }
 
     private fun addPointToThePlayer(currentPlayer: Multiplayer) {
@@ -123,7 +126,6 @@ var playersOrderByScore = emptyList<Multiplayer>()
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
-
     }
 
 }
