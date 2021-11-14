@@ -1,15 +1,10 @@
 package ar.teamrocket.duelosmeli.data.repository.impl
 
-import ar.teamrocket.duelosmeli.*
-import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
 import ar.teamrocket.duelosmeli.data.retrofit.API
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MeliRepositoryImpl : MeliRepository {
 

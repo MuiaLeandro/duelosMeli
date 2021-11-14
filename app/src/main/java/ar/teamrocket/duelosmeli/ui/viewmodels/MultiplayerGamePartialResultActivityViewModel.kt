@@ -1,18 +1,14 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MultiplayerGamePartialResultActivityViewModel(application: Application) : AndroidViewModel(application) {
-    private  var repository: PlayersRepository = PlayersRepository(application)
+
+class MultiplayerGamePartialResultActivityViewModel(val repository: PlayersRepository) : ViewModel() {
     var team = MutableLiveData<List<Multiplayer>>()
     var playersOrderByScore = MutableLiveData<List<Multiplayer>>()
     var game = MutableLiveData<GameMultiplayer>()

@@ -4,7 +4,6 @@ import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
 import com.google.gson.Gson
-import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

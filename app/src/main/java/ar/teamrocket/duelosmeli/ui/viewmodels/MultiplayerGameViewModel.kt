@@ -1,10 +1,7 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
@@ -18,10 +15,7 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-class MultiplayerGameViewModel(application: Application) : AndroidViewModel(application) {
-    private val meliRepositoryImpl: MeliRepository = MeliRepositoryImpl()
-    private  var repository: PlayersRepository = PlayersRepository(application)
-
+class MultiplayerGameViewModel(val meliRepositoryImpl: MeliRepository, var repository: PlayersRepository) : ViewModel() {
 
     val itemNameMutable = MutableLiveData<String>()
     val picture = MutableLiveData<String>()

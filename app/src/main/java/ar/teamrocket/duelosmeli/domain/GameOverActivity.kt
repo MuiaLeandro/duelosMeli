@@ -5,14 +5,16 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import ar.teamrocket.duelosmeli.R
-import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Player
+import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
+import org.koin.android.ext.android.inject
+
 
 class GameOverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameOverBinding
+    private val playerDao : PlayerDao by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +24,6 @@ class GameOverActivity : AppCompatActivity() {
         gameOverSound.start()
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
 
-        //ROOM
-        val database = Room.databaseBuilder(
-            applicationContext,
-            DuelosMeliDb::class.java,
-            "duelosmeli-db"
-        ).allowMainThreadQueries().build()
-        val playerDao = database.playerDao()
-        val allPlayers = playerDao.getAll()
         val topTenPlayers = playerDao.getTopTenOrderByScore()
 
         val idPlayer = intent.extras!!.getLong("IdPlayer")

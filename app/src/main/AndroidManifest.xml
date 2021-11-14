@@ -10,18 +10,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DuelosMeli">
+        android:theme="@style/Theme.DuelosMeli"
+        android:name=".MyApplication">
         <activity
-            android:name=".MultiplayerGamePartialResultActivity"
+            android:name=".multiplayerActivities.MultiplayerGamePartialResultActivity"
             android:exported="true" />
         <activity
-            android:name=".MultiplayerGameActivity"
+            android:name=".multiplayerActivities.MultiplayerGameActivity"
             android:exported="true" />
         <activity
-            android:name=".MultiplayerGameReadyActivity"
+            android:name=".multiplayerActivities.MultiplayerGameReadyActivity"
             android:exported="true" />
         <activity
-            android:name=".NewMultiplayerGameActivity"
+            android:name=".multiplayerActivities.NewMultiplayerGameActivity"
             android:exported="true" />
         <activity
             android:name=".MainMenuActivity"

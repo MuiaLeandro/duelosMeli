@@ -8,35 +8,31 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
-import androidx.room.Room
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
-import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
-import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
+import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
-import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
     private val start = 21000L
     var timer = start
     lateinit var countDownTimer: CountDownTimer
-    private var meliRepository: MeliRepository = MeliRepositoryImpl()
-    private var gameFunctions: GameFunctions = GameFunctionsImpl()
-    private val vm: GameViewModel by viewModels()
+    private val meliRepository: MeliRepository by inject()
+    private val gameFunctions: GameFunctions by inject()
+    private val vm: GameViewModel by viewModel()
+    private val playerDao : PlayerDao by inject()
     var correctPricePosition: Int = 0
     lateinit var fake1: String
     lateinit var fake2: String
@@ -223,15 +219,8 @@ class GameActivity : AppCompatActivity() {
         if (game.errors == 3) {
             game.state = false
 
-            val database = Room.databaseBuilder(
-                applicationContext,
-                DuelosMeliDb::class.java,
-                "duelosmeli-db"
-            ).allowMainThreadQueries().build()
-            val playerDao = database.playerDao()
-
             //actualizar el jugador:
-            var player = playerDao.getById(game.playerId)
+            val player = playerDao.getById(game.playerId)
             if (player.isNotEmpty() && game.points > player[0].score ) {
                 player[0].score = game.points
                 playerDao.updatePlayer(player[0])
