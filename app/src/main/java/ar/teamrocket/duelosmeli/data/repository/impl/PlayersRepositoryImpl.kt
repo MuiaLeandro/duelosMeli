@@ -30,6 +30,7 @@ class PlayersRepositoryImpl (val playerDao : PlayerDao): PlayersRepository {
     override suspend fun updateMultiplayer(multiplayer: Multiplayer){
         playerDao.updateMultiplayer(multiplayer)
     }
-
-
+    override suspend fun updateMultiplayers(multiplayers: List<Multiplayer>) {
+        playerDao.updateMultiplayers(multiplayers)
+    }
 }

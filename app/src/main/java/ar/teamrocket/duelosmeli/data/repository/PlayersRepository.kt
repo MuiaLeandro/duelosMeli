@@ -7,7 +7,6 @@ import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 
-
 interface PlayersRepository {
 
     suspend fun getAllMultiplayers(): List<Multiplayer>
@@ -23,4 +22,6 @@ interface PlayersRepository {
     suspend fun getAllMultiplayersOrderByScore(): List<Multiplayer>
 
     suspend fun updateMultiplayer(multiplayer: Multiplayer)
+
+    suspend fun updateMultiplayers(multiplayers: List<Multiplayer>)
 }

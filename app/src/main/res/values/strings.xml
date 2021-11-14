@@ -34,4 +34,5 @@
     <string name="guessed">Adivinó</string>
     <string name="did_not_guessed">No adivinó</string>
     <string name="money_sign">$</string>
+    <string name="delete">Borrar</string>
 </resources>
