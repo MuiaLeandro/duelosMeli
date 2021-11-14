@@ -72,21 +72,20 @@
         android:id="@+id/btnNext"
         android:layout_width="210dp"
         android:layout_height="70dp"
+        android:layout_marginTop="32dp"
         android:text="@string/next"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvPlayers"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintTop_toBottomOf="@+id/rvPlayers" />
 
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Borrar"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="@+id/tvSelectPlayer"
         app:layout_constraintEnd_toEndOf="@+id/linearLayoutInsertPlayer"
         app:layout_constraintTop_toTopOf="@+id/tvSelectPlayer" />

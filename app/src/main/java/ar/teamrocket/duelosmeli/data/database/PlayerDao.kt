@@ -52,9 +52,9 @@ interface PlayerDao {
     fun getMultiplayerById(id: Long): List<Multiplayer>
 
     @Update
-    fun updateMultiplayer(multiplayer: Multiplayer)
+    suspend fun updateMultiplayer(multiplayer: Multiplayer)
 
     @Update
-    fun updateMultiplayers(multiplayers: List<Multiplayer>)
+    suspend fun updateMultiplayers(multiplayers: List<Multiplayer>)
 
 }
