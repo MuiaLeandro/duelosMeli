@@ -33,10 +33,9 @@ class MultiplayerGameActivity : AppCompatActivity() {
         vm.setAllMultiplayerOrderByScore()
         vm.setCurrentPlayer()
 
-        playGame(game)
-        startTimer(game)
         setListeners(game)
         setObservers()
+        startTimer(game)
     }
 
     private fun setObservers() {
