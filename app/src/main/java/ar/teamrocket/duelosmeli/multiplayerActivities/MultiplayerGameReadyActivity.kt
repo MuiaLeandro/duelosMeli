@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.multiplayerActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

@@ -1,10 +1,12 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.multiplayerActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
+import ar.teamrocket.duelosmeli.MainMenuActivity
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel

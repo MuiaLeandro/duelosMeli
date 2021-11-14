@@ -3,10 +3,9 @@ package ar.teamrocket.duelosmeli
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
-import ar.teamrocket.duelosmeli.domain.GameActivity
 import ar.teamrocket.duelosmeli.domain.NewGameActivity
+import ar.teamrocket.duelosmeli.multiplayerActivities.NewMultiplayerGameActivity
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 
 class MainMenuActivity : AppCompatActivity() {
