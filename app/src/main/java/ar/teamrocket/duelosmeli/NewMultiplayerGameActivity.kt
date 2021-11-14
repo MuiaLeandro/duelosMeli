@@ -21,12 +21,7 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
         binding = ActivityNewMultiplayerGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var players = emptyList<Multiplayer>()
-        vm.getListMultiplayersLiveData().value.also {
-            if (it != null) {
-                players = it
-            }
-        }
+        val players = emptyList<Multiplayer>()
 
         val adapter = PlayersTeamsAdapter(players, this)
         binding.rvPlayers.layoutManager = LinearLayoutManager(this)
@@ -55,13 +50,11 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
         vm.team.observe(this,  {
             if (it != null) {
                 adapter.setListData(it)
-                //binding.tvNewMultiplayerGame.text = it[it.lastIndex].name
             }
         })
     }
 
     private fun addPlayer() {
-
         val newPlayer = Multiplayer("",0)
         newPlayer.name = binding.etPlayerName.text.toString()//.replace(" ", "")
 
@@ -79,17 +72,14 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
 
     private fun viewMultiplayerGameReadyActivity() {
         if (vm.allPlayersId.value != null) {
-            val playersId: LongArray = vm.allPlayersId.value!!.toLongArray()
             val newGame = GameMultiplayer()
 
             val intent = Intent(this, MultiplayerGameReadyActivity::class.java)
             intent.putExtra("Game", newGame)
-            //intent.putExtra("Players", playersId)
             startActivity(intent)
             finish()
         }
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -100,5 +90,4 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
     override fun onItemClicked(player: Multiplayer) {
         vm.deleteMultiplayer(player)
     }
-
 }

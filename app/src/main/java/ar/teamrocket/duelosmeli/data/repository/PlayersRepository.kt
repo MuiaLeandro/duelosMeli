@@ -58,5 +58,8 @@ class PlayersRepository(application: Application) {
     suspend fun updateMultiplayer(multiplayer: Multiplayer){
         playerDao.updateMultiplayer(multiplayer)
     }
+    suspend fun updateMultiplayers(multiplayers: List<Multiplayer>){
+        playerDao.updateMultiplayers(multiplayers)
+    }
 
 }

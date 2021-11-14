@@ -15,6 +15,11 @@ class NewMultiplayerGameViewModel(application: Application) : AndroidViewModel(a
     fun setListMultiplayers() {
         viewModelScope.launch {
             team.value = repository.getAllMultiplayers()
+            var players = team.value
+            for (player in players!!){
+                player.score = 0
+            }
+            repository.updateMultiplayers(players)
         }
     }
     fun setListMultiplayersId() {
@@ -50,8 +55,18 @@ class NewMultiplayerGameViewModel(application: Application) : AndroidViewModel(a
         setListMultiplayers()
     }
 
+    fun inicializeScores() {
+        if (team.value?.isNotEmpty() == true) {
+            var players = team.value
 
-
+            for (player in players!!){
+                player.score = 0
+            }
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.updateMultiplayers(players)
+            }
+        }
+    }
 
 
 }
