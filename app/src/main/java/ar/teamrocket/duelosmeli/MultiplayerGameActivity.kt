@@ -5,19 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
-import androidx.activity.viewModels
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MultiplayerGameActivity : AppCompatActivity() {
     val start = 61000L
     var timer = start
     lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
-    private val vm: MultiplayerGameViewModel by viewModels()
+    private val vm: MultiplayerGameViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,15 +1,18 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
-class NewMultiplayerGameViewModel(application: Application) : AndroidViewModel(application)  {
-    private  var repository: PlayersRepository = PlayersRepository(application)        //No es una buena práctica pasar el contexto de su actividad al modelo de vista de la actividad, ya que es una pérdida de memoria.
-    var team = MutableLiveData<List<Multiplayer>>()                  //Por lo tanto, para obtener el contexto en su ViewModel, la clase ViewModel debería extender la clase Android View Model
+
+class NewMultiplayerGameViewModel (val repository: PlayersRepository) : ViewModel()  {
+
+    var team = MutableLiveData<List<Multiplayer>>()
     var allPlayersId = MutableLiveData<List<Long>>()
 
     fun setListMultiplayers() {

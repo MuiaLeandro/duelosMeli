@@ -11,10 +11,12 @@ import ar.teamrocket.duelosmeli.domain.IPlayersTeamsAdapter
 import ar.teamrocket.duelosmeli.domain.PlayersTeamsAdapter
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.NewMultiplayerGameViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
     private lateinit var binding: ActivityNewMultiplayerGameBinding
-    private val vm: NewMultiplayerGameViewModel by viewModels()
+    private val vm: NewMultiplayerGameViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

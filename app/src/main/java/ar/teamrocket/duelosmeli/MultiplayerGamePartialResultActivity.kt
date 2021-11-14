@@ -10,10 +10,12 @@ import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGamePartialResult
 import ar.teamrocket.duelosmeli.domain.MultiplayerScoreAdapter
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGamePartialResultActivityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MultiplayerGamePartialResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMultiplayerGamePartialResultBinding
-    private val vm: MultiplayerGamePartialResultActivityViewModel by viewModels()
+    private val vm: MultiplayerGamePartialResultActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

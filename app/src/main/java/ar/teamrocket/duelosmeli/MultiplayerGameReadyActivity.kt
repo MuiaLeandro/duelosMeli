@@ -3,15 +3,16 @@ package ar.teamrocket.duelosmeli
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameReadyBinding
 import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameReadyViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MultiplayerGameReadyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMultiplayerGameReadyBinding
-    private val vm: MultiplayerGameReadyViewModel by viewModels()
+    private val vm: MultiplayerGameReadyViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
