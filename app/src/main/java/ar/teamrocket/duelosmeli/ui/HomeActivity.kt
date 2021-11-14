@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ar.teamrocket.duelosmeli.MainMenuActivity
-import ar.teamrocket.duelosmeli.domain.NewGameActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 import ar.teamrocket.duelosmeli.domain.HomeFunctions

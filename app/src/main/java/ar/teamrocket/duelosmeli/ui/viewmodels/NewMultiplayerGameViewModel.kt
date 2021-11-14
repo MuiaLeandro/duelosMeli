@@ -1,17 +1,13 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
-import android.app.Application
-import android.view.View
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 
 class NewMultiplayerGameViewModel (val repository: PlayersRepository) : ViewModel()  {
-
     var team = MutableLiveData<List<Multiplayer>>()
     var allPlayersId = MutableLiveData<List<Long>>()
 

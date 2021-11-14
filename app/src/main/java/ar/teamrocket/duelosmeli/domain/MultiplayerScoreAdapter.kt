@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
-import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.databinding.ItemHighscoreBinding
 
 class MultiplayerScoreAdapter (private var players:List<Multiplayer>): RecyclerView.Adapter<MultiplayerScoreAdapter.HighScoreHolder>(){

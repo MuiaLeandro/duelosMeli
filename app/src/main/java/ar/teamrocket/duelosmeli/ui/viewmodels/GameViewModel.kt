@@ -15,13 +15,8 @@ import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.roundToInt
-import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 
 class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
-    //var randomPrice1 by Delegates.notNull<Double>()
-    //var randomPrice2 by Delegates.notNull<Double>()
-    private var gameFunctions: GameFunctions = GameFunctionsImpl()
     val itemNameMutable = MutableLiveData<String>()
     val picture = MutableLiveData<String>()
     val itemPriceString = MutableLiveData<String>()

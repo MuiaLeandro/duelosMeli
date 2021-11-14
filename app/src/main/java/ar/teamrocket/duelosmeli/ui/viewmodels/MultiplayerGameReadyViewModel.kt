@@ -1,6 +1,5 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
