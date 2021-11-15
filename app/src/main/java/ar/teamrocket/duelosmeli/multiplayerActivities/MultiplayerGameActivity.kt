@@ -115,12 +115,6 @@ class MultiplayerGameActivity : AppCompatActivity() {
         }
     }
 
-    private fun playGame(game: GameMultiplayer): GameMultiplayer {
-        if (game.state) {
-            vm.findCategories()
-        }
-        return game
-    }
 
     private fun viewMultiplayerGamePartialResultActivity(game: GameMultiplayer, addPoint: Boolean) {
         val intent = Intent(this, MultiplayerGamePartialResultActivity::class.java)

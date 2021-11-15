@@ -119,12 +119,6 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun addPointToThePlayer(currentPlayer: Multiplayer) {
-        vm.addPointToThePlayer(currentPlayer)
-        vm.setAllMultiplayerOrderByScore()
-        vm.setCurrentPlayer()
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
