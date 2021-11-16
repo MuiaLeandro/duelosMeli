@@ -68,7 +68,6 @@ class MultiplayerGameReadyActivity : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, NewMultiplayerGameActivity::class.java)
         startActivity(intent)
-
     }
 
 }

@@ -16,9 +16,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MultiplayerGameActivity : AppCompatActivity() {
-    val start = 61000L
-    var timer = start
-    lateinit var countDownTimer: CountDownTimer
+    private val start = 61000L
+    private var timer = start
+    private lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
     private val vm: MultiplayerGameViewModel by viewModel()
 
@@ -33,10 +33,9 @@ class MultiplayerGameActivity : AppCompatActivity() {
         vm.setAllMultiplayerOrderByScore()
         vm.setCurrentPlayer()
 
-        playGame(game)
-        startTimer(game)
         setListeners(game)
         setObservers()
+        startTimer(game)
     }
 
     private fun setObservers() {
@@ -116,12 +115,6 @@ class MultiplayerGameActivity : AppCompatActivity() {
         }
     }
 
-    private fun playGame(game: GameMultiplayer): GameMultiplayer {
-        if (game.state) {
-            vm.findCategories()
-        }
-        return game
-    }
 
     private fun viewMultiplayerGamePartialResultActivity(game: GameMultiplayer, addPoint: Boolean) {
         val intent = Intent(this, MultiplayerGamePartialResultActivity::class.java)
