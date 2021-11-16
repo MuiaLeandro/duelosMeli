@@ -15,7 +15,6 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.R
-import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
@@ -28,14 +27,13 @@ class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
     private val start = 21000L
     var timer = start
-    lateinit var countDownTimer: CountDownTimer
-    private val meliRepository: MeliRepository by inject()
+    private lateinit var countDownTimer: CountDownTimer
     private val gameFunctions: GameFunctions by inject()
     private val vm: GameViewModel by viewModel()
     private val playerDao : PlayerDao by inject()
-    var correctPricePosition: Int = 0
-    lateinit var fake1: String
-    lateinit var fake2: String
+    private var correctPricePosition: Int = 0
+    private lateinit var fake1: String
+    private lateinit var fake2: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

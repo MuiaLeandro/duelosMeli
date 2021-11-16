@@ -16,9 +16,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MultiplayerGameActivity : AppCompatActivity() {
-    val start = 61000L
-    var timer = start
-    lateinit var countDownTimer: CountDownTimer
+    private val start = 61000L
+    private var timer = start
+    private lateinit var countDownTimer: CountDownTimer
     private lateinit var binding: ActivityMultiplayerGameBinding
     private val vm: MultiplayerGameViewModel by viewModel()
 

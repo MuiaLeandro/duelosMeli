@@ -18,7 +18,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // Reproduccción del sonido
+        // Reproducción del sonido
         val openSound = MediaPlayer.create(this, R.raw.open)
         openSound.start()
 

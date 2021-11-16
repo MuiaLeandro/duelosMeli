@@ -16,17 +16,12 @@ interface PlayerDao {
     @Query("SELECT * FROM players WHERE id = :id")
     fun getById(id: Long): List<Player>
 
-    @Query("SELECT * FROM players WHERE name = :name")
-    fun getByName(name: String): List<Player>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertPlayer(player: Player)
 
     @Update
     fun updatePlayer(player: Player)
 
-    @Delete
-    fun deletePlayer(player: Player)
 
     ///////////////////////////////////
 
@@ -47,9 +42,6 @@ interface PlayerDao {
 
     @Query("SELECT id FROM multiplayers")
     suspend fun getAllMultiplayerId(): List<Long>
-
-    @Query("SELECT * FROM multiplayers WHERE id = :id")
-    fun getMultiplayerById(id: Long): List<Multiplayer>
 
     @Update
     suspend fun updateMultiplayer(multiplayer: Multiplayer)

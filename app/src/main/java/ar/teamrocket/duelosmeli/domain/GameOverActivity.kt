@@ -15,7 +15,7 @@ import org.koin.android.ext.android.inject
 class GameOverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameOverBinding
     private val playerDao : PlayerDao by inject()
-
+//TODO: Agregar ViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameOverBinding.inflate(layoutInflater)
@@ -53,7 +53,7 @@ class GameOverActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun viewNewGame() {
+    private fun viewNewGame() {
         val intent = Intent(this, NewGameActivity::class.java)
         startActivity(intent)
         finish()

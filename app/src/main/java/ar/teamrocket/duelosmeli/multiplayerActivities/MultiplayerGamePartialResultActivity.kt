@@ -96,8 +96,6 @@ class MultiplayerGamePartialResultActivity : AppCompatActivity() {
             if (game1.round < 3) {
                 viewMultiplayerGameReadyActivity(game1)
             } else {
-                //binding.tvCurrentNamePlayer.text = playerFirst.name
-
                 binding.tvCurrentNamePlayer.text = vm.playersOrderByScore.value?.get(0)?.name ?: ""
                 binding.tvPlayerSituation.text = getString(R.string.won_the_game)
                 binding.btnNext.text = getString(R.string.finalize)

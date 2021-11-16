@@ -34,7 +34,7 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
 
     }
 
-    fun setListeners(){
+    private fun setListeners(){
         vm.setListMultiplayers()
         vm.setListMultiplayersId()
         binding.btnAddPlayer.setOnClickListener {
@@ -48,7 +48,7 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
         }
     }
 
-    fun setObservers(adapter: PlayersTeamsAdapter) {
+    private fun setObservers(adapter: PlayersTeamsAdapter) {
         vm.team.observe(this,  {
             if (it != null) {
                 adapter.setListData(it)

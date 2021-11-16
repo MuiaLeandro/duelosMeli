@@ -1,6 +1,5 @@
 package ar.teamrocket.duelosmeli.domain
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +16,7 @@ class NewGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewGameBinding
 
     private val playerDao: PlayerDao by inject()
-
+//TODO: Add View Model
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewGameBinding.inflate(layoutInflater)
