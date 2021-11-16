@@ -37,7 +37,5 @@ class MainMenuActivity : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
-
     }
-
 }
