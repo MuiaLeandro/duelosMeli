@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.utils
 
 import android.app.Application
 import android.content.Context

@@ -1,12 +1,11 @@
-package ar.teamrocket.duelosmeli
+package ar.teamrocket.duelosmeli.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
-import ar.teamrocket.duelosmeli.domain.NewGameActivity
-import ar.teamrocket.duelosmeli.multiplayerActivities.NewMultiplayerGameActivity
-import ar.teamrocket.duelosmeli.ui.HomeActivity
+import ar.teamrocket.duelosmeli.domain.singleplayerActivities.NewGameActivity
+import ar.teamrocket.duelosmeli.domain.multiplayerActivities.NewMultiplayerGameActivity
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding

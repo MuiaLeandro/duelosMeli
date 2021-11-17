@@ -1,19 +1,13 @@
 package ar.teamrocket.duelosmeli.ui.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
-import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
-import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
+import ar.teamrocket.duelosmeli.domain.multiplayerActivities.GameMultiplayer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
-import java.text.NumberFormat
-import java.util.*
-import kotlin.math.roundToInt
 
 class MultiplayerGameViewModel(val meliRepositoryImpl: MeliRepository, var repository: PlayersRepository) : ViewModel() {
 

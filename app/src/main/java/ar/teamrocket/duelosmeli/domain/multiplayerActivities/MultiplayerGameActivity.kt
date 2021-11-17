@@ -1,14 +1,13 @@
-package ar.teamrocket.duelosmeli.multiplayerActivities
+package ar.teamrocket.duelosmeli.domain.multiplayerActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
-import ar.teamrocket.duelosmeli.MainMenuActivity
+import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
-import ar.teamrocket.duelosmeli.domain.model.GameMultiplayer
 import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
@@ -68,7 +67,7 @@ class MultiplayerGameActivity : AppCompatActivity() {
         vm.itemException.observe(this, this::handleException)
     }
 
-    private fun setListeners(game:GameMultiplayer) {
+    private fun setListeners(game: GameMultiplayer) {
         vm.setGame(game)
         vm.setListMultiplayers()
         vm.setAllMultiplayerOrderByScore()

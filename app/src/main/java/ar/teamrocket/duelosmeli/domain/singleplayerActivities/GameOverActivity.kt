@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain
+package ar.teamrocket.duelosmeli.domain.singleplayerActivities
 
 import android.content.Intent
 import android.media.MediaPlayer
@@ -9,6 +9,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
+import ar.teamrocket.duelosmeli.domain.adapters.HighScoreAdapter
 import org.koin.android.ext.android.inject
 
 
