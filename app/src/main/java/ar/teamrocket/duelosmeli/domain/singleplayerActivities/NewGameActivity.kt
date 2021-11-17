@@ -1,16 +1,17 @@
-package ar.teamrocket.duelosmeli.domain
+package ar.teamrocket.duelosmeli.domain.singleplayerActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import ar.teamrocket.duelosmeli.MainMenuActivity
+import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import org.koin.android.ext.android.inject
 import ar.teamrocket.duelosmeli.databinding.ActivityNewGameBinding
+import ar.teamrocket.duelosmeli.domain.adapters.PlayersAdapter
 
 class NewGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewGameBinding

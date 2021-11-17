@@ -11,31 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli"
-        android:name=".MyApplication">
+        android:name=".utils.MyApplication">
         <activity
-            android:name=".multiplayerActivities.MultiplayerGamePartialResultActivity"
+            android:name=".domain.multiplayerActivities.MultiplayerGamePartialResultActivity"
             android:exported="true" />
         <activity
-            android:name=".multiplayerActivities.MultiplayerGameActivity"
+            android:name=".domain.multiplayerActivities.MultiplayerGameActivity"
             android:exported="true" />
         <activity
-            android:name=".multiplayerActivities.MultiplayerGameReadyActivity"
+            android:name=".domain.multiplayerActivities.MultiplayerGameReadyActivity"
             android:exported="true" />
         <activity
-            android:name=".multiplayerActivities.NewMultiplayerGameActivity"
+            android:name=".domain.multiplayerActivities.NewMultiplayerGameActivity"
             android:exported="true" />
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".ui.MainMenuActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.GameOverActivity"
+            android:name=".domain.singleplayerActivities.GameOverActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.GameActivity"
+            android:name=".domain.singleplayerActivities.GameActivity"
             android:exported="true"
             android:theme="@style/Theme.DuelosMeli.GameActivityStyle" />
         <activity
-            android:name=".domain.NewGameActivity"
+            android:name=".domain.singleplayerActivities.NewGameActivity"
             android:exported="true" />
         <activity
             android:name=".ui.HomeActivity"

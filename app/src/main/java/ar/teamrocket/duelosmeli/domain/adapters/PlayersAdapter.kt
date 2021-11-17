@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain
+package ar.teamrocket.duelosmeli.domain.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.databinding.ItemPlayerBinding
+import ar.teamrocket.duelosmeli.domain.singleplayerActivities.GameActivity
 
 class PlayersAdapter(private val players:List<Player>): RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
 

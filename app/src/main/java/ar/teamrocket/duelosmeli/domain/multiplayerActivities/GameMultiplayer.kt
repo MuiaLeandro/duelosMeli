@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.model
+package ar.teamrocket.duelosmeli.domain.multiplayerActivities
 
 import android.os.Parcel
 import android.os.Parcelable
