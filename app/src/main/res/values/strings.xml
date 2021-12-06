@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">duelosMeli</string>
+    <string name="app_name" translatable="false">duelosMeli</string>
     <string name="whats_the_price">¿Qué precio tiene este producto?</string>
     <string name="new_player">Nuevo jugador</string>
     <string name="select_player">o seleccioná un jugador</string>
     <string name="nickname">Apodo</string>
-    <string name="ok">OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="game_over">¡Perdiste!</string>
     <string name="score_table">Tabla de puntajes</string>
     <string name="back_to_the_start">Inicio</string>
     <string name="next">Siguiente</string>
-    <string name="exit">X</string>
+    <string name="exit" translatable="false">X</string>
     <string name="play">Jugar</string>
     <string name="achieved_points">Hiciste %d puntos</string>
     <string name="record_points">Tu record: %d</string>
@@ -33,6 +33,6 @@
     <string name="finalize">Finalizar</string>
     <string name="guessed">Adivinó</string>
     <string name="did_not_guessed">No adivinó</string>
-    <string name="money_sign">$</string>
+    <string name="money_sign" translatable="false">$</string>
     <string name="delete">Borrar</string>
 </resources>
