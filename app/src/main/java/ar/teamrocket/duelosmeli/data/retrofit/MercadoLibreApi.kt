@@ -12,6 +12,7 @@ interface MercadoLibreApi {
 
     companion object {
         const val ARGENTINA: String = "MLA"
+        const val BRASIL: String = "MLB"
     }
 
     @GET("items/{itemId}")
@@ -22,4 +23,11 @@ interface MercadoLibreApi {
 
     @GET("sites/${ARGENTINA}/search")
     suspend fun getArticlesFromCategory(@Query("category")id: String): Response<Articles>
+
+    // Brazilian searchs
+    @GET("sites/${BRASIL}/categories")
+    suspend fun getCategoriesBR(): Response<List<Category>>
+
+    @GET("sites/${BRASIL}/search")
+    suspend fun getArticlesFromCategoryBR(@Query("category")id: String): Response<Articles>
 }
