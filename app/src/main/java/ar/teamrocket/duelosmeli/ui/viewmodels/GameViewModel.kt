@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.data.model.Articles
+import ar.teamrocket.duelosmeli.data.model.Category
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
-import ar.teamrocket.duelosmeli.domain.GameFunctions
-import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
 import kotlinx.coroutines.launch
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -17,6 +17,11 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
+
+    private val systemLanguage: String = Locale.getDefault().language
+    private lateinit var categories: List<Category>
+    private lateinit var categoryId: String
+    lateinit var items: Articles
     val itemNameMutable = MutableLiveData<String>()
     val picture = MutableLiveData<String>()
     val itemPriceString = MutableLiveData<String>()
@@ -37,8 +42,11 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
         viewModelScope.launch {
             starGame.value = false
             try {
-                val categories = meliRepositoryImpl.searchCategories()
-                val categoryId = categories[(categories.indices).random()].id
+                categories = when(systemLanguage) {
+                    "pt" -> meliRepositoryImpl.searchCategoriesBR()
+                    else -> meliRepositoryImpl.searchCategories()
+                }
+                categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
                 //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
@@ -52,7 +60,10 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
     fun findItemFromCategory(categoryId: String) {
         viewModelScope.launch {
             try {
-                val items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+                items = when(systemLanguage) {
+                    "pt" -> meliRepositoryImpl.searchItemFromCategoryBR(categoryId)
+                    else -> meliRepositoryImpl.searchItemFromCategory(categoryId)
+                }
                 val itemsList: MutableList<Article> = mutableListOf()
                 itemsList.addAll(items.results)
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">duelosMeli</string>
+    <string name="whats_the_price">Qual é o preço deste produto?</string>
+    <string name="new_player">Novo jogador</string>
+    <string name="select_player">ou selecione um jogador</string>
+    <string name="nickname">Apelido</string>
+    <string name="game_over">Você perdeu!</string>
+    <string name="score_table">Tabela de pontuação</string>
+    <string name="back_to_the_start">Início</string>
+    <string name="next">Próximo</string>
+    <string name="play">Jogar</string>
+    <string name="achieved_points">Você conseguiu %d pontos</string>
+    <string name="record_points">Sua pontuação: %d</string>
+    <string name="resource_not_found">Recurso não encontrado</string>
+    <string name="bad_request">Aplicação incorreta</string>
+    <string name="server_error">Ocorreu um erro no servidor</string>
+    <string name="unknown_error">Erro desconhecido</string>
+    <string name="no_internet">Sem conexão</string>
+    <string name="player_name_already_exists">Já existe um jogador com esse nome!</string>
+    <string name="put_your_name">Escreva seu nome ou apelido!</string>
+    <string name="un_jugador">Um jogador</string>
+    <string name="multi_jugador">Multijogador</string>
+    <string name="nuevo_juego">Novo jogo</string>
+    <string name="participantes">Participantes</string>
+    <string name="estas_listo">Você está pronto?</string>
+    <string name="comenzar">Iniciar</string>
+    <string name="que_es">Qual é o produto?</string>
+    <string name="adivino">Adivinhou</string>
+    <string name="puntajes_actuales">Pontuações atuais</string>
+    <string name="won_the_game">Ganhou o jogo</string>
+    <string name="finalize">Fim</string>
+    <string name="guessed">Adivinhou</string>
+    <string name="did_not_guessed">Não adivinhou</string>
+    <string name="delete">Excluir</string>
+</resources>
