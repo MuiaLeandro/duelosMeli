@@ -1,9 +1,9 @@
-package ar.teamrocket.duelosmeli.ui.viewmodels
+package ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels
 
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
-import ar.teamrocket.duelosmeli.domain.multiplayerActivities.GameMultiplayer
+import ar.teamrocket.duelosmeli.domain.GameMultiplayer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

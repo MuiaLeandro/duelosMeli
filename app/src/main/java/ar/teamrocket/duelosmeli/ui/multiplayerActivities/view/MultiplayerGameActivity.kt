@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.multiplayerActivities
+package ar.teamrocket.duelosmeli.ui.multiplayerActivities.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,8 @@ import android.widget.Toast
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
-import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGameViewModel
+import ar.teamrocket.duelosmeli.domain.GameMultiplayer
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import org.koin.androidx.viewmodel.ext.android.viewModel

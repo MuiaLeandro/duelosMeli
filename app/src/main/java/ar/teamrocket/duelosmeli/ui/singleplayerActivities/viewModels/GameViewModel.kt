@@ -1,11 +1,8 @@
-package ar.teamrocket.duelosmeli.ui.viewmodels
+package ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels
 
-import android.content.Context
-import android.media.MediaPlayer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
@@ -33,10 +30,10 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
     val itemFromCategoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
 
-    fun startSound(context: Context){
-        val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
-        doorbellSound.start()
-    }
+//    fun startSound(context: Context){
+//        val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
+//        doorbellSound.start()
+//    }
 
     fun findCategories() {
         viewModelScope.launch {

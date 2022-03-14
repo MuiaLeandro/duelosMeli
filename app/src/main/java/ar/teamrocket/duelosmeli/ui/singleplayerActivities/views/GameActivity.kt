@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.singleplayerActivities
+package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
-import ar.teamrocket.duelosmeli.ui.viewmodels.GameViewModel
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import org.koin.androidx.viewmodel.ext.android.viewModel

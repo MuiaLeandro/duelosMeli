@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.multiplayerActivities
+package ar.teamrocket.duelosmeli.ui.multiplayerActivities.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +8,9 @@ import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGamePartialResultBinding
-import ar.teamrocket.duelosmeli.domain.adapters.MultiplayerScoreAdapter
-import ar.teamrocket.duelosmeli.ui.viewmodels.MultiplayerGamePartialResultActivityViewModel
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.adapters.MultiplayerScoreAdapter
+import ar.teamrocket.duelosmeli.domain.GameMultiplayer
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGamePartialResultActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
