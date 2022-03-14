@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.domain.adapters
+package ar.teamrocket.duelosmeli.ui.singleplayerActivities.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

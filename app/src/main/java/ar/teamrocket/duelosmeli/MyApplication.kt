@@ -1,4 +1,4 @@
-package ar.teamrocket.duelosmeli.utils
+package ar.teamrocket.duelosmeli
 
 import android.app.Application
 import android.content.Context
@@ -11,7 +11,11 @@ import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.data.repository.impl.PlayersRepositoryImpl
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
-import ar.teamrocket.duelosmeli.ui.viewmodels.*
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGamePartialResultActivityViewModel
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameReadyViewModel
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
+import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.NewMultiplayerGameViewModel
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel

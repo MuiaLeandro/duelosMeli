@@ -11,31 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli"
-        android:name=".utils.MyApplication">
+        android:name=".MyApplication">
         <activity
-            android:name=".domain.multiplayerActivities.MultiplayerGamePartialResultActivity"
+            android:name=".ui.multiplayerActivities.view.MultiplayerGamePartialResultActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.multiplayerActivities.MultiplayerGameActivity"
+            android:name=".ui.multiplayerActivities.view.MultiplayerGameActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.multiplayerActivities.MultiplayerGameReadyActivity"
+            android:name=".ui.multiplayerActivities.view.MultiplayerGameReadyActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.multiplayerActivities.NewMultiplayerGameActivity"
+            android:name=".ui.multiplayerActivities.view.NewMultiplayerGameActivity"
             android:exported="true" />
         <activity
             android:name=".ui.MainMenuActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.singleplayerActivities.GameOverActivity"
+            android:name=".ui.singleplayerActivities.views.GameOverActivity"
             android:exported="true" />
         <activity
-            android:name=".domain.singleplayerActivities.GameActivity"
+            android:name=".ui.singleplayerActivities.views.GameActivity"
             android:exported="true"
             android:theme="@style/Theme.DuelosMeli.GameActivityStyle" />
         <activity
-            android:name=".domain.singleplayerActivities.NewGameActivity"
+            android:name=".ui.singleplayerActivities.views.NewGameActivity"
             android:exported="true" />
         <activity
             android:name=".ui.HomeActivity"
