@@ -160,6 +160,7 @@ class GameActivity : AppCompatActivity() {
                     else -> threeCorrect()
                 }
                 game.errorsCounter(game); timerFunctions(game)
+                timer = 21000L
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -184,22 +185,65 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun optionsButtons(game: Game, correctOption: Int){
+        binding.btnOption1.setOnClickListener{
+            pauseTimer()
+            timer = 21000L
+            showCorrectOption(correctOption,1)
+            if (correctOption == 1){
+                game.pointsCounter(game)
+            } else {
+                game.errorsCounter(game)
+            }
+            timerFunctions(game)
+        }
+
+        binding.btnOption2.setOnClickListener{
+            pauseTimer()
+            timer = 21000L
+            showCorrectOption(correctOption,2)
+            if (correctOption == 2){
+                game.pointsCounter(game)
+            } else {
+                game.errorsCounter(game)
+            }
+            timerFunctions(game)
+        }
+
+        binding.btnOption3.setOnClickListener{
+            pauseTimer()
+            timer = 21000L
+            showCorrectOption(correctOption,3)
+            if (correctOption == 3){
+                game.pointsCounter(game)
+            } else {
+                game.errorsCounter(game)
+            }
+            timerFunctions(game)
+        }
+    }
+
+    private fun showCorrectOption(correctOption: Int, pricedOption: Int) {
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); oneCorrect(); game.pointsCounter(game); timerFunctions(game)}
-                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
-                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); oneCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
             }
             2 -> {
-                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
-                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); twoCorrect(); game.pointsCounter(game); timerFunctions(game)}
-                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); twoCorrect(); game.errorsCounter(game); timerFunctions(game)}
+                binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
             }
             else -> {
-                binding.btnOption1.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
-                binding.btnOption2.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,false); threeCorrect(); game.errorsCounter(game); timerFunctions(game)}
-                binding.btnOption3.setOnClickListener { pauseTimer(); timer = 21000L; gameFunctions.optionsSounds(this,true); threeCorrect(); game.pointsCounter(game); timerFunctions(game)}
+                binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
             }
+        }
+
+        if (correctOption != pricedOption){
+            gameFunctions.optionsSounds(this,false)
+            when (pricedOption) {
+                1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
+                2 -> { binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
+                else -> { binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
+            }
+        } else {
+            gameFunctions.optionsSounds(this,true)
         }
     }
 
@@ -208,7 +252,7 @@ class GameActivity : AppCompatActivity() {
         var actualGame = game
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
         Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1000)
-        Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
+        Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },0)
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
     }
