@@ -186,40 +186,28 @@ class GameActivity : AppCompatActivity() {
 
     private fun optionsButtons(game: Game, correctOption: Int){
         binding.btnOption1.setOnClickListener{
-            pauseTimer()
-            timer = 21000L
-            showCorrectOption(correctOption,1)
-            if (correctOption == 1){
-                game.pointsCounter(game)
-            } else {
-                game.errorsCounter(game)
-            }
-            timerFunctions(game)
+            optionIsChosen(1, correctOption, game)
         }
 
         binding.btnOption2.setOnClickListener{
-            pauseTimer()
-            timer = 21000L
-            showCorrectOption(correctOption,2)
-            if (correctOption == 2){
-                game.pointsCounter(game)
-            } else {
-                game.errorsCounter(game)
-            }
-            timerFunctions(game)
+            optionIsChosen(2, correctOption, game)
         }
 
         binding.btnOption3.setOnClickListener{
-            pauseTimer()
-            timer = 21000L
-            showCorrectOption(correctOption,3)
-            if (correctOption == 3){
-                game.pointsCounter(game)
-            } else {
-                game.errorsCounter(game)
-            }
-            timerFunctions(game)
+            optionIsChosen(3, correctOption, game)
         }
+    }
+
+    private fun optionIsChosen(pricedOption: Int, correctOption: Int, game: Game) {
+        pauseTimer()
+        timer = 21000L
+        showCorrectOption(correctOption, pricedOption)
+        if (correctOption == pricedOption) {
+            game.pointsCounter(game)
+        } else {
+            game.errorsCounter(game)
+        }
+        timerFunctions(game)
     }
 
     private fun showCorrectOption(correctOption: Int, pricedOption: Int) {
