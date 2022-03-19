@@ -223,22 +223,28 @@ class GameActivity : AppCompatActivity() {
     private fun showCorrectOption(correctOption: Int, pressedOption: Int) {
         when (correctOption) {
             1 -> {
-                binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
+                binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color
+                    .green1,null))
             }
             2 -> {
-                binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
+                binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color
+                    .green1,null))
             }
             else -> {
-                binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
+                binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color
+                    .green1,null))
             }
         }
 
         if (correctOption != pressedOption){
             gameFunctions.optionsSounds(this,false)
             when (pressedOption) {
-                1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
-                2 -> { binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
-                else -> { binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
+                1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources,
+                    R.color.red1,null)) }
+                2 -> { binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources,
+                    R.color.red1,null)) }
+                else -> { binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor
+                    (resources, R.color.red1,null)) }
             }
         } else {
             gameFunctions.optionsSounds(this,true)
@@ -274,21 +280,30 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun oneCorrect() {
-        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
+        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
     }
 
     private fun twoCorrect() {
-        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green, null))
-        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
+        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
+        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
     }
 
     private fun threeCorrect() {
-        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
-        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
+        binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
     }
 
 
