@@ -198,11 +198,11 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun optionIsChosen(pricedOption: Int, correctOption: Int, game: Game) {
+    private fun optionIsChosen(pressedOption: Int, correctOption: Int, game: Game) {
         pauseTimer()
         timer = 21000L
-        showCorrectOption(correctOption, pricedOption)
-        if (correctOption == pricedOption) {
+        showCorrectOption(correctOption, pressedOption)
+        if (correctOption == pressedOption) {
             game.pointsCounter(game)
         } else {
             game.errorsCounter(game)
@@ -210,7 +210,7 @@ class GameActivity : AppCompatActivity() {
         timerFunctions(game)
     }
 
-    private fun showCorrectOption(correctOption: Int, pricedOption: Int) {
+    private fun showCorrectOption(correctOption: Int, pressedOption: Int) {
         when (correctOption) {
             1 -> {
                 binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
@@ -223,9 +223,9 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        if (correctOption != pricedOption){
+        if (correctOption != pressedOption){
             gameFunctions.optionsSounds(this,false)
-            when (pricedOption) {
+            when (pressedOption) {
                 1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
                 2 -> { binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
                 else -> { binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null)) }
