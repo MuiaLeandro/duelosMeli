@@ -249,8 +249,8 @@ class GameActivity : AppCompatActivity() {
     private fun timerFunctions(game: Game){
         var actualGame = game
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
-        Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1000)
-        Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },0)
+        Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1500)
+        Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
     }
