@@ -9,6 +9,7 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.TypedValue
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -20,6 +21,7 @@ import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -56,12 +58,16 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun continueGame(){
+        binding.clLoading.visibility=View.VISIBLE
         vm.findCategories()
     }
 
     private fun setListeners(){
         vm.starGame.observe(this, {
-            if (it) vm.findCategories()
+            if (it) {
+                binding.clLoading.visibility=View.VISIBLE
+                vm.findCategories()
+            }
         })
     }
 
@@ -75,9 +81,18 @@ class GameActivity : AppCompatActivity() {
             if (it != null){
                 Picasso.get()
                     .load(it)
-                    .placeholder(R.drawable.spinner)
+                    .noFade()
                     .error(R.drawable.no_image)
-                    .into(binding.ivProductPicture)
+                    .into(binding.ivProductPicture, object: Callback {
+                        override fun onSuccess() {
+                            //mostrar pantalla del juego
+                            binding.clLoading.visibility=View.GONE
+                        }
+
+                        override fun onError(e: java.lang.Exception?) {
+                            //do smth when there is picture loading error
+                        }
+                    })
             }
         })
         vm.randomNumber1to3Mutable.observe(this, {
@@ -114,10 +129,6 @@ class GameActivity : AppCompatActivity() {
         vm.categoriesException.observe(this, this::handleException)
         vm.itemFromCategoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)
-        // Para probar un snackbar y ver diferencia con Toast
-        /*vm.itemException.observe(this, {
-            Snackbar.make(binding.root, it.toString(), Snackbar.LENGTH_LONG).show()
-        })*/
     }
 
     private fun handleException(exception: Throwable?) {
@@ -145,14 +156,14 @@ class GameActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    
+
     private fun successChecker(correctOption: Int, game: Game) {
         startTimer(game, correctOption)
     }
 
     private fun startTimer(game: Game, correctOption: Int) {
         countDownTimer = object : CountDownTimer(timer,1000){
-            //            end of timer
+
             override fun onFinish() {
                 when (correctOption) {
                     1 -> oneCorrect()
@@ -170,6 +181,7 @@ class GameActivity : AppCompatActivity() {
         }.start()
         optionsButtons(game, correctOption)
     }
+
     private fun pauseTimer() {
         countDownTimer.cancel()
     }
@@ -177,9 +189,7 @@ class GameActivity : AppCompatActivity() {
     private fun setTextTimer() {
         val m = (timer / 1000) / 60
         val s = (timer / 1000) % 60
-
         val format = String.format("%02d:%02d", m, s)
-
         binding.tvTime.text = format
     }
 
@@ -248,7 +258,7 @@ class GameActivity : AppCompatActivity() {
         binding.btnOption2.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red,null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green,null))
     }
-    
+
 
     private fun colorResetter(){
         binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
