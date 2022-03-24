@@ -52,5 +52,6 @@
 
     <color name="yellow">#FFE600</color>
     <color name="black">#1A1A1A</color>
-    <color name="white">#F5F5F5</color>
+    <color name="white0">#00F5F5F5</color>
+    <color name="white">#FFFFFF</color>
 </resources>
