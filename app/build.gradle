@@ -64,6 +64,7 @@ dependencies {
     // Corrutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
 
+    implementation 'com.android.databinding:viewbinding:4.0.1'
     implementation 'androidx.databinding:databinding-runtime:7.0.3'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
