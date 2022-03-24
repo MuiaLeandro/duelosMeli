@@ -26,4 +26,13 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
     </style>
+
+    <style name="Dialog">
+        <item name="fontFamily">@font/proxima_nova</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

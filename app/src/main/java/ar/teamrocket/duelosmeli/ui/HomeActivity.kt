@@ -13,6 +13,7 @@ import ar.teamrocket.duelosmeli.domain.impl.HomeFunctionsImpl
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private var homeFunctions: HomeFunctions = HomeFunctionsImpl()
+    private lateinit var openingSound: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +22,13 @@ class HomeActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // Reproducción del sonido
-        val openSound = MediaPlayer.create(this, R.raw.open)
-        openSound.start()
+        /*val openSound = MediaPlayer.create(this, R.raw.open)
+        openSound.start()*/
+
+        openingSound = MediaPlayer.create(this, R.raw.open)
+        openingSound.setOnPreparedListener {
+            openingSound.start()
+        }
 
         // Se instancia una clase que implementa una interfaz con funciones para esta Activity
         homeFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)

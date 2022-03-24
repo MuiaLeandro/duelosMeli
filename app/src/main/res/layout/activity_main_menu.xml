@@ -6,43 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainMenuActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <Button
+        android:id="@+id/btnOnePlayer"
+        android:layout_width="210dp"
+        android:layout_height="70dp"
+        android:text="@string/un_jugador"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnMultiplayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
 
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="311dp"
-            android:layout_height="209dp"
-            android:layout_marginTop="180dp"
-            android:contentDescription="@null"
-            android:src="@drawable/activity_home_logo"
-            android:layout_gravity="center_horizontal"  />
+    <Button
+        android:id="@+id/btnMultiplayer"
+        android:layout_width="210dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/multi_jugador"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOnePlayer" />
 
-        <Button
-            android:id="@+id/btnOnePlayer"
-            android:layout_width="210dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/un_jugador"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"/>
-
-        <Button
-            android:id="@+id/btnMultiplayer"
-            android:layout_width="210dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:text="@string/multi_jugador"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
-
-
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="311dp"
+        android:layout_height="209dp"
+        android:contentDescription="@null"
+        android:src="@drawable/activity_home_logo"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnOnePlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,4 +35,8 @@
     <string name="did_not_guessed">No adivinó</string>
     <string name="money_sign" translatable="false">$</string>
     <string name="delete">Borrar</string>
+    <string name="conexion_perdida">Se ha perdido la conexión a internet</string>
+    <string name="asegurar_conexion">Asegurate de estar conectado a una red Wi-Fi con conexión a internet o red de datos móviles</string>
+    <string name="terminar_partida">Terminar la partida</string>
+    <string name="reintentar_conexion">Reintentar conexión</string>
 </resources>

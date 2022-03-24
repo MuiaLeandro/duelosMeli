@@ -33,4 +33,8 @@
     <string name="guessed">Adivinhou</string>
     <string name="did_not_guessed">Não adivinhou</string>
     <string name="delete">Excluir</string>
+    <string name="conexion_perdida">Perda de conexão com a Internet</string>
+    <string name="asegurar_conexion">Verifique se você está conectado a uma rede Wi-Fi com conexão à Internet ou rede de dados móveis</string>
+    <string name="terminar_partida">Terminar o jogo</string>
+    <string name="reintentar_conexion">Tente novamente a conexão</string>
 </resources>

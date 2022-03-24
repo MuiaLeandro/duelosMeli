@@ -72,6 +72,8 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
 
                 searchItem(item.id)
                 randomOptionsCalculator(item)
+                //val s: String? = null
+                //println(s!!)
             } catch (e: Exception) {
                 itemFromCategoryException.value = e
             }
