@@ -41,6 +41,7 @@ class GameActivity : AppCompatActivity() {
     private var correctPricePosition: Int = 0
     private lateinit var fake1: String
     private lateinit var fake2: String
+    private lateinit var doorbellSound: MediaPlayer
 
     lateinit var game: Game
 
@@ -48,8 +49,12 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
-        doorbellSound.start()
+
+        // Reproducción de sonido de timbre
+        doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
+        doorbellSound.setOnPreparedListener {
+            doorbellSound.start()
+        }
 
         val playerId = intent.extras!!.getLong("Id")
         game = Game(playerId)

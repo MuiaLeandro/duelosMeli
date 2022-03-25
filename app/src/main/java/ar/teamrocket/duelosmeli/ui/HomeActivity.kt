@@ -21,10 +21,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        // Reproducción del sonido
-        /*val openSound = MediaPlayer.create(this, R.raw.open)
-        openSound.start()*/
-
+        // Reproducción del sonido de apertura de la app
         openingSound = MediaPlayer.create(this, R.raw.open)
         openingSound.setOnPreparedListener {
             openingSound.start()
