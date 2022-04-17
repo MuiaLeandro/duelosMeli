@@ -30,10 +30,6 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
     val itemFromCategoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
 
-//    fun startSound(context: Context){
-//        val doorbellSound = MediaPlayer.create(context, R.raw.doorbell)
-//        doorbellSound.start()
-//    }
 
     fun findCategories() {
         viewModelScope.launch {

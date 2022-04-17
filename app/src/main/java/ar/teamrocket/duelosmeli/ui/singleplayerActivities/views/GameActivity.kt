@@ -21,11 +21,14 @@ import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import java.net.UnknownHostException
 
 class GameActivity : AppCompatActivity() {
     lateinit var binding: ActivityGameBinding
@@ -38,16 +41,23 @@ class GameActivity : AppCompatActivity() {
     private var correctPricePosition: Int = 0
     private lateinit var fake1: String
     private lateinit var fake2: String
+    private lateinit var doorbellSound: MediaPlayer
+
+    lateinit var game: Game
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
-        doorbellSound.start()
+
+        // Reproducción de sonido de timbre
+        doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
+        doorbellSound.setOnPreparedListener {
+            doorbellSound.start()
+        }
 
         val playerId = intent.extras!!.getLong("Id")
-        val game = Game(playerId)
+        game = Game(playerId)
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
@@ -132,13 +142,32 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun handleException(exception: Throwable?) {
-        if (exception is HttpException)
-            when (exception.code()) {
+        if (exception is UnknownHostException)
+            //Toast.makeText(this, "Ups! Connection lost :(", Toast.LENGTH_LONG).show()
+        /*Snackbar.make(binding.root, "Ups! Connection lost :(", Snackbar.LENGTH_SHORT)
+            .setTextColor(resources.getColor(R.color.black))
+            .setBackgroundTint(resources.getColor(R.color.black))
+            .show()*/
+        MaterialAlertDialogBuilder(this,
+            R.style.Dialog)
+            .setTitle(R.string.conexion_perdida)
+            .setMessage(R.string.asegurar_conexion)
+            .setNegativeButton(R.string.terminar_partida) { dialog, which ->
+                // Respond to negative button press
+                viewGameOver(game)
+            }
+            .setPositiveButton(R.string.reintentar_conexion) { dialog, which ->
+                // Respond to positive button press
+                vm.findCategories()
+            }
+            .show()
+            //TODO: sobreescribir onBackPressed para que se ejecute el game over
+            /*when (exception.code()) {
                 400 -> Toast.makeText(this, R.string.bad_request.toString(), Toast.LENGTH_LONG).show()
                 404 -> Toast.makeText(this, R.string.resource_not_found.toString(), Toast.LENGTH_LONG).show()
                 in 500..599 -> Toast.makeText(this, R.string.server_error.toString(), Toast.LENGTH_LONG).show()
                 else -> Toast.makeText(this, R.string.unknown_error.toString(), Toast.LENGTH_LONG).show()
-            }
+            }*/
     }
 
     private fun viewGameOver(game: Game) {
