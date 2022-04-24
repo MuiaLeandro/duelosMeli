@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">duelosMeli</string>
     <string name="whats_the_price">Qual é o preço deste produto?</string>
     <string name="new_player">Novo jogador</string>
     <string name="select_player">ou selecione um jogador</string>
@@ -37,4 +36,6 @@
     <string name="asegurar_conexion">Verifique se você está conectado a uma rede Wi-Fi com conexão à Internet ou rede de dados móveis</string>
     <string name="terminar_partida">Terminar o jogo</string>
     <string name="reintentar_conexion">Tente novamente a conexão</string>
+    <string name="partida_finalizada">Fim de jogo</string>
+    <string name="player">Jogador</string>
 </resources>

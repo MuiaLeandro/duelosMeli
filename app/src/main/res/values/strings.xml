@@ -39,4 +39,6 @@
     <string name="asegurar_conexion">Asegurate de estar conectado a una red Wi-Fi con conexión a internet o red de datos móviles</string>
     <string name="terminar_partida">Terminar la partida</string>
     <string name="reintentar_conexion">Reintentar conexión</string>
+    <string name="partida_finalizada">Partida finalizada</string>
+    <string name="player">Jugador</string>
 </resources>
