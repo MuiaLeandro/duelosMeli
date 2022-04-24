@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.databinding.ActivityNewMultiplayerGameBinding
@@ -22,6 +23,8 @@ class NewMultiplayerGameActivity : AppCompatActivity(), IPlayersTeamsAdapter {
         super.onCreate(savedInstanceState)
         binding = ActivityNewMultiplayerGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.iHeader.tvTitle.text=getString(R.string.partida_multijugador)
+        binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
 
         val players = emptyList<Multiplayer>()
 

@@ -38,4 +38,5 @@
     <string name="reintentar_conexion">Tente novamente a conexão</string>
     <string name="partida_finalizada">Fim de jogo</string>
     <string name="player">Jogador</string>
+    <string name="partida_multijugador">Jogo multijogador</string>
 </resources>
