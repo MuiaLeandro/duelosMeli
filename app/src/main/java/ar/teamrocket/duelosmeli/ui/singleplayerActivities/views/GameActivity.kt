@@ -50,6 +50,8 @@ class GameActivity : AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.iHeader.tvTitle.text = getString(R.string.whats_the_price)
+
         // Reproducción de sonido de timbre
         doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
         doorbellSound.setOnPreparedListener {
@@ -60,6 +62,10 @@ class GameActivity : AppCompatActivity() {
         game = Game(playerId)
 
         binding.btnExitGame.setOnClickListener { viewGameOver(game) }
+
+        // La flecha asi atras te lleva al Home o a partida finalizada?
+        binding.iHeader.ivButtonBack.setOnClickListener { viewGameOver(game) }
+        //binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
 
@@ -73,30 +79,30 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setListeners(){
-        vm.starGame.observe(this, {
+        vm.starGame.observe(this) {
             if (it) {
-                binding.clLoading.visibility=View.VISIBLE
+                binding.clLoading.visibility = View.VISIBLE
                 vm.findCategories()
             }
-        })
+        }
     }
 
     private fun setObservers(game: Game){
-        vm.itemNameMutable.observe(this, {
-            if (it != null){
+        vm.itemNameMutable.observe(this) {
+            if (it != null) {
                 binding.tvProductName.text = it
             }
-        })
-        vm.picture.observe(this, {
-            if (it != null){
+        }
+        vm.picture.observe(this) {
+            if (it != null) {
                 Picasso.get()
                     .load(it)
                     .noFade()
                     .error(R.drawable.no_image)
-                    .into(binding.ivProductPicture, object: Callback {
+                    .into(binding.ivProductPicture, object : Callback {
                         override fun onSuccess() {
                             //mostrar pantalla del juego
-                            binding.clLoading.visibility=View.GONE
+                            binding.clLoading.visibility = View.GONE
                         }
 
                         override fun onError(e: java.lang.Exception?) {
@@ -104,19 +110,19 @@ class GameActivity : AppCompatActivity() {
                         }
                     })
             }
-        })
-        vm.randomNumber1to3Mutable.observe(this, {
+        }
+        vm.randomNumber1to3Mutable.observe(this) {
             correctPricePosition = it
-        })
+        }
 
-        vm.itemPriceString.observe(this, { price ->
+        vm.itemPriceString.observe(this) { price ->
             when (correctPricePosition) {
                 1 -> binding.btnOption1.text = getString(R.string.money_sign).plus(price)
                 2 -> binding.btnOption2.text = getString(R.string.money_sign).plus(price)
                 3 -> binding.btnOption3.text = getString(R.string.money_sign).plus(price)
                 else -> println("Out of bounds")
             }
-            vm.fakePrice1.observe(this, {
+            vm.fakePrice1.observe(this) {
                 fake1 = it
                 when (correctPricePosition) {
                     1 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake1)
@@ -124,8 +130,8 @@ class GameActivity : AppCompatActivity() {
                     3 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
                     else -> println("Out of bounds")
                 }
-            })
-            vm.fakePrice2.observe(this, {
+            }
+            vm.fakePrice2.observe(this) {
                 fake2 = it
                 when (correctPricePosition) {
                     1 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
@@ -133,9 +139,9 @@ class GameActivity : AppCompatActivity() {
                     3 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake2)
                     else -> println("Out of bounds")
                 }
-            })
+            }
             successChecker(correctPricePosition, game)
-        })
+        }
         vm.categoriesException.observe(this, this::handleException)
         vm.itemFromCategoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)

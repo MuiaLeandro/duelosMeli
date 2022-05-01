@@ -16,11 +16,16 @@ import org.koin.android.ext.android.inject
 class GameOverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameOverBinding
     private val playerDao : PlayerDao by inject()
-//TODO: Agregar ViewModel
+    //TODO: Agregar ViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.iHeader.tvTitle.text=getString(R.string.partida_finalizada)
+        binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
+
+
         val gameOverSound = MediaPlayer.create(this, R.raw.gameover)
         gameOverSound.start()
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
@@ -50,8 +55,7 @@ class GameOverActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, NewGameActivity::class.java)
-        startActivity(intent)
+        viewNewGame()
     }
 
     private fun viewNewGame() {
