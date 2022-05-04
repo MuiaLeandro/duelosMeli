@@ -13,6 +13,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/pbDeterminateBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressBackgroundTint="@color/blue1"
+        android:progressTint="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:indeterminate="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iHeader"
+        tools:progress="70" />
+
     <ScrollView
         android:id="@+id/svScrollView"
         android:layout_width="match_parent"
@@ -20,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iHeader" >
+        app:layout_constraintTop_toBottomOf="@+id/pbDeterminateBar" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,17 +43,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:textSize="34sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="5" />
 
             <TextView
                 android:id="@+id/tvProductName"
@@ -105,23 +107,14 @@
                 tools:ignore="ContentDescription"
                 tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
 
-            <Button
-                android:id="@+id/btnExitGame"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ic_exit"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/ivLifeOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@+id/btnExitGame"
-                app:layout_constraintTop_toBottomOf="@+id/btnExitGame"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_life_filled"
                 tools:ignore="ContentDescription" />
 
@@ -162,7 +155,7 @@
             android:layout_height="match_parent"
             android:background="@color/blue1"
             android:gravity="center"
-            android:text="¿Estás listo?"
+            android:text="@string/tv_activity_game_estas_listo"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
