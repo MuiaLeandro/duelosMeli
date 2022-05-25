@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "ar.teamrocket.duelosmeli"
-        minSdk 31
+        minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -102,6 +102,4 @@ dependencies {
     implementation "androidx.camera:camera-view:${camerax_version}"
     // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:${camerax_version}"
-
-
 }
