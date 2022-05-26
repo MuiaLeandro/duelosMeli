@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
         <activity
-            android:name=".ui.UserProfileActivity"
+            android:name=".ui.userProfile.UserProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.multiplayerActivities.view.MultiplayerGamePartialResultActivity"

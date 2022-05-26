@@ -6,6 +6,7 @@ import android.os.Bundle
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
+import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
