@@ -20,11 +20,6 @@ class MainMenuActivity : AppCompatActivity() {
         binding.btnOnePlayer.setOnClickListener { viewNewGame() }
         binding.btnMultiplayer.setOnClickListener { viewNewMultiplayerGame() }
 
-        binding.btnGoToActivity.setOnClickListener {
-            val intent = Intent(this, UserProfileActivity::class.java)
-            startActivity(intent)
-        }
-
     }
 
     private fun viewNewGame() {

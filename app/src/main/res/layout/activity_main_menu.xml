@@ -35,17 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnOnePlayer" />
 
-    <Button
-        android:id="@+id/btnGoToActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ir a UserActivity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnMultiplayer" />
-
-
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="311dp"
