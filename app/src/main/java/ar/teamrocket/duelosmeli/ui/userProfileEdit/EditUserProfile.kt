@@ -15,7 +15,7 @@ class EditUserProfile : AppCompatActivity() {
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnGotoToCamera.setOnClickListener {
+        binding.tvChangeImage.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
