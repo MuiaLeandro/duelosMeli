@@ -8,4 +8,6 @@ interface GameFunctions {
     fun optionsSounds(context: Context, state: Boolean)
 
     fun mistakeCounterUpdater(game: Game, lifeThree: ImageView, lifeTwo: ImageView, lifeOne: ImageView)
+
+    fun lifesCounterUpdater(game: Game, lifeThree: ImageView, lifeTwo: ImageView, lifeOne: ImageView)
 }

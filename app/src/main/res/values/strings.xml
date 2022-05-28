@@ -42,5 +42,11 @@
     <string name="partida_finalizada">Partida finalizada</string>
     <string name="player">Jugador</string>
     <string name="partida_multijugador">Partida multijugador</string>
+    <string name="pasar_pregunta">¡Paso! (3 puntos)</string>
+    <string name="vida_extra">Vida Extra (5 puntos)</string>
+    <string name="usa_puntos">Usá tus puntos</string>
+    <string name="pedi_una_ayuda">¡Rápido! ¡Pedí una ayuda por puntos!</string>
+    <string name="puntos_insuficientes">Ups! No tenés puntos suficientes :(</string>
+    <string name="vidas_completas">¡Tenés 3 vidas! Todo tiene un límite :P</string>
     <string name="tv_activity_game_estas_listo">¿Estás listo?</string>
 </resources>
