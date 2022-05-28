@@ -1,5 +1,7 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -7,30 +9,28 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.TypedValue
 import android.view.View
-import android.widget.Toast
+import android.view.animation.DecelerateInterpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
+import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownHostException
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
@@ -67,7 +67,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         val playerId = intent.extras!!.getLong("Id")
         game = Game(playerId)
 
-        binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
         // La flecha asi atras te lleva al Home o a partida finalizada?
         binding.iHeader.ivButtonBack.setOnClickListener { viewGameOver(game) }
@@ -204,6 +203,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun startTimer(game: Game, correctOption: Int) {
+        var i = 0
         countDownTimer = object : CountDownTimer(timer,1000){
 
             override fun onFinish() {
@@ -216,9 +216,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                 timer = 31000L
             }
 
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onTick(millisUntilFinished: Long) {
                 timer = millisUntilFinished
-                setTextTimer()
+                i++
+                binding.pbDeterminateBar.setProgress(i * 100 / (start.toInt() / 1000),true)
             }
 
         }.start()
@@ -227,13 +229,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     private fun pauseTimer() {
         countDownTimer.cancel()
-    }
-
-    private fun setTextTimer() {
-        val m = (timer / 1000) / 60
-        val s = (timer / 1000) % 60
-        val format = String.format("%02d:%02d", m, s)
-        binding.tvTime.text = format
     }
 
     private fun optionsButtons(game: Game, correctOption: Int){
