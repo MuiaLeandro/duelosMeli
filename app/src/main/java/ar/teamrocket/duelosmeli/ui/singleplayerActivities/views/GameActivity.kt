@@ -1,7 +1,5 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -12,7 +10,6 @@ import android.media.MediaPlayer
 import android.os.*
 import android.util.TypedValue
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -26,11 +23,11 @@ import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownHostException
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
