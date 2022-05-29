@@ -11,8 +11,10 @@
     <string name="next">Siguiente</string>
     <string name="exit" translatable="false">X</string>
     <string name="play">Jugar</string>
-    <string name="achieved_points">Hiciste %d puntos</string>
-    <string name="record_points">Tu record: %d</string>
+    <string name="achieved_no_point">No lograste ningún punto :(</string>
+    <string name="achieved_one_point">¡Lograste solo %d punto!</string>
+    <string name="achieved_points">¡Lograste %d puntos!</string>
+    <string name="record_points">Tu último mayor puntaje fue: %d</string>
     <string name="resource_not_found">No se encontró el recurso</string>
     <string name="bad_request">Solicitud incorrecta</string>
     <string name="server_error">Ocurrió un error en el servidor</string>

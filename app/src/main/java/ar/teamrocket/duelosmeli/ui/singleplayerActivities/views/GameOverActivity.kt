@@ -42,15 +42,25 @@ class GameOverActivity : AppCompatActivity() {
         }
         //playerDao.updatePlayer(player[0])
         val pointsAchieved = intent.extras!!.getInt("Points")
+        val zeroPointAchievedString = getString(R.string.achieved_no_point)
+        val onePointAchievedString = getString(R.string.achieved_one_point, pointsAchieved)
         val pointsAchievedString = getString(R.string.achieved_points, pointsAchieved)
         val pointsHighscore = getString(R.string.record_points, player[0].score)
 
-        binding.tvScoreAchieved.text = pointsAchievedString
+        achievedPointsBinder(pointsAchieved, zeroPointAchievedString, onePointAchievedString, pointsAchievedString)
         binding.tvHigherScore.text = pointsHighscore
 
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
+    }
+
+    private fun achievedPointsBinder(pointsAchieved: Int, zero: String, one: String, moreThanOne: String) {
+        when(pointsAchieved) {
+            0 -> binding.tvScoreAchieved.text = zero
+            1 -> binding.tvScoreAchieved.text = one
+            else -> binding.tvScoreAchieved.text = moreThanOne
+        }
     }
 
     override fun onBackPressed() {
