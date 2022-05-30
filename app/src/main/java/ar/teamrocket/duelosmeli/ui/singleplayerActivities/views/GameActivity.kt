@@ -1,38 +1,41 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.TypedValue
 import android.view.View
-import android.widget.Toast
+import android.view.animation.DecelerateInterpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
+import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import retrofit2.HttpException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownHostException
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), SensorEventListener {
     lateinit var binding: ActivityGameBinding
-    private val start = 21000L
+    private val start = 31000L
     var timer = start
     private lateinit var countDownTimer: CountDownTimer
     private val gameFunctions: GameFunctions by inject()
@@ -42,6 +45,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var fake1: String
     private lateinit var fake2: String
     private lateinit var doorbellSound: MediaPlayer
+    private lateinit var whistleSongExtraLife: MediaPlayer
+    private lateinit var sensorManager: SensorManager
+    private var mov: Int = 0
 
     lateinit var game: Game
 
@@ -61,7 +67,6 @@ class GameActivity : AppCompatActivity() {
         val playerId = intent.extras!!.getLong("Id")
         game = Game(playerId)
 
-        binding.btnExitGame.setOnClickListener { viewGameOver(game) }
 
         // La flecha asi atras te lleva al Home o a partida finalizada?
         binding.iHeader.ivButtonBack.setOnClickListener { viewGameOver(game) }
@@ -91,6 +96,7 @@ class GameActivity : AppCompatActivity() {
         vm.itemNameMutable.observe(this) {
             if (it != null) {
                 binding.tvProductName.text = it
+                setUpSensorStuff()
             }
         }
         vm.picture.observe(this) {
@@ -197,6 +203,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun startTimer(game: Game, correctOption: Int) {
+        var i = 0
         countDownTimer = object : CountDownTimer(timer,1000){
 
             override fun onFinish() {
@@ -206,12 +213,14 @@ class GameActivity : AppCompatActivity() {
                     else -> threeCorrect()
                 }
                 game.errorsCounter(game); timerFunctions(game)
-                timer = 21000L
+                timer = 31000L
             }
 
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onTick(millisUntilFinished: Long) {
                 timer = millisUntilFinished
-                setTextTimer()
+                i++
+                binding.pbDeterminateBar.setProgress(i * 100 / (start.toInt() / 1000),true)
             }
 
         }.start()
@@ -220,13 +229,6 @@ class GameActivity : AppCompatActivity() {
 
     private fun pauseTimer() {
         countDownTimer.cancel()
-    }
-
-    private fun setTextTimer() {
-        val m = (timer / 1000) / 60
-        val s = (timer / 1000) % 60
-        val format = String.format("%02d:%02d", m, s)
-        binding.tvTime.text = format
     }
 
     private fun optionsButtons(game: Game, correctOption: Int){
@@ -245,7 +247,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun optionIsChosen(pressedOption: Int, correctOption: Int, game: Game) {
         pauseTimer()
-        timer = 21000L
+        timer = 31000L
         showCorrectOption(correctOption, pressedOption)
         if (correctOption == pressedOption) {
             game.pointsCounter(game)
@@ -356,5 +358,110 @@ class GameActivity : AppCompatActivity() {
     ): Int {
         theme.resolveAttribute(attrColor, typedValue, resolveRefs)
         return typedValue.data
+    }
+
+    // ******** Feature de sensor - Acelerómetro - Rotando el celu hacia la izquierda ********
+    fun setUpSensorStuff() {
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER).also {
+            sensorManager.registerListener(
+                this,
+            it,
+            SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    // Esta función es similar a la función optionIsChosen()
+    // La diferencia es que no está el if para no contar puntos ni errores, solo se pasa de producto
+    fun nextProduct() {
+        pauseTimer()
+        timer = 31000L
+        showCorrectOption(correctPricePosition, correctPricePosition)
+        timerFunctions(game)
+    }
+
+    // Esta función es como un listener
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            // Sides -> Rotando hacia la izquierda es de 0 a 9, derecha 0 a -9
+            var sides = event.values[0]
+            var upDown = event.values[1]
+
+            // Mayor a 8 es casi horizontal, para que no se active con una pequeña rotación
+            if(sides > 8f && mov==0) {
+                // Prácticamente toda la lógica se especifica para cada botón del Dialog
+                MaterialAlertDialogBuilder(this,
+                    R.style.Dialog)
+                        // Seteo de título y descripción del Dialog
+                    .setTitle(R.string.usa_puntos)
+                    .setMessage(R.string.pedi_una_ayuda)
+
+                        //Botón de canjeo de puntos para pasar de producto
+                    .setPositiveButton(R.string.pasar_pregunta) { dialog, which ->
+                        if (game.points >= 3) {
+                            game.points-=3
+                            nextProduct()
+                        } else {
+                            Snackbar.make(binding.root, R.string.puntos_insuficientes, Snackbar.LENGTH_LONG)
+                                .setTextColor(resources.getColor(R.color.black))
+                                .setBackgroundTint(resources.getColor(R.color.black))
+                                .show()
+                        }
+                    }
+                        //Botón de canjeo de puntos para obtener una vida extra
+                    .setNegativeButton(R.string.vida_extra) { dialog, which ->
+                        if (game.points >= 5) {
+                            if (game.errors > 0) {
+                                gameFunctions.lifesCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
+                                game.errorsDiscounter(game)
+                                game.points-=5
+
+                                // Sonido de vida extra
+                                whistleSongExtraLife = MediaPlayer.create(this, R.raw.whistle_song)
+                                whistleSongExtraLife.setOnPreparedListener {
+                                    whistleSongExtraLife.start()
+                                }
+                            } else {
+                                Snackbar.make(binding.root, R.string.vidas_completas, Snackbar.LENGTH_LONG)
+                                    .setTextColor(resources.getColor(R.color.black))
+                                    .setBackgroundTint(resources.getColor(R.color.black))
+                                    .show()
+                            }
+                        } else {
+                            Snackbar.make(binding.root, R.string.puntos_insuficientes, Snackbar.LENGTH_LONG)
+                                .setTextColor(resources.getColor(R.color.black))
+                                .setBackgroundTint(resources.getColor(R.color.black))
+                                .show()
+                        }
+                    }
+                    .show()
+                mov++
+            }
+
+            /* Este else if es necesario por el mov.
+               El mov obliga a que el flujo entre por acá cuando pasa a ser mov=1
+               porque sino, por alguna razón, por mas que pongamos el celu en vertical sigue
+               entrando en el if de arriba, por mas que sides ya no sea 8, y el bucle rompe toddo.
+               Y si lo pongo en 0 directamente también hace que siga el bucle, entonces se fuerza
+               con un if más, para que entre acá, así se olvida del sides=8 y después si volvemos
+               a resetear el mov a 0.
+             */
+            else if(sides < 1f && mov==1){
+                mov++
+            }
+            if(mov==2) mov=0
+        }
+
+    }
+
+    // Esta función tiene una utilidad pero para nuestro caso no es necesaria
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        return
+    }
+
+    override fun onDestroy() {
+        sensorManager.unregisterListener(this)
+        super.onDestroy()
     }
 }
