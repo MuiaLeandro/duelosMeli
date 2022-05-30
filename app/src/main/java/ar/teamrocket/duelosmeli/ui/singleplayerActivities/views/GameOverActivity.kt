@@ -9,6 +9,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
+import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.adapters.HighScoreAdapter
 import org.koin.android.ext.android.inject
 
@@ -50,6 +51,10 @@ class GameOverActivity : AppCompatActivity() {
         achievedPointsBinder(pointsAchieved, zeroPointAchievedString, onePointAchievedString, pointsAchievedString)
         binding.tvHigherScore.text = pointsHighscore
 
+        // Seteo de botones
+        goMenuOfGameSelection()
+        playAgain(idPlayer)
+
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
@@ -60,6 +65,25 @@ class GameOverActivity : AppCompatActivity() {
             0 -> binding.tvScoreAchieved.text = zero
             1 -> binding.tvScoreAchieved.text = one
             else -> binding.tvScoreAchieved.text = moreThanOne
+        }
+    }
+
+    // Botón para volver al inicio
+    private fun goMenuOfGameSelection() {
+        binding.btnHome.setOnClickListener {
+            it.context
+                .startActivity(Intent(this, MainMenuActivity::class.java))
+            finish()
+        }
+    }
+
+    // Botón para jugar de nuevo
+    private fun playAgain(id:Long) {
+        binding.btnPlay.setOnClickListener {
+            it.context
+                .startActivity(Intent(binding.root.context, GameActivity::class.java)
+                    .putExtra("Id",id))
+            finish()
         }
     }
 
