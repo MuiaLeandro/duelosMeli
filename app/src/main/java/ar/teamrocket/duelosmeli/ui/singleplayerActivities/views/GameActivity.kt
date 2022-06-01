@@ -401,7 +401,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                             nextProduct()
                         } else {
                             Snackbar.make(binding.root, R.string.puntos_insuficientes, Snackbar.LENGTH_LONG)
-                                .setTextColor(resources.getColor(R.color.black))
+                                //.setTextColor(resources.getColor(R.color.black))
                                 .setBackgroundTint(resources.getColor(R.color.black))
                                 .show()
                         }
@@ -421,13 +421,13 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                                 }
                             } else {
                                 Snackbar.make(binding.root, R.string.vidas_completas, Snackbar.LENGTH_LONG)
-                                    .setTextColor(resources.getColor(R.color.black))
+                                    //.setTextColor(resources.getColor(R.color.black))
                                     .setBackgroundTint(resources.getColor(R.color.black))
                                     .show()
                             }
                         } else {
                             Snackbar.make(binding.root, R.string.puntos_insuficientes, Snackbar.LENGTH_LONG)
-                                .setTextColor(resources.getColor(R.color.black))
+                                //.setTextColor(resources.getColor(R.color.black))
                                 .setBackgroundTint(resources.getColor(R.color.black))
                                 .show()
                         }
