@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
+import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
@@ -35,6 +36,7 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
+        single { Prefs(applicationContext) }
     }
 
 
