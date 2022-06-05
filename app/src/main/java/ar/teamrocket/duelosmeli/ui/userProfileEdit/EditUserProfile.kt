@@ -11,7 +11,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityEditUserProfileBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class EditUserProfile : AppCompatActivity() {
@@ -25,11 +27,34 @@ class EditUserProfile : AppCompatActivity() {
 
         binding.tvChangeImage.setOnClickListener {view ->
             if (allPermissionsGranted()) {
-                takePhoto()
+                showDialog()
             } else {
                 requestPermissions(view)
             }
         }
+    }
+
+    private fun showDialog() {
+        val options = arrayOf("Tomar foto", "Seleccionar de la galeria", "Eliminar foto")
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.cambiar_foto)
+            .setItems(options) { dialog, which ->
+                when (options[which]){
+                    "Tomar foto" -> takePhoto()
+                    "Seleccionar de la galeria" -> takeGalleryPhoto()
+                    "Eliminar foto" -> deletePhoto()
+                }
+            }
+            .show()
+    }
+
+    private fun deletePhoto() {
+        TODO("Not yet implemented")
+    }
+
+    private fun takeGalleryPhoto() {
+        TODO("Not yet implemented")
     }
 
     private fun requestPermissions(view: View) {
