@@ -9,6 +9,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
+import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.adapters.HighScoreAdapter
 import org.koin.android.ext.android.inject
 
@@ -42,15 +43,48 @@ class GameOverActivity : AppCompatActivity() {
         }
         //playerDao.updatePlayer(player[0])
         val pointsAchieved = intent.extras!!.getInt("Points")
+        val zeroPointAchievedString = getString(R.string.achieved_no_point)
+        val onePointAchievedString = getString(R.string.achieved_one_point, pointsAchieved)
         val pointsAchievedString = getString(R.string.achieved_points, pointsAchieved)
         val pointsHighscore = getString(R.string.record_points, player[0].score)
 
-        binding.tvScoreAchieved.text = pointsAchievedString
+        achievedPointsBinder(pointsAchieved, zeroPointAchievedString, onePointAchievedString, pointsAchievedString)
         binding.tvHigherScore.text = pointsHighscore
+
+        // Seteo de botones
+        goMenuOfGameSelection()
+        playAgain(idPlayer)
 
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
+    }
+
+    private fun achievedPointsBinder(pointsAchieved: Int, zero: String, one: String, moreThanOne: String) {
+        when(pointsAchieved) {
+            0 -> binding.tvScoreAchieved.text = zero
+            1 -> binding.tvScoreAchieved.text = one
+            else -> binding.tvScoreAchieved.text = moreThanOne
+        }
+    }
+
+    // Botón para volver al inicio
+    private fun goMenuOfGameSelection() {
+        binding.btnHome.setOnClickListener {
+            it.context
+                .startActivity(Intent(this, MainMenuActivity::class.java))
+            finish()
+        }
+    }
+
+    // Botón para jugar de nuevo
+    private fun playAgain(id:Long) {
+        binding.btnPlay.setOnClickListener {
+            it.context
+                .startActivity(Intent(binding.root.context, GameActivity::class.java)
+                    .putExtra("Id",id))
+            finish()
+        }
     }
 
     override fun onBackPressed() {

@@ -4,72 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background15"
     tools:context=".ui.singleplayerActivities.views.GameOverActivity">
-
-    <include
-        android:id="@+id/iHeader"
-        layout="@layout/include_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvGameOver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/game_over"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iHeader" />
-
-    <TextView
-        android:id="@+id/tvScoreAchieved"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="21sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameOver"
-        tools:text="Lograste 20 puntos" />
-
-    <TextView
-        android:id="@+id/tvHigherScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvScoreAchieved"
-        tools:text="Tu mayor puntaje: 10" />
-
-    <TextView
-        android:id="@+id/tvScoreTable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/score_table"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHigherScore" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvScoreTable"
-        android:layout_width="0dp"
-        android:layout_height="365dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvScoreTable"
-        tools:listitem="@layout/item_highscore" />
 
     <Button
         android:id="@+id/btnBackToHome"
@@ -81,4 +17,100 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvScoreTable" />
+
+    <TextView
+        android:id="@+id/tvHigherScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/blue1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgStar"
+        tools:text="Tu último mayor puntaje fue: 10" />
+
+    <TextView
+        android:id="@+id/tvScoreTable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/score_table"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnPlay"
+        app:layout_constraintStart_toStartOf="@+id/btnHome"
+        app:layout_constraintTop_toBottomOf="@+id/btnHome" />
+
+    <TextView
+        android:id="@+id/tvScoreAchieved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/green1"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iHeader"
+        tools:text="¡Lograste 20 puntos!" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvScoreTable"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvScoreTable"
+        tools:listitem="@layout/item_highscore" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/imgStar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvScoreAchieved"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/star_gameover" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btnHome"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="70dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHigherScore"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/home_button" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btnPlay"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="70dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnHome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnHome"
+        app:layout_constraintTop_toTopOf="@+id/btnHome"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/play_button" />
+
+    <include
+        android:id="@+id/iHeader"
+        layout="@layout/include_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
