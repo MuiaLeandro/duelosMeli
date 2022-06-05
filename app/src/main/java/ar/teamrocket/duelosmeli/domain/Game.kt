@@ -13,4 +13,8 @@ class Game(idPlayer: Long){
     fun errorsCounter(game: Game) {
         game.errors++
     }
+
+    fun errorsDiscounter(game: Game) {
+        game.errors--
+    }
 }

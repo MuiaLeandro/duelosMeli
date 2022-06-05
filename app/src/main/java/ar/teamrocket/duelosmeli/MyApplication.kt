@@ -17,6 +17,7 @@ import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerG
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.NewMultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
+import com.facebook.drawee.backends.pipeline.Fresco
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,6 +43,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Fresco.initialize(this)
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
