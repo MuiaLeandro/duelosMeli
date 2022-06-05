@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,7 +26,7 @@ class EditUserProfile : AppCompatActivity() {
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvChangeImage.setOnClickListener {view ->
+        binding.tvChangeImage.setOnClickListener { view ->
             if (allPermissionsGranted()) {
                 showDialog()
             } else {
@@ -35,14 +36,14 @@ class EditUserProfile : AppCompatActivity() {
     }
 
     private fun showDialog() {
-        val options = arrayOf("Tomar foto", "Seleccionar de la galeria", "Eliminar foto")
+        val options = arrayOf("Tomar foto", "Seleccionar de la galería", "Eliminar foto")
 
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.cambiar_foto)
             .setItems(options) { dialog, which ->
-                when (options[which]){
+                when (options[which]) {
                     "Tomar foto" -> takePhoto()
-                    "Seleccionar de la galeria" -> takeGalleryPhoto()
+                    "Seleccionar de la galería" -> takeGalleryPhoto()
                     "Eliminar foto" -> deletePhoto()
                 }
             }
@@ -50,11 +51,13 @@ class EditUserProfile : AppCompatActivity() {
     }
 
     private fun deletePhoto() {
-        TODO("Not yet implemented")
+        Toast.makeText(this, "Eliminar Foto", Toast.LENGTH_SHORT).show()
     }
 
     private fun takeGalleryPhoto() {
-        TODO("Not yet implemented")
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE_GALLERY)
     }
 
     private fun requestPermissions(view: View) {
@@ -95,28 +98,40 @@ class EditUserProfile : AppCompatActivity() {
                     binding.ivUserProfile.setImageBitmap(bitmap)
                 }
             }
+            REQUEST_CODE_GALLERY -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val image = data?.data
+                    binding.ivUserProfile.setImageURI(image)
+                }
+            }
         }
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray) {
+        IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                takePhoto()
+                showDialog()
             }
         }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     companion object {
+        private const val REQUEST_CODE_GALLERY = 20
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
-            mutableListOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray()
+            mutableListOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ).toTypedArray()
     }
 }
