@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,20 +23,17 @@ class EditUserProfile : AppCompatActivity() {
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvChangeImage.setOnClickListener { view ->
-            requestPermissions(view)
+        binding.tvChangeImage.setOnClickListener {view ->
+            if (allPermissionsGranted()) {
+                takePhoto()
+            } else {
+                requestPermissions(view)
+            }
         }
     }
 
     private fun requestPermissions(view: View) {
         when {
-            REQUIRED_PERMISSIONS.all {
-                ContextCompat.checkSelfPermission(
-                    this, it
-                ) == PackageManager.PERMISSION_GRANTED
-            } -> {
-                takePhoto()
-            }
             REQUIRED_PERMISSIONS.all {
                 ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
@@ -49,10 +45,14 @@ class EditUserProfile : AppCompatActivity() {
                     "Estos permisos son necesarios para cambiar la foto de perfil",
                     Snackbar.LENGTH_INDEFINITE
                 ).setAction("OK") {
-                    requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
+                    ActivityCompat.requestPermissions(
+                        this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    )
                 }.show()
             }
-            else -> requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
+            else -> ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
     }
 
@@ -60,9 +60,6 @@ class EditUserProfile : AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, REQUEST_CODE_PERMISSIONS)
     }
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { takePhoto() }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -74,6 +71,22 @@ class EditUserProfile : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                takePhoto()
+            }
+        }
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
     companion object {
