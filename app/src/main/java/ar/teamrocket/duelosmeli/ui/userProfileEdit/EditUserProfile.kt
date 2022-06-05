@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 class EditUserProfile : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserProfileBinding
-    private val REQUEST_CODE_CAMERA = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,50 +25,60 @@ class EditUserProfile : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.tvChangeImage.setOnClickListener { view ->
-            requestPermission(view)
+            requestPermissions(view)
         }
     }
 
-    private fun requestPermission(view: View) {
+    private fun requestPermissions(view: View) {
         when {
-            ContextCompat.checkSelfPermission(
-                this, Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            REQUIRED_PERMISSIONS.all {
+                ContextCompat.checkSelfPermission(
+                    this, it
+                ) == PackageManager.PERMISSION_GRANTED
+            } -> {
                 takePhoto()
             }
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.CAMERA
-            ) -> {
+            REQUIRED_PERMISSIONS.all {
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    it
+                )
+            } -> {
                 Snackbar.make(
                     view,
-                    "Este permiso es necesario para tomar una foto",
+                    "Estos permisos son necesarios para cambiar la foto de perfil",
                     Snackbar.LENGTH_INDEFINITE
                 ).setAction("OK") {
-                    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                    requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
                 }.show()
             }
-            else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            else -> requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
         }
     }
 
     private fun takePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_CODE_CAMERA)
+        startActivityForResult(intent, REQUEST_CODE_PERMISSIONS)
     }
 
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { takePhoto() }
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { takePhoto() }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            REQUEST_CODE_CAMERA -> {
+            REQUEST_CODE_PERMISSIONS -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val bitmap = data?.extras?.get("data") as Bitmap
                     binding.ivUserProfile.setImageBitmap(bitmap)
                 }
             }
         }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray()
     }
 }
