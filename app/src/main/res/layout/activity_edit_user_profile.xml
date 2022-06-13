@@ -10,7 +10,7 @@
         android:id="@+id/ivUserProfile"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/oval_background"
+        android:background="@drawable/oval_background"
         android:scaleType="centerCrop"
         android:layout_marginStart="32dp"
         android:layout_marginTop="180dp"
@@ -32,14 +32,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivUserProfile" />
 
+
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:text="Nombre"
-        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvChangeImage" />
 
@@ -48,16 +48,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="16dp"
         android:baselineAligned="false"
-        android:ems="15"
+        android:ems="12"
         android:hint="Nombre de usuario"
         android:importantForAutofill="no"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords|textAutoCorrect"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+    <Button
+        android:id="@+id/btnSaveName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:baselineAligned="false"
+        android:text="Guardar"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUserName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
