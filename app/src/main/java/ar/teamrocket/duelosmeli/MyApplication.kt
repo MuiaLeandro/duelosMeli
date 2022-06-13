@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
+import ar.teamrocket.duelosmeli.data.database.UserPreferences
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
@@ -24,6 +25,11 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class MyApplication : Application() {
+
+    companion object {
+        lateinit var  userPreferences: UserPreferences
+    }
+
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
@@ -42,6 +48,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Fresco.initialize(this)
+        userPreferences = UserPreferences(applicationContext)
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
