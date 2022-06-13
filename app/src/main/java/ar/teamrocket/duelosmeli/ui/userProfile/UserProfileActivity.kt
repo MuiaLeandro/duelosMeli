@@ -1,12 +1,12 @@
 package ar.teamrocket.duelosmeli.ui.userProfile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ar.teamrocket.duelosmeli.MyApplication.Companion.userPreferences
 import ar.teamrocket.duelosmeli.databinding.ActivityUserProfileBinding
-import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.ui.userProfileEdit.EditUserProfile
-import com.facebook.drawee.backends.pipeline.Fresco
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -17,9 +17,20 @@ class UserProfileActivity : AppCompatActivity() {
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setView()
+
         binding.ivEditProfile.setOnClickListener {
-            val intent = Intent(this, EditUserProfile::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EditUserProfile::class.java))
         }
+    }
+
+    private fun setView() {
+        binding.tvUserName.text = userPreferences.getName()
+        binding.ivUserProfile.setImageURI(Uri.parse(userPreferences.getPhoto()))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setView()
     }
 }

@@ -2,20 +2,26 @@ package ar.teamrocket.duelosmeli.ui.userProfileEdit
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.MediaStore.Images
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import ar.teamrocket.duelosmeli.MyApplication.Companion.userPreferences
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityEditUserProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import java.io.ByteArrayOutputStream
+
 
 class EditUserProfile : AppCompatActivity() {
 
@@ -26,12 +32,30 @@ class EditUserProfile : AppCompatActivity() {
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setView()
+
         binding.tvChangeImage.setOnClickListener { view ->
             if (allPermissionsGranted()) {
                 showDialog()
             } else {
                 requestPermissions(view)
             }
+        }
+
+        binding.btnSaveName.setOnClickListener {
+            saveNameToPrefs()
+            finish()
+        }
+    }
+
+    private fun setView() {
+        binding.etUserName.hint = userPreferences.getName()
+        binding.ivUserProfile.setImageURI(Uri.parse(userPreferences.getPhoto()))
+    }
+
+    private fun saveNameToPrefs() {
+        if (!binding.etUserName.text.toString().isNullOrEmpty()) {
+            userPreferences.saveName(binding.etUserName.text.toString())
         }
     }
 
@@ -95,16 +119,35 @@ class EditUserProfile : AppCompatActivity() {
             REQUEST_CODE_PERMISSIONS -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val bitmap = data?.extras?.get("data") as Bitmap
-                    binding.ivUserProfile.setImageBitmap(bitmap)
+                    val image = getImageUri(this, bitmap)
+                    saveImage(image)
                 }
             }
             REQUEST_CODE_GALLERY -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val image = data?.data
-                    binding.ivUserProfile.setImageURI(image)
+                    saveImage(image)
                 }
             }
         }
+    }
+
+    private fun saveImage(image: Uri?) {
+        binding.ivUserProfile.setImageURI(image)
+        userPreferences.savePhoto(image.toString())
+    }
+
+    /**
+    Convierte un Bitmap a una imagen Uri
+     */
+    fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = Images.Media.insertImage(
+            context.getContentResolver(),
+            bitmap, "Temp", null
+        )
+        return Uri.parse(path)
     }
 
     override fun onRequestPermissionsResult(
@@ -131,7 +174,8 @@ class EditUserProfile : AppCompatActivity() {
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
                 Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
             ).toTypedArray()
     }
 }
