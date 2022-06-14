@@ -11,43 +11,46 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/yellow"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="10dp">
+        android:layout_height="320dp"
+        android:background="@drawable/bg_motion_layout"
+        android:elevation="10dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/Button1"
+            android:id="@+id/btnUserProfile"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
-            android:text="Boton 1"
-            />
-
-        <Button
-            android:id="@+id/Button2"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
+            android:text="@string/perfil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/blue1"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnSetup"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
             android:layout_marginTop="100dp"
-            android:text="Boton 2"
-            />
-
-        <Button
-            android:id="@+id/Button3"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
+            android:text="@string/configuraciones"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/blue1"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnAbout"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
             android:layout_marginTop="180dp"
-            android:text="Boton 3"
-            />
+            android:text="@string/acerca_de"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/blue1"
+            android:textColor="@color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
