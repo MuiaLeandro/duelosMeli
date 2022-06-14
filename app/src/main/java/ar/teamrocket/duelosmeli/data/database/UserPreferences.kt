@@ -21,4 +21,8 @@ class UserPreferences(val context: Context) {
     fun getName() = storage.getString(SHARED_USER_NAME, "")!!
 
     fun getPhoto() = storage.getString(SHARED_USER_PHOTO, "")!!
+
+    fun deletePhoto(){
+        storage.edit().remove(SHARED_USER_PHOTO).apply()
+    }
 }

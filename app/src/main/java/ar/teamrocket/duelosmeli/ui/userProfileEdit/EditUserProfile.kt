@@ -75,7 +75,8 @@ class EditUserProfile : AppCompatActivity() {
     }
 
     private fun deletePhoto() {
-        Toast.makeText(this, "Eliminar Foto", Toast.LENGTH_SHORT).show()
+        userPreferences.deletePhoto()
+        binding.ivUserProfile.setImageURI(Uri.parse(userPreferences.getPhoto()))
     }
 
     private fun takeGalleryPhoto() {
