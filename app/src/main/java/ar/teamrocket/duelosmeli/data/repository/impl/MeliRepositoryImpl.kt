@@ -22,6 +22,15 @@ class MeliRepositoryImpl : MeliRepository {
         return response.body()!!
     }
 
+    override suspend fun searchItemFromCategory(
+        id: String,
+        state: String,
+        city: String
+    ): Articles {
+        val response = API().getArticlesFromCategory(id,state,city)
+        return response.body()!!
+    }
+
     // Se obtienen los datos más detallados de un artículo, por ahora usamos solo una imágen
     override suspend fun searchItem(id: String): Article {
 

@@ -16,5 +16,16 @@ data class ArticlePicture (
 )
 
 data class Articles (
-    var results: List<Article>
+    var results: List<Article>,
+    var available_filters: List<AvailableFilters>
+)
+
+data class AvailableFilters (
+    var id: String,
+    var values: List<Values>
+)
+
+data class Values (
+    val id: String,
+    val name: String
 )
