@@ -12,6 +12,16 @@
             motion:touchAnchorSide="bottom"
             motion:dragDirection="dragDown"/>
         <KeyFrameSet>
+            <KeyPosition
+                motion:motionTarget="@+id/tvSinglePlayer"
+                motion:framePosition="60"
+                motion:keyPositionType="deltaRelative"
+                motion:percentX="0"/>
+            <KeyPosition
+                motion:motionTarget="@+id/tvMultiPlayer"
+                motion:framePosition="60"
+                motion:keyPositionType="deltaRelative"
+                motion:percentX="0"/>
         </KeyFrameSet>
     </Transition>
 
@@ -21,6 +31,46 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             motion:layout_constraintBottom_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/ivLogo"
+            android:layout_height="209dp"
+            android:layout_width="311dp"
+            android:layout_marginTop="100dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/btnSinglePlayer"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="220dp"
+            android:layout_marginStart="90dp" />
+        <Constraint
+            android:id="@+id/btnMultiPlayer"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="220dp"
+            android:layout_marginEnd="90dp" />
+        <Constraint
+            android:id="@+id/tvSinglePlayer"
+            android:layout_height="20dp"
+            android:layout_width="100dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="190dp"
+            motion:layout_constraintStart_toStartOf="@id/btnSinglePlayer"
+            motion:layout_constraintEnd_toEndOf="@id/btnSinglePlayer" />
+        <Constraint
+            android:id="@+id/tvMultiPlayer"
+            android:layout_height="20dp"
+            android:layout_width="130dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="190dp"
+            motion:layout_constraintStart_toStartOf="@id/btnMultiPlayer"
+            motion:layout_constraintEnd_toEndOf="@id/btnMultiPlayer"/>
     </ConstraintSet>
 
 
@@ -29,31 +79,42 @@
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="320dp"
-            motion:layout_constraintTop_toTopOf="parent"/>
-
+            motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
             android:id="@+id/ivLogo"
             android:layout_width="311dp"
             android:layout_height="209dp"
-            motion:layout_constraintBottom_toTopOf="@+id/btnOnePlayer"
-            android:layout_marginBottom="10dp"
-            android:scaleX="0.75"
-            android:scaleY="0.75"
-            />
-
+            motion:layout_constraintBottom_toTopOf="@+id/btnSinglePlayer"
+            android:layout_marginBottom="30dp"/>
         <Constraint
-            android:id="@+id/btnOnePlayer"
-            android:layout_width="210dp"
+            android:id="@+id/btnSinglePlayer"
             android:layout_height="70dp"
-            motion:layout_constraintBottom_toTopOf="@+id/btnMultiplayer"
-            android:layout_marginBottom="20dp"
-            />
-
-        <Constraint
-            android:id="@+id/btnMultiplayer"
-            android:layout_width="210dp"
-            android:layout_height="70dp"
+            android:layout_width="70dp"
             motion:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="20dp"/>
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="60dp"
+            android:layout_marginStart="90dp" />
+        <Constraint
+            android:id="@+id/btnMultiPlayer"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="60dp"
+            android:layout_marginEnd="90dp"  />
+        <Constraint
+            android:id="@id/tvSinglePlayer"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            motion:layout_constraintEnd_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/tvMultiPlayer"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            motion:layout_constraintStart_toEndOf="parent"/>
     </ConstraintSet>
 </MotionScene>

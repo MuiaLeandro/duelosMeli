@@ -54,4 +54,6 @@
     <string name="configuraciones">Configuraciones</string>
     <string name="perfil">Perfil</string>
     <string name="acerca_de">Acerca de duelosMeli</string>
+    <string name="_1_jugador">1 JUGADOR</string>
+    <string name="multijugador">MULTIJUGADOR</string>
 </resources>
