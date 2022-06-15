@@ -10,8 +10,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
+import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,13 +19,13 @@ import ar.teamrocket.duelosmeli.MyApplication.Companion.userPreferences
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityEditUserProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import java.io.ByteArrayOutputStream
 
 
 class EditUserProfile : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserProfileBinding
+    private var wasShowedRequestPermissionRationale = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +37,31 @@ class EditUserProfile : AppCompatActivity() {
         binding.tvChangeImage.setOnClickListener { view ->
             if (allPermissionsGranted()) {
                 showDialog()
-            } else {
-                requestPermissions(view)
-            }
+            } else if (wasShowedRequestPermissionRationale && !allPermissionsGranted()) {
+                showConfigurationDialog()
+            } else requestPermissions(view)
         }
 
         binding.btnSaveName.setOnClickListener {
             saveNameToPrefs()
             finish()
         }
+    }
+
+    private fun showConfigurationDialog() {
+        MaterialAlertDialogBuilder(
+            this,
+            R.style.Dialog
+        )
+            .setMessage("Abre la configuración, toca Permisos y activa Camara y Almacenamiento")
+            .setNegativeButton("Cancelar") { dialog, which -> }
+            .setPositiveButton("Abrir configuración") { dialog, which ->
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    data = Uri.parse("package:$packageName")
+                }.let { startActivity(it) }
+            }
+            .show()
     }
 
     private fun setView() {
@@ -93,15 +109,20 @@ class EditUserProfile : AppCompatActivity() {
                     it
                 )
             } -> {
-                Snackbar.make(
-                    view,
-                    "Estos permisos son necesarios para cambiar la foto de perfil",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction("OK") {
-                    ActivityCompat.requestPermissions(
-                        this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-                    )
-                }.show()
+                MaterialAlertDialogBuilder(
+                    this,
+                    R.style.Dialog
+                )
+                    .setTitle("Solicitud de permisos")
+                    .setMessage("Para continuar, activa los permisos necesarios para cambiar la foto de perfil")
+                    .setNegativeButton("Cancelar") { dialog, which -> }
+                    .setPositiveButton("Aceptar") { dialog, which ->
+                        ActivityCompat.requestPermissions(
+                            this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                        )
+                    }
+                    .show()
+                wasShowedRequestPermissionRationale = true
             }
             else -> ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
