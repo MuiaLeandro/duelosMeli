@@ -6,6 +6,7 @@ import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
+import ar.teamrocket.duelosmeli.data.database.UserPreferences
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
@@ -28,7 +29,7 @@ class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
-        viewModel { GameViewModel(get(),get()) }
+        viewModel { GameViewModel(get()) }
         viewModel { MultiplayerGamePartialResultActivityViewModel(get()) }
         viewModel { MultiplayerGameReadyViewModel(get()) }
         viewModel { NewMultiplayerGameViewModel(get()) }
@@ -37,7 +38,6 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
-        single { Prefs(applicationContext) }
     }
 
 
