@@ -31,6 +31,10 @@ class API {
         return getAPI().getArticlesFromCategory(id)
     }
 
+    suspend fun getArticlesFromCategory(id: String,state: String,city:String): Response<Articles>{
+        return getAPI().getArticlesFromCategory(id,state,city)
+    }
+
     // Brazilian searchs
     suspend fun getCategoriesBR(): Response<List<Category>>{
         return getAPI().getCategoriesBR()
