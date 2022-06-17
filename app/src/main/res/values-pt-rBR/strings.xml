@@ -9,8 +9,10 @@
     <string name="back_to_the_start">Início</string>
     <string name="next">Próximo</string>
     <string name="play">Jogar</string>
-    <string name="achieved_points">Você conseguiu %d pontos</string>
-    <string name="record_points">Sua pontuação: %d</string>
+    <string name="achieved_no_point">Você não conseguiu nenhum ponto :(</string>
+    <string name="achieved_one_point">Você tem apenas %d ponto!</string>
+    <string name="achieved_points">Você conseguiu %d pontos!</string>
+    <string name="record_points">Sua última pontuação mais alta foi: %d</string>
     <string name="resource_not_found">Recurso não encontrado</string>
     <string name="bad_request">Aplicação incorreta</string>
     <string name="server_error">Ocorreu um erro no servidor</string>
