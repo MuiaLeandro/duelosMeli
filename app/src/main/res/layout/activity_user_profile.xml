@@ -33,6 +33,8 @@
         app:layout_constraintStart_toEndOf="@+id/tvUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName"
         app:placeholderImage="@drawable/button_edit"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         fresco:roundAsCircle="true" />
 
     <TextView
