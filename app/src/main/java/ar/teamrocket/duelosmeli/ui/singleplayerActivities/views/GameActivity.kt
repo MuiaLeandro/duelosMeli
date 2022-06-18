@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
+import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
@@ -82,10 +83,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     private fun setListeners(){
         vm.starGame.observe(this) {
-            if (it) {
-                binding.clLoading.visibility = View.VISIBLE
-                vm.findCategories()
-            }
+            if (it) continueGame()
         }
     }
 

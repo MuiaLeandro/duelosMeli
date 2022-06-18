@@ -10,6 +10,8 @@ interface MeliRepository {
 
     suspend fun searchItemFromCategory(id: String): Articles
 
+    suspend fun searchItemFromCategory(id: String,state: String,city:String): Articles
+
     suspend fun searchItem(id: String): Article
 
     // Brazilian searchs

@@ -7,7 +7,6 @@
     app:layoutDescription="@xml/activity_main_menu_scene"
     tools:context=".ui.MainMenuActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -21,11 +20,11 @@
             android:layout_width="220dp"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:backgroundTint="@color/blue1"
             android:text="@string/perfil"
             android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,11 +34,11 @@
             android:layout_width="220dp"
             android:layout_height="60dp"
             android:layout_marginTop="100dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:backgroundTint="@color/blue1"
             android:text="@string/configuraciones"
             android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,17 +48,16 @@
             android:layout_width="220dp"
             android:layout_height="60dp"
             android:layout_marginTop="180dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:backgroundTint="@color/blue1"
             android:text="@string/acerca_de"
             android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/btnSinglePlayer"
@@ -74,6 +72,35 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         app:placeholderImage="@drawable/multiplayer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clLocationContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_location_on_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLocationPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue1"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -99,5 +126,12 @@
         android:text="@string/multijugador"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="25dp" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
