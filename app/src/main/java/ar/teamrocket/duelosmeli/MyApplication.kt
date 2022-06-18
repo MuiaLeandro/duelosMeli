@@ -26,11 +26,6 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class MyApplication : Application() {
-
-    companion object {
-        lateinit var  userPreferences: UserPreferences
-    }
-
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
@@ -43,13 +38,13 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
-        single {Prefs(applicationContext)}
+        single { Prefs(applicationContext) }
+        single { UserPreferences(applicationContext) }
     }
 
     override fun onCreate() {
         super.onCreate()
         Fresco.initialize(this)
-        userPreferences = UserPreferences(applicationContext)
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
