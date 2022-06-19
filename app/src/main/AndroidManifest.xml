@@ -26,9 +26,9 @@
         <activity
             android:name=".ui.ConfigActivity"
             android:exported="false" />
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.geo.API_KEY" -->
-        <!-- android:value="${MAPS_API_KEY}" /> -->
+         <meta-data
+         android:name="com.google.android.geo.API_KEY"
+         android:value="${MAPS_API_KEY}" />
         <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false" />

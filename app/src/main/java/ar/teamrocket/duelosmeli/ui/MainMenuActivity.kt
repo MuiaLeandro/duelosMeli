@@ -20,6 +20,7 @@ import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
 import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -73,7 +74,7 @@ class MainMenuActivity : AppCompatActivity() {
                 binding.tvLocationPlay.text=""
             }
             .setPositiveButton("Si") { _, _ ->
-                //getLocation() // obtiene ubicacion
+                getLocation() // obtiene ubicacion
             }
             .show()
     }
@@ -87,27 +88,27 @@ class MainMenuActivity : AppCompatActivity() {
     * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
     * */
 
-//    private fun getLocation(){
-//        if(!isLocationPermissionGranted()){
-//            requestLocationPermission()
-//        } else if (isLocationEnabled()) {
-//            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-//                if(location == null){
-//                    // si no existe una ultima ubicacion conocida entonces la creamos con un request:
-//                    newLocationData()
-//                }else{
-//                    saveLocationWithinPrefs(location)
-//
-//                    binding.tvLocationPlay.text = prefs.getLocationState()
-//                    Log.d("Coordenadas:" , "Your Location:${location.longitude},${location.latitude}")
-//                }
-//                prefs.saveLocationEnabled(true)  //Setea configuracion del juego para jugar con location
-//                binding.tvLocationPlay.text= prefs.getLocationState()
-//            }
-//        } else {
-//            Toast.makeText(this,"Por favor, para jugar con publicaciones cercanas debes activar la ubicación",Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    private fun getLocation(){
+        if(!isLocationPermissionGranted()){
+            requestLocationPermission()
+        } else if (isLocationEnabled()) {
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                if(location == null){
+                    // si no existe una ultima ubicacion conocida entonces la creamos con un request:
+                    newLocationData()
+                }else{
+                    saveLocationWithinPrefs(location)
+
+                    binding.tvLocationPlay.text = prefs.getLocationState()
+                    Log.d("Coordenadas:" , "Your Location:${location.longitude},${location.latitude}")
+                }
+                prefs.saveLocationEnabled(true)  //Setea configuracion del juego para jugar con location
+                binding.tvLocationPlay.text= prefs.getLocationState()
+            }
+        } else {
+            Toast.makeText(this,"Por favor, para jugar con publicaciones cercanas debes activar la ubicación",Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun saveLocationWithinPrefs(location: Location) {
         prefs.saveLocationCountry(getCountryName(location.latitude, location.longitude))
@@ -142,17 +143,17 @@ class MainMenuActivity : AppCompatActivity() {
         return getAddress(latitude, longitude).subAdminArea
     }
 
-//
-//    private fun newLocationData() {
-//        val locationRequest =  LocationRequest()
-//        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-//        locationRequest.interval = 0
-//        locationRequest.fastestInterval = 0
-//        locationRequest.numUpdates = 1
-//        fusedLocationProviderClient.requestLocationUpdates(
-//            locationRequest,locationCallback, Looper.myLooper()
-//        )
-//    }
+
+    private fun newLocationData() {
+        val locationRequest =  LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        locationRequest.interval = 0
+        locationRequest.fastestInterval = 0
+        locationRequest.numUpdates = 1
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,locationCallback, Looper.myLooper()
+        )
+    }
 
 
     private fun isLocationEnabled(): Boolean {      //devuelve TRUE si el GPS o los datos moviles estan encendidos
@@ -203,7 +204,7 @@ class MainMenuActivity : AppCompatActivity() {
             REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 prefs.saveLocationEnabled(true)
                 binding.tvLocationPlay.text=""
-                //getLocation()
+                getLocation()
             } else {
                 Toast.makeText(this, "Para poder utilizar tu ubicacion necesitamos que aceptes el permiso desde los ajustes de tu telefono movil", Toast.LENGTH_SHORT).show()
             }
