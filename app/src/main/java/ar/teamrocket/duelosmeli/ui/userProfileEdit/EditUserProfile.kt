@@ -15,10 +15,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ar.teamrocket.duelosmeli.MyApplication.Companion.userPreferences
 import ar.teamrocket.duelosmeli.R
+import ar.teamrocket.duelosmeli.data.database.UserPreferences
+import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityEditUserProfileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.android.ext.android.inject
 import java.io.ByteArrayOutputStream
 
 
@@ -26,6 +28,7 @@ class EditUserProfile : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserProfileBinding
     private var wasShowedRequestPermissionRationale = false
+    private val userPreferences: UserPreferences by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,10 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
+import android.location.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -21,7 +18,9 @@ import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
+import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -56,8 +55,12 @@ class MainMenuActivity : AppCompatActivity() {
             showDialogForGameWithLocation()
             prefs.saveIsFirstUse(false)
         }
-        binding.btnOnePlayer.setOnClickListener { viewNewGame() }
-        binding.btnMultiplayer.setOnClickListener { viewNewMultiplayerGame() }
+
+        binding.btnSinglePlayer.setOnClickListener { viewNewGame() }
+        binding.btnMultiPlayer.setOnClickListener { viewNewMultiplayerGame() }
+        binding.btnUserProfile.setOnClickListener{ viewUserProfile() }
+        binding.btnSetup.setOnClickListener{ viewConfig() }
+        binding.btnAbout.setOnClickListener {viewAboutUs() }
         binding.clLocationContainer.setOnClickListener { showDialogForGameWithLocation() }
     }
 
@@ -84,6 +87,7 @@ class MainMenuActivity : AppCompatActivity() {
     * Si la ubicacion GPS o los datos moviles estan encendidos pide la última ubicación conocida. Si
     * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
     * */
+
     private fun getLocation(){
         if(!isLocationPermissionGranted()){
             requestLocationPermission()
@@ -233,4 +237,27 @@ class MainMenuActivity : AppCompatActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
+
+    private fun viewUserProfile() {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun viewConfig() {
+        val intent = Intent(this, ConfigActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun viewAboutUs() {
+
+        Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
+
+        // Agregar AboutUsActivity
+        //val intent = Intent(this, AboutUsActivity::class.java)
+        //startActivity(intent)
+        //finish()
+    }
+
 }

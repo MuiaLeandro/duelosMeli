@@ -51,5 +51,10 @@
     <string name="puntos_insuficientes">Ups! No tenés puntos suficientes :(</string>
     <string name="vidas_completas">¡Tenés 3 vidas! Todo tiene un límite :P</string>
     <string name="tv_activity_game_estas_listo">¿Estás listo?</string>
+    <string name="configuraciones">Configuraciones</string>
+    <string name="perfil">Perfil</string>
+    <string name="acerca_de">Acerca de duelosMeli</string>
+    <string name="_1_jugador">1 JUGADOR</string>
+    <string name="multijugador">MULTIJUGADOR</string>
     <string name="cambiar_foto">Cambiar foto del perfil</string>
 </resources>

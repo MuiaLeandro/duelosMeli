@@ -29,7 +29,7 @@ class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
-        viewModel { GameViewModel(get()) }
+        viewModel { GameViewModel(get(), get()) }
         viewModel { MultiplayerGamePartialResultActivityViewModel(get()) }
         viewModel { MultiplayerGameReadyViewModel(get()) }
         viewModel { NewMultiplayerGameViewModel(get()) }
@@ -38,8 +38,9 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
+        single { Prefs(applicationContext) }
+        single { UserPreferences(applicationContext) }
     }
-
 
     override fun onCreate() {
         super.onCreate()
