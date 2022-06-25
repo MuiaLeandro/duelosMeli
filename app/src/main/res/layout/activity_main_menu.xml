@@ -38,12 +38,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnSetup"
+            android:id="@+id/btnHowToPlay"
             android:layout_width="220dp"
             android:layout_height="60dp"
             android:layout_marginTop="100dp"
             android:backgroundTint="@color/blue1"
-            android:text="@string/configuraciones"
+            android:text="@string/howToPlay"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"

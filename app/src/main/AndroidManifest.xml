@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
         <activity
-            android:name=".ui.ConfigActivity"
+            android:name=".ui.HowToPlayActivity"
             android:exported="false" />
          <meta-data
          android:name="com.google.android.geo.API_KEY"
