@@ -35,7 +35,7 @@ android {
     viewBinding {
         enabled = true
     }
-    //buildToolsVersion '33.0.0 rc2'
+    namespace 'ar.teamrocket.duelosmeli'
 }
 
 dependencies {
