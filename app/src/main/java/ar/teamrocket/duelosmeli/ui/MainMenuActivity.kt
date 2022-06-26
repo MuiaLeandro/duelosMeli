@@ -59,7 +59,7 @@ class MainMenuActivity : AppCompatActivity() {
         binding.btnSinglePlayer.setOnClickListener { viewNewGame() }
         binding.btnMultiPlayer.setOnClickListener { viewNewMultiplayerGame() }
         binding.btnUserProfile.setOnClickListener{ viewUserProfile() }
-        binding.btnSetup.setOnClickListener{ viewConfig() }
+        binding.btnHowToPlay.setOnClickListener{ viewHowToPlayActivity() }
         binding.btnAbout.setOnClickListener {viewAboutUs() }
         binding.clLocationContainer.setOnClickListener { showDialogForGameWithLocation() }
     }
@@ -244,8 +244,8 @@ class MainMenuActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun viewConfig() {
-        val intent = Intent(this, ConfigActivity::class.java)
+    private fun viewHowToPlayActivity() {
+        val intent = Intent(this, HowToPlayActivity::class.java)
         startActivity(intent)
         finish()
     }
