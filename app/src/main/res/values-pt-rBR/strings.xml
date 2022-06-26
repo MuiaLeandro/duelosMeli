@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">duelosMeli</string>
     <string name="whats_the_price">Qual é o preço deste produto?</string>
     <string name="new_player">Novo jogador</string>
     <string name="select_player">ou selecione um jogador</string>
@@ -10,8 +9,10 @@
     <string name="back_to_the_start">Início</string>
     <string name="next">Próximo</string>
     <string name="play">Jogar</string>
-    <string name="achieved_points">Você conseguiu %d pontos</string>
-    <string name="record_points">Sua pontuação: %d</string>
+    <string name="achieved_no_point">Você não conseguiu nenhum ponto :(</string>
+    <string name="achieved_one_point">Você tem apenas %d ponto!</string>
+    <string name="achieved_points">Você conseguiu %d pontos!</string>
+    <string name="record_points">Sua última pontuação mais alta foi: %d</string>
     <string name="resource_not_found">Recurso não encontrado</string>
     <string name="bad_request">Aplicação incorreta</string>
     <string name="server_error">Ocorreu um erro no servidor</string>
@@ -37,4 +38,20 @@
     <string name="asegurar_conexion">Verifique se você está conectado a uma rede Wi-Fi com conexão à Internet ou rede de dados móveis</string>
     <string name="terminar_partida">Terminar o jogo</string>
     <string name="reintentar_conexion">Tente novamente a conexão</string>
+    <string name="partida_finalizada">Fim de jogo</string>
+    <string name="player">Jogador</string>
+    <string name="partida_multijugador">Jogo multijogador</string>
+    <string name="pasar_pregunta">¡Próximo!</string>
+    <string name="vida_extra">Vida Extra</string>
+    <string name="usa_puntos">Use seus pontos</string>
+    <string name="pedi_una_ayuda">Rápido! Troque pontos por ajuda!</string>
+    <string name="puntos_insuficientes">Opa! Você não tem pontos suficientes :(</string>
+    <string name="vidas_completas">Você tem 3 vidas! Tudo tem limite :P</string>
+    <string name="tv_activity_game_estas_listo">estás pronto?</string>
+    <string name="cambiar_foto">Mudar a foto do perfil</string>
+    <string name="howToPlay">Como jogar</string>
+    <string name="perfil">Perfil</string>
+    <string name="acerca_de">Sobre duelosMeli</string>
+    <string name="_1_jugador">1 JOGADOR</string>
+    <string name="multijugador">MULTIJOGADOR</string>
 </resources>

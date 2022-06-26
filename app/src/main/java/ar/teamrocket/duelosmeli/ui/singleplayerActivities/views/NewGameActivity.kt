@@ -23,8 +23,11 @@ class NewGameActivity : AppCompatActivity() {
         binding = ActivityNewGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+    binding.iHeader.tvTitle.text=getString(R.string.player)
+    binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
 
-        //Obtengo todos los jugadores guardados
+
+    //Obtengo todos los jugadores guardados
         val allPlayers = playerDao.getAll()
         val allPlayersOrderedByName = playerDao.getAllOrderByName()
 

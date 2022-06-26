@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.room.Room
 import ar.teamrocket.duelosmeli.data.database.DuelosMeliDb
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
+import ar.teamrocket.duelosmeli.data.preferences.Prefs
+import ar.teamrocket.duelosmeli.data.database.UserPreferences
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
@@ -16,6 +18,7 @@ import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerG
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.NewMultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
+import com.facebook.drawee.backends.pipeline.Fresco
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,7 +29,7 @@ class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
-        viewModel { GameViewModel(get()) }
+        viewModel { GameViewModel(get(), get()) }
         viewModel { MultiplayerGamePartialResultActivityViewModel(get()) }
         viewModel { MultiplayerGameReadyViewModel(get()) }
         viewModel { NewMultiplayerGameViewModel(get()) }
@@ -35,11 +38,13 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
+        single { Prefs(applicationContext) }
+        single { UserPreferences(applicationContext) }
     }
-
 
     override fun onCreate() {
         super.onCreate()
+        Fresco.initialize(this)
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)

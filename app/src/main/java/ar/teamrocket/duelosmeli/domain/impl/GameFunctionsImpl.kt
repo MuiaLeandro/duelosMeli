@@ -29,4 +29,11 @@ class GameFunctionsImpl : GameFunctions {
             3 -> lifeOne.setImageResource(R.drawable.ic_life_not_filled)
         }
     }
+
+    override fun lifesCounterUpdater(game: Game, lifeThree: ImageView, lifeTwo: ImageView, lifeOne: ImageView) {
+        when (game.errors){
+            1 -> lifeThree.setImageResource(R.drawable.ic_life_filled)
+            2 -> lifeTwo.setImageResource(R.drawable.ic_life_filled)
+        }
+    }
 }

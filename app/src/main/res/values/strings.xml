@@ -11,8 +11,10 @@
     <string name="next">Siguiente</string>
     <string name="exit" translatable="false">X</string>
     <string name="play">Jugar</string>
-    <string name="achieved_points">Hiciste %d puntos</string>
-    <string name="record_points">Tu record: %d</string>
+    <string name="achieved_no_point">No lograste ningún punto :(</string>
+    <string name="achieved_one_point">¡Lograste solo %d punto!</string>
+    <string name="achieved_points">¡Lograste %d puntos!</string>
+    <string name="record_points">Tu último mayor puntaje fue: %d</string>
     <string name="resource_not_found">No se encontró el recurso</string>
     <string name="bad_request">Solicitud incorrecta</string>
     <string name="server_error">Ocurrió un error en el servidor</string>
@@ -39,4 +41,20 @@
     <string name="asegurar_conexion">Asegurate de estar conectado a una red Wi-Fi con conexión a internet o red de datos móviles</string>
     <string name="terminar_partida">Terminar la partida</string>
     <string name="reintentar_conexion">Reintentar conexión</string>
+    <string name="partida_finalizada">Partida finalizada</string>
+    <string name="player">Jugador</string>
+    <string name="partida_multijugador">Partida multijugador</string>
+    <string name="pasar_pregunta">¡Paso! (3 puntos)</string>
+    <string name="vida_extra">Vida Extra (5 puntos)</string>
+    <string name="usa_puntos">Usá tus puntos</string>
+    <string name="pedi_una_ayuda">¡Rápido! ¡Pedí una ayuda por puntos!</string>
+    <string name="puntos_insuficientes">Ups! No tenés puntos suficientes :(</string>
+    <string name="vidas_completas">¡Tenés 3 vidas! Todo tiene un límite :P</string>
+    <string name="tv_activity_game_estas_listo">¿Estás listo?</string>
+    <string name="howToPlay">Como jugar</string>
+    <string name="perfil">Perfil</string>
+    <string name="acerca_de">Acerca de duelosMeli</string>
+    <string name="_1_jugador">1 JUGADOR</string>
+    <string name="multijugador">MULTIJUGADOR</string>
+    <string name="cambiar_foto">Cambiar foto del perfil</string>
 </resources>

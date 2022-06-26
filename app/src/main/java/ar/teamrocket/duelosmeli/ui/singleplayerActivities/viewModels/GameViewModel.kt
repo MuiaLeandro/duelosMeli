@@ -1,11 +1,13 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import kotlinx.coroutines.launch
 import java.math.RoundingMode
@@ -13,7 +15,8 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
+
+class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs: Prefs) : ViewModel() {
 
     private val systemLanguage: String = Locale.getDefault().language
     private lateinit var categories: List<Category>
@@ -50,22 +53,64 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository) : ViewModel() {
         }
     }
 
+    /*
+    *
+    * Si el lenguaje del dispositivo no esta en portugues y la configuracion del juego esta
+    * habilitada para jugar con ubicacion y nunca antes se habia guardado el ID de la provincia
+    * (state), entonces se hace una llamada a la API para que traiga los items de esa categoria sin
+    * filtros de ubicacion y dentro del response busca el filtro de "STATE" para encontrar el ID de
+    * la provincia y lo guarda en Preferences para ya tenerlo en futuras consultas. Luego vuelve a
+    * hacer el llamado a la API para obtener la lista de items pero filtrada por STATE (Provincia).
+    * --------------------------------------------------------------------------------------------
+    * Si el ID de la provincia ya esta guardado en SharedPreferences hace la llamada a la API
+    * directamente con el id de la categoria y el de la provincia y nada mas.
+    * --------------------------------------------------------------------------------------------
+    * Si el juego por ubicacion esta deshabilitado se hace la llamada a la API con el ID de la
+    * categoria nada mas.
+    *
+    *
+    * */
+
     fun findItemFromCategory(categoryId: String) {
         viewModelScope.launch {
             try {
-                items = when(systemLanguage) {
-                    "pt" -> meliRepositoryImpl.searchItemFromCategoryBR(categoryId)
-                    else -> meliRepositoryImpl.searchItemFromCategory(categoryId)
+                if (systemLanguage == "pt") {
+                    items = meliRepositoryImpl.searchItemFromCategoryBR(categoryId)
+                } else {
+                    if (prefs.getLocationEnabled()) {
+                        if (prefs.getLocationStateId() == "") {
+                            items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+                            val stateFilter =
+                                items.available_filters.first { filter -> filter.id == "state" }
+                            val state = stateFilter.values.firstOrNull { state ->
+                                state.name.uppercase(Locale.getDefault()) == prefs.getLocationState()
+                                    .uppercase(Locale.getDefault())
+                            }
+                            prefs.saveLocationStateId(state?.id ?: "")
+                            items = meliRepositoryImpl.searchItemFromCategory(
+                                categoryId,
+                                prefs.getLocationStateId(),
+                                prefs.getLocationCityId()
+                            )
+                        } else {
+                            items = meliRepositoryImpl.searchItemFromCategory(
+                                categoryId,
+                                prefs.getLocationStateId(),
+                                prefs.getLocationCityId()
+                            )
+                        }
+                    } else {
+                        items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+                    }
                 }
                 val itemsList: MutableList<Article> = mutableListOf()
                 itemsList.addAll(items.results)
 
                 val item = itemsList[(itemsList.indices).random()]
-
                 itemNameMutable.value = item.title
 
                 itemPriceString.value = numberRounder(item.price)
-
+                Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
                 searchItem(item.id)
                 randomOptionsCalculator(item)
             } catch (e: Exception) {
