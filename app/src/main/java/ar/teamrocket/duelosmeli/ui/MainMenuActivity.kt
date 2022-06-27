@@ -1,6 +1,7 @@
 package ar.teamrocket.duelosmeli.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,6 +23,8 @@ import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -58,10 +61,12 @@ class MainMenuActivity : AppCompatActivity() {
 
         binding.btnSinglePlayer.setOnClickListener { viewNewGame() }
         binding.btnMultiPlayer.setOnClickListener { viewNewMultiplayerGame() }
+        binding.btnDuelMode.setOnClickListener { showDialogForDuelMode() }
         binding.btnUserProfile.setOnClickListener{ viewUserProfile() }
         binding.btnHowToPlay.setOnClickListener{ viewHowToPlayActivity() }
         binding.btnAbout.setOnClickListener {viewAboutUs() }
         binding.clLocationContainer.setOnClickListener { showDialogForGameWithLocation() }
+
     }
 
     private fun showDialogForGameWithLocation(){
@@ -88,6 +93,7 @@ class MainMenuActivity : AppCompatActivity() {
     * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
     * */
 
+    @SuppressLint("MissingPermission")
     private fun getLocation(){
         if(!isLocationPermissionGranted()){
             requestLocationPermission()
@@ -143,7 +149,7 @@ class MainMenuActivity : AppCompatActivity() {
         return getAddress(latitude, longitude).subAdminArea
     }
 
-
+    @SuppressLint("MissingPermission")
     private fun newLocationData() {
         val locationRequest =  LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
@@ -210,6 +216,47 @@ class MainMenuActivity : AppCompatActivity() {
             }
             else -> { }
         }
+    }
+
+    private fun showDialogForDuelMode(){
+        MaterialAlertDialogBuilder(this,
+        R.style.Dialog)
+        // Seteo de título y descripción del Dialog
+        .setTitle("Modo duelo")
+        .setMessage("¿Querés crear una partida o unirte?")
+        .setPositiveButton("Unirme") { _, _ ->
+            //Mostrar lector de QR
+            initScanner()
+        }
+        .setNegativeButton("Crear") { _, _ ->
+            //Mostrar QR con lista de 5 productos ya cargados
+        }
+        .show()
+    }
+
+    private fun initScanner() {
+        val integrator = IntentIntegrator(this)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
+        integrator.setPrompt("Scanea el QR de un amigo!")
+        integrator.setBeepEnabled(true)
+        integrator.initiateScan()
+        //con integrator.setTorchEnabled(true) podemos encender el flash, pero deberiamos setear
+    // un boton para eso
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data)
+        if (result != null){
+            if (result.contents == null){
+                Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
+            }else{
+                //Agarrar el QR scaneado y hacer lo que sea necesario
+                //Con esta funcion solo lee qr de texto y lo muestra en pantalla
+                Toast.makeText(this, "QR : ${result.contents}", Toast.LENGTH_LONG).show()
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+
     }
 
     override fun onResume() {

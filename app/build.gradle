@@ -6,8 +6,8 @@ plugins {
 }
 
 android {
+    namespace 'ar.teamrocket.duelosmeli'
     compileSdk 31
-
     defaultConfig {
         applicationId "ar.teamrocket.duelosmeli"
         minSdk 21
@@ -35,7 +35,6 @@ android {
     viewBinding {
         enabled = true
     }
-    namespace 'ar.teamrocket.duelosmeli'
 }
 
 dependencies {
