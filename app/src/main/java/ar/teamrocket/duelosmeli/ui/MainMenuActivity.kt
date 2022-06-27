@@ -243,6 +243,7 @@ class MainMenuActivity : AppCompatActivity() {
         //con integrator.setTorchEnabled(true) podemos encender el flash, pero deberiamos setear
     // un boton para eso
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data)
         if (result != null){
@@ -250,8 +251,8 @@ class MainMenuActivity : AppCompatActivity() {
                 Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
             }else{
                 //Agarrar el QR scaneado y hacer lo que sea necesario
-                //Con esta funcion solo lee qr de texto y lo muestra en pantalla
-                Toast.makeText(this, "QR : ${result.contents}", Toast.LENGTH_LONG).show()
+                //Con esta funcion ahora solo muestra el texto en pantalla
+                Toast.makeText(this, "${result.contents}", Toast.LENGTH_LONG).show()
             }
         }else{
             super.onActivityResult(requestCode, resultCode, data)
