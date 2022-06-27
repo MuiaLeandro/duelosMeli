@@ -14,14 +14,13 @@ class DuelActivity : AppCompatActivity() {
         binding = ActivityDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //TODO: Hacer logica para leer los productos de la activity anterior y presentarlos en
-    // pantalla
-
+        //TODO: Hacer logica para leer los productos de la activity anterior y presentarlos en pantalla
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        //val intent = Intent(this, DuelOverActivity::class.java)
+        //TODO: ir al duel over?
+        val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
         finish()
     }

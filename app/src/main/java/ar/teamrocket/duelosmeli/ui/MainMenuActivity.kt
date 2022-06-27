@@ -2,6 +2,7 @@ package ar.teamrocket.duelosmeli.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import ar.teamrocket.duelosmeli.ui.duelActivities.NewDuelActivity
 import ar.teamrocket.duelosmeli.R
+import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
@@ -31,6 +33,7 @@ import java.util.*
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
+    val scanner = QRScanner()
     private val prefs: Prefs by inject()
     private val westCities = setOf("La Matanza", "Merlo", "Moreno", "Morón", "Gral. Rodríguez", "Marcos Paz", "Hurlingham", "Ituzaingó", "Tres de Febrero")
     private val southCities = setOf("Avellaneda", "Quilmes", "Berazategui", "Florencio Varela", "Lanús", "Lomas de Zamora", "Almirante Brown", "Esteban Echeverría", "Ezeiza", "Presidente Perón", "San Vicente")
@@ -225,7 +228,7 @@ class MainMenuActivity : AppCompatActivity() {
         .setMessage("¿Querés crear una partida o unirte?")
         .setPositiveButton("Unirme") { _, _ ->
             //Mostrar lector de QR
-            initScanner()
+            scanner.initScanner(this)
         }
         .setNegativeButton("Crear") { _, _ ->
             //Mostrar QR con lista de 5 productos ya cargados
@@ -234,16 +237,7 @@ class MainMenuActivity : AppCompatActivity() {
         .show()
     }
 
-    private fun initScanner() {
-        val integrator = IntentIntegrator(this)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-        integrator.setPrompt("Scanea el QR de un amigo!")
-        integrator.setBeepEnabled(true)
-        integrator.initiateScan()
-        //con integrator.setTorchEnabled(true) podemos encender el flash, pero deberiamos setear
-    // un boton para eso
-    }
-
+    //Funcion que maneja el resultado del escaneo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data)
         if (result != null){
@@ -251,14 +245,13 @@ class MainMenuActivity : AppCompatActivity() {
                 Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
             }else{
                 // TODO: Agarrar el QR scaneado y hacer lo que sea necesario
-                //result.contents es lo que contiene el QR scaneado
+                //result.contents es quien contiene el resultado del QR scaneado
                 //Con esta funcion ahora solo muestra el texto en pantalla
                 Toast.makeText(this, "${result.contents}", Toast.LENGTH_LONG).show()
             }
         }else{
             super.onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     override fun onResume() {
