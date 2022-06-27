@@ -1,6 +1,8 @@
 package ar.teamrocket.duelosmeli.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +15,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import ar.teamrocket.duelosmeli.ui.duelActivities.NewDuelActivity
 import ar.teamrocket.duelosmeli.R
+import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
@@ -22,12 +26,14 @@ import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
 import java.util.*
 
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
+    val scanner = QRScanner()
     private val prefs: Prefs by inject()
     private val westCities = setOf("La Matanza", "Merlo", "Moreno", "Morón", "Gral. Rodríguez", "Marcos Paz", "Hurlingham", "Ituzaingó", "Tres de Febrero")
     private val southCities = setOf("Avellaneda", "Quilmes", "Berazategui", "Florencio Varela", "Lanús", "Lomas de Zamora", "Almirante Brown", "Esteban Echeverría", "Ezeiza", "Presidente Perón", "San Vicente")
@@ -58,6 +64,7 @@ class MainMenuActivity : AppCompatActivity() {
 
         binding.btnSinglePlayer.setOnClickListener { viewNewGame() }
         binding.btnMultiPlayer.setOnClickListener { viewNewMultiplayerGame() }
+        binding.btnDuelMode.setOnClickListener { showDialogForDuelMode() }
         binding.btnUserProfile.setOnClickListener{ viewUserProfile() }
         binding.btnHowToPlay.setOnClickListener{ viewHowToPlayActivity() }
         binding.btnAbout.setOnClickListener {viewAboutUs() }
@@ -88,6 +95,7 @@ class MainMenuActivity : AppCompatActivity() {
     * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
     * */
 
+    @SuppressLint("MissingPermission")
     private fun getLocation(){
         if(!isLocationPermissionGranted()){
             requestLocationPermission()
@@ -143,7 +151,7 @@ class MainMenuActivity : AppCompatActivity() {
         return getAddress(latitude, longitude).subAdminArea
     }
 
-
+    @SuppressLint("MissingPermission")
     private fun newLocationData() {
         val locationRequest =  LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
@@ -212,6 +220,40 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    private fun showDialogForDuelMode(){
+        MaterialAlertDialogBuilder(this,
+        R.style.Dialog)
+        // Seteo de título y descripción del Dialog
+        .setTitle("Modo duelo")
+        .setMessage("¿Querés crear una partida o unirte?")
+        .setPositiveButton("Unirme") { _, _ ->
+            //Mostrar lector de QR
+            scanner.initScanner(this)
+        }
+        .setNegativeButton("Crear") { _, _ ->
+            //Mostrar QR con lista de 5 productos ya cargados
+            viewNewDuelActivity()
+        }
+        .show()
+    }
+
+    //Funcion que maneja el resultado del escaneo
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data)
+        if (result != null){
+            if (result.contents == null){
+                Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
+            }else{
+                // TODO: Agarrar el QR scaneado y hacer lo que sea necesario
+                //result.contents es quien contiene el resultado del QR scaneado
+                //Con esta funcion ahora solo muestra el texto en pantalla
+                Toast.makeText(this, "${result.contents}", Toast.LENGTH_LONG).show()
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         if (!isLocationPermissionGranted()){
@@ -245,6 +287,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewHowToPlayActivity() {
+        //TODO: Agregar instructivo del juego
         val intent = Intent(this, HowToPlayActivity::class.java)
         startActivity(intent)
         finish()
@@ -253,11 +296,15 @@ class MainMenuActivity : AppCompatActivity() {
     private fun viewAboutUs() {
 
         Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
-
-        // Agregar AboutUsActivity
+        // TODO: Agregar AboutUsActivity
         //val intent = Intent(this, AboutUsActivity::class.java)
         //startActivity(intent)
         //finish()
     }
 
+    private fun viewNewDuelActivity() {
+        val intent = Intent(this, NewDuelActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
