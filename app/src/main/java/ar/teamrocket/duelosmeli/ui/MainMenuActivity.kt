@@ -23,6 +23,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
+import java.io.IOException
 import java.util.*
 
 
@@ -35,7 +36,7 @@ class MainMenuActivity : AppCompatActivity() {
     private val costaAtlanticaCities = setOf("La Costa","Pinamar","Villa Gesell","Mar Chiquita","General Pueyrredón","General Alvarado","Lobería","Necochea","San Cayetano","Tres Arroyos","Coronel Dorrego","Monte Hermoso","Coronel Rosales","Bahía Blanca","Villarino","Patagones")
 
     companion object {
-        val REQUEST_CODE_LOCATION = 0
+        const val REQUEST_CODE_LOCATION = 0
     }
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -81,13 +82,11 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun isLocationPermissionGranted()=
         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
-    /*
-    * getLocation() : Si los permisos de ubicacion no estan, los pide.
-    * Si la ubicacion GPS o los datos moviles estan encendidos pide la última ubicación conocida. Si
-    * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
-    * */
-
+/**
+ * Si los permisos de ubicacion no estan, los pide.
+ * Si la ubicacion GPS o los datos moviles estan encendidos pide la última ubicación conocida. Si
+ * esta existe la guarda en Prefs. De lo contrario, hace una request para obtener una ubicacion (newLocationData)
+ */
     private fun getLocation(){
         if(!isLocationPermissionGranted()){
             requestLocationPermission()
@@ -128,21 +127,31 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAddress(latitude: Double, longitude: Double): Address {
+    private fun getAddress(latitude: Double, longitude: Double): Address? {
         val geocoder = Geocoder(this, Locale.getDefault())
-        val address = geocoder.getFromLocation(latitude,longitude,1)
-        return address[0]
+        val address: MutableList<Address>
+        try {
+            address = geocoder.getFromLocation(latitude,longitude,1)
+        } catch (e: IOException) {
+            Log.e("LOCATION",e.message.toString())
+            return null
+        }
+        return if (!address.isNullOrEmpty()) {
+            address[0]
+        } else {
+            Toast.makeText(this, "Por favor, comprueba tu conexión a internet y vuelve a intentarlo", Toast.LENGTH_LONG).show()
+            null
+        }
     }
     private fun getCountryName(latitude: Double, longitude: Double): String {
-        return getAddress(latitude, longitude).countryName
+        return getAddress(latitude, longitude)?.countryName ?: ""
     }
     private fun getStateName(latitude: Double, longitude: Double): String {
-        return getAddress(latitude, longitude).adminArea
+        return getAddress(latitude, longitude)?.adminArea ?: ""
     }
     private fun getCityName(latitude: Double, longitude: Double): String {
-        return getAddress(latitude, longitude).subAdminArea
+        return getAddress(latitude, longitude)?.subAdminArea ?: ""
     }
-
 
     private fun newLocationData() {
         val locationRequest =  LocationRequest()
@@ -155,14 +164,14 @@ class MainMenuActivity : AppCompatActivity() {
         )
     }
 
-
-    private fun isLocationEnabled(): Boolean {      //devuelve TRUE si el GPS o los datos moviles estan encendidos
-        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private fun isLocationEnabled(): Boolean {
+        //devuelve TRUE si el GPS o los datos moviles estan encendidos
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
-    /*
-    * requestLocationPermission(): Si los permisos fueron rechazados anteriormente pedimos al
+    /**
+    * Si los permisos fueron rechazados anteriormente pedimos al
     * usuario que los habilite manualmente. De lo contrario hacemos el request para que acepte los
     * permisos por primera vez.
     * */
@@ -189,17 +198,16 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    /*
-    * onRequestPermissionsResult: Lo que sucede una vez que el usuario ACEPTO/RECHAZO los permisos.
-    * Si los aceptó se guarda en prefs el modo de juego con ubicacion y se obtiene la ubicacion,
-    * de lo contrario se muesatra un mensaje informativo.
-    * */
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        /* Si el usuario ACEPTÓ los permisos se guarda en prefs el modo de juego con ubicacion y se obtiene la ubicacion,
+         * de lo contrario se muesatra un mensaje informativo.
+         * */
         when (requestCode){
             REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 prefs.saveLocationEnabled(true)
@@ -215,7 +223,7 @@ class MainMenuActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (!isLocationPermissionGranted()){
-            //ya no esta habilitado el permiso:
+            // si ya no esta habilitado el permiso:
             prefs.saveLocationEnabled(false)
             binding.tvLocationPlay.text=""
         }
