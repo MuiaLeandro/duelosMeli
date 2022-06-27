@@ -19,18 +19,26 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DuelosMeli"
-        android:hardwareAccelerated="true">
+        android:theme="@style/Theme.DuelosMeli">
+        <activity
+            android:name="ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity"
+            android:exported="false" />
+        <activity
+            android:name="ar.teamrocket.duelosmeli.ui.duelActivities.NewDuelActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.HowToPlayActivity"
             android:exported="false" />
-         <meta-data
-         android:name="com.google.android.geo.API_KEY"
-         android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false" />
@@ -88,13 +96,14 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--Cambiar orientation de la pantalla del lector de QR-->
-        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+        </activity> <!-- Cambiar orientation de la pantalla del lector de QR -->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
-            tools:replace="screenOrientation"/>
+            tools:replace="screenOrientation" />
     </application>
 
 </manifest>

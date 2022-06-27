@@ -14,6 +14,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import ar.teamrocket.duelosmeli.ui.duelActivities.NewDuelActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
@@ -24,7 +25,6 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.integration.android.IntentIntegrator
-import com.google.zxing.integration.android.IntentResult
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -66,7 +66,6 @@ class MainMenuActivity : AppCompatActivity() {
         binding.btnHowToPlay.setOnClickListener{ viewHowToPlayActivity() }
         binding.btnAbout.setOnClickListener {viewAboutUs() }
         binding.clLocationContainer.setOnClickListener { showDialogForGameWithLocation() }
-
     }
 
     private fun showDialogForGameWithLocation(){
@@ -230,6 +229,7 @@ class MainMenuActivity : AppCompatActivity() {
         }
         .setNegativeButton("Crear") { _, _ ->
             //Mostrar QR con lista de 5 productos ya cargados
+            viewNewDuelActivity()
         }
         .show()
     }
@@ -250,7 +250,8 @@ class MainMenuActivity : AppCompatActivity() {
             if (result.contents == null){
                 Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
             }else{
-                //Agarrar el QR scaneado y hacer lo que sea necesario
+                // TODO: Agarrar el QR scaneado y hacer lo que sea necesario
+                //result.contents es lo que contiene el QR scaneado
                 //Con esta funcion ahora solo muestra el texto en pantalla
                 Toast.makeText(this, "${result.contents}", Toast.LENGTH_LONG).show()
             }
@@ -293,6 +294,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewHowToPlayActivity() {
+        //TODO: Agregar instructivo del juego
         val intent = Intent(this, HowToPlayActivity::class.java)
         startActivity(intent)
         finish()
@@ -301,11 +303,15 @@ class MainMenuActivity : AppCompatActivity() {
     private fun viewAboutUs() {
 
         Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
-
-        // Agregar AboutUsActivity
+        // TODO: Agregar AboutUsActivity
         //val intent = Intent(this, AboutUsActivity::class.java)
         //startActivity(intent)
         //finish()
     }
 
+    private fun viewNewDuelActivity() {
+        val intent = Intent(this, NewDuelActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
