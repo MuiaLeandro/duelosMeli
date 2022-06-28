@@ -3,8 +3,13 @@ package ar.teamrocket.duelosmeli.ui.duelActivities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import ar.teamrocket.duelosmeli.data.model.ItemDuel
 import ar.teamrocket.duelosmeli.databinding.ActivityNewDuelBinding
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
+import com.google.gson.Gson
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 
 class NewDuelActivity : AppCompatActivity() {
     lateinit var binding :ActivityNewDuelBinding
@@ -12,16 +17,36 @@ class NewDuelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //TODO: Hacer logica para que se cree el QR con los items
+        val gson = Gson()
+        val items = mutableListOf<ItemDuel>()
+        items.add(ItemDuel("item1","titulo1","4565","https://dsgfgd", listOf("7854","44"),(1..3).random()))
+        items.add(ItemDuel("item2","titulo2","234","https://dsgfgd", listOf("56","775"),(1..3).random()))
+        items.add(ItemDuel("item3","titulo3","908","https://dsgfgd", listOf("234","6789"),(1..3).random()))
+        val itemsString: String = gson.toJson(items)
 
         binding.iHeader.tvTitle.text = "Nuevo duelo"
         binding.iHeader.ivButtonBack.setOnClickListener{ onBackPressed() }
-        binding.btnStartDuel.setOnClickListener{ viewDuelActivity() }
+        binding.btnStartDuel.setOnClickListener{ viewDuelActivity(itemsString) }
 
-        //TODO: Hacer logica para que se cree el QR con los items
+        //TODO: Obtener los items
+
+
+
+
+        //TODO: Crear el QR con los items
+        val barcodeEncoder = BarcodeEncoder()
+        try {
+            val bitmap = barcodeEncoder.encodeBitmap(itemsString,BarcodeFormat.QR_CODE,750,750)
+            binding.ivQRCode.setImageBitmap(bitmap)
+        } catch (e:Exception){
+            Log.e("QR_CODE",e.toString())
+        }
     }
 
-    private fun viewDuelActivity() {
+    private fun viewDuelActivity(items:String) {
         val intent = Intent(this, DuelActivity::class.java)
+        intent.putExtra("ITEMS",items)
         startActivity(intent)
         finish()
     }
