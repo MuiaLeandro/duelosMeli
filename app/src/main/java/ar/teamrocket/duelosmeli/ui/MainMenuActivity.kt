@@ -165,7 +165,7 @@ class MainMenuActivity : AppCompatActivity() {
 
 
     private fun isLocationEnabled(): Boolean {      //devuelve TRUE si el GPS o los datos moviles estan encendidos
-        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
@@ -246,12 +246,19 @@ class MainMenuActivity : AppCompatActivity() {
             }else{
                 // TODO: Agarrar el QR scaneado y hacer lo que sea necesario
                 //result.contents es quien contiene el resultado del QR scaneado
-                //Con esta funcion ahora solo muestra el texto en pantalla
-                Toast.makeText(this, "${result.contents}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
+                viewNewDuel(result.contents)
             }
         }else{
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun viewNewDuel(items: String) {
+        val intent = Intent(this, NewDuelActivity::class.java)
+        intent.putExtra("ITEMS",items)
+        startActivity(intent)
+        finish()
     }
 
     override fun onResume() {
