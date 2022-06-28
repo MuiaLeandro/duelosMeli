@@ -2,7 +2,6 @@ package ar.teamrocket.duelosmeli.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,6 +19,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
+import ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
 import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
@@ -255,7 +255,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewNewDuel(items: String) {
-        val intent = Intent(this, NewDuelActivity::class.java)
+        val intent = Intent(this, DuelActivity::class.java)
         intent.putExtra("ITEMS",items)
         startActivity(intent)
         finish()

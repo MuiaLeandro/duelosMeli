@@ -20,9 +20,9 @@ class NewDuelActivity : AppCompatActivity() {
         //TODO: Hacer logica para que se cree el QR con los items
         val gson = Gson()
         val items = mutableListOf<ItemDuel>()
-        items.add(ItemDuel("item1","titulo1","4565","http://dsgfgd", listOf("7854","44")))
-        items.add(ItemDuel("item2","titulo2","234","http://dsgfgd", listOf("56","775")))
-        items.add(ItemDuel("item3","titulo3","908","http://dsgfgd", listOf("234","6789")))
+        items.add(ItemDuel("item1","titulo1","4565","https://dsgfgd", listOf("7854","44"),(1..3).random()))
+        items.add(ItemDuel("item2","titulo2","234","https://dsgfgd", listOf("56","775"),(1..3).random()))
+        items.add(ItemDuel("item3","titulo3","908","https://dsgfgd", listOf("234","6789"),(1..3).random()))
         val itemsString: String = gson.toJson(items)
 
         binding.iHeader.tvTitle.text = "Nuevo duelo"

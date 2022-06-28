@@ -5,5 +5,6 @@ data class ItemDuel(
     var title: String,
     var price: String,
     var image: String,
-    var fakePrice: List<String>
+    var fakePrice: List<String>,
+    var correctPosition: Int
     )
