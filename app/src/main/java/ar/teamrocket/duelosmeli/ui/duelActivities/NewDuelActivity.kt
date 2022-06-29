@@ -45,13 +45,15 @@ class NewDuelActivity : AppCompatActivity() {
        // items.add(ItemDuel("item3","titulo3","908","https://dsgfgd", listOf("234","6789"),(1..3)
            // .random()))
 
+        binding.clLoading.visibility = View.VISIBLE
+        binding.btnStartDuel.visibility = View.GONE
         vm.findCategories()
         setObservers()
 
 
         binding.iHeader.tvTitle.text = "Nuevo duelo"
         binding.iHeader.ivButtonBack.setOnClickListener{ onBackPressed() }
-       // binding.btnStartDuel.setOnClickListener{ viewDuelActivity(itemsString) }
+        binding.btnStartDuel.setOnClickListener{ viewDuelActivity(listToString(items)) }
 
         //TODO: Obtener los items
 
@@ -67,6 +69,8 @@ class NewDuelActivity : AppCompatActivity() {
                 counter++
             } else {
                 QRGenerator(items)
+                binding.clLoading.visibility = View.GONE
+                binding.btnStartDuel.visibility = View.VISIBLE
             }
         }
 

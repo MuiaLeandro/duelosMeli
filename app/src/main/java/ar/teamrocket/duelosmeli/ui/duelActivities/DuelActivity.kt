@@ -31,6 +31,7 @@ class DuelActivity : AppCompatActivity() {
 
         loadUI(items[0])
 
+        binding.iHeader.ivButtonBack.setOnClickListener{ onBackPressed() }
     }
 
     private fun loadUI(item: ItemDuel) {
@@ -67,10 +68,6 @@ class DuelActivity : AppCompatActivity() {
             }
             else -> println("Out of bounds")
         }
-
-
-
-
     }
 
     override fun onBackPressed() {
