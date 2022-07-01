@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/tvRound"
-                android:text="2/10"
+                android:text="1/5"
                 android:layout_width="0dp"
                 android:textSize="21sp"
                 android:layout_height="wrap_content"
