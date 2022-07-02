@@ -275,6 +275,7 @@ class MainMenuActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    
     private fun viewNewMultiplayerGame() {
         val intent = Intent(this, NewMultiplayerGameActivity::class.java)
         startActivity(intent)
