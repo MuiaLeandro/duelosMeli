@@ -44,7 +44,7 @@ class DuelActivity : AppCompatActivity() {
         vm.initViewModel(items)
 
         setListeners(items)
-        setObservers()
+        setObservers(items)
     }
 
     private fun setListeners(items: MutableList<ItemDuel>) {
@@ -62,7 +62,7 @@ class DuelActivity : AppCompatActivity() {
 
     private fun pressedOption(items: MutableList<ItemDuel>,positionPressed:Int) {
         optionIsChosen(positionPressed, vm.itemDuel.value?.correctPosition)
-        if ((vm.countItem.value ?: 0) < items.size - 1) {
+        if ((vm.positionItem.value ?: 0) < items.size - 1) {
             Handler(Looper.getMainLooper()).postDelayed({ hideGame() }, 2000)
         } else {
             //TODO: Terminar partida
@@ -82,8 +82,12 @@ class DuelActivity : AppCompatActivity() {
     private fun optionIsChosen(pressedOption: Int, correctPosition: Int?) {
         showCorrectOption(correctPosition, pressedOption)
         if (correctPosition == pressedOption) {
-            vm.score.value = vm.score.value?.plus(10) ?: 10
+            calculateScore()
         }
+    }
+
+    private fun calculateScore() {
+        vm.score.value = vm.score.value?.plus(10) ?: 10
     }
 
     private fun showCorrectOption(correctPosition: Int?, pressedOption: Int) {
@@ -134,9 +138,12 @@ class DuelActivity : AppCompatActivity() {
         }
     }
 
-    private fun setObservers() {
+    private fun setObservers(items: MutableList<ItemDuel>) {
         vm.itemDuel.observe(this){
             loadUI(it)
+        }
+        vm.positionItem.observe(this){
+            binding.tvRoundDuel.text="${it+1}/${items.size}"
         }
     }
 

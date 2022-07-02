@@ -7,16 +7,16 @@ import ar.teamrocket.duelosmeli.data.model.ItemDuel
 class DuelGameViewModel:ViewModel() {
     lateinit var itemsDuel: List<ItemDuel>
     val itemDuel = MutableLiveData<ItemDuel>()
-    val countItem = MutableLiveData<Int>()
+    val positionItem = MutableLiveData<Int>()
     val score = MutableLiveData<Int>()
 
     fun initViewModel(items:List<ItemDuel>){
         itemsDuel = items
-        countItem.value = 0
-        itemDuel.value = itemsDuel[countItem.value ?: 0]
+        positionItem.value = 0
+        itemDuel.value = itemsDuel[positionItem.value ?: 0]
     }
     fun nextItem(){
-        countItem.value = countItem.value?.plus(1) ?: 0
-        itemDuel.value = itemsDuel[countItem.value ?: 0]
+        positionItem.value = positionItem.value?.plus(1) ?: 0
+        itemDuel.value = itemsDuel[positionItem.value ?: 0]
     }
 }
