@@ -13,9 +13,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DuelActivity : AppCompatActivity() {
     lateinit var binding: ActivityDuelBinding
+    private val vm: DuelGameViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,21 +30,35 @@ class DuelActivity : AppCompatActivity() {
         val itemsString = intent.getStringExtra("ITEMS")
         val itemsType = object : TypeToken<MutableList<ItemDuel>>() {}.type
         val items: MutableList<ItemDuel> = gson.fromJson(itemsString, itemsType)
-        Log.d("ITEMS",items.toString())
+        Log.d("ITEMS", items.toString())
 
-        loadUI(items[0])
 
-        binding.iHeader.ivButtonBack.setOnClickListener{ onBackPressed() }
+        vm.initViewModel(items)
+        binding.btnOption1Duel.setOnClickListener {
+            if ((vm.countItem.value ?: 0) < items.size-1) {
+                vm.nextItem()
+            } else {
+                //TODO: Terminar partida
+            }
+        }
+        binding.iHeaderDuel.ivButtonBack.setOnClickListener{ onBackPressed() }
+        setObservers()
+    }
+
+    private fun setObservers() {
+        vm.itemDuel.observe(this){
+            loadUI(it)
+        }
     }
 
     private fun loadUI(item: ItemDuel) {
-        binding.tvProductName.text = item.title
+        binding.tvProductNameDuel.text = item.title
         Picasso
             .get()
             .load(item.image)
             .noFade()
             .error(R.drawable.no_image)
-            .into(binding.ivProductPicture, object : Callback {
+            .into(binding.ivProductPictureDuel, object : Callback {
                 override fun onSuccess() {
                     //mostrar pantalla del juego
                     binding.clLoading.visibility = View.GONE
@@ -52,19 +69,19 @@ class DuelActivity : AppCompatActivity() {
             })
         when (item.correctPosition) {
             1 -> {
-                binding.btnOption1.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption2.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption3.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.price)
+                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
+                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
             }
             2 -> {
-                binding.btnOption2.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption1.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption3.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.price)
+                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
+                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
             }
             3 -> {
-                binding.btnOption3.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption1.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption2.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.price)
+                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
+                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
             }
             else -> println("Out of bounds")
         }
