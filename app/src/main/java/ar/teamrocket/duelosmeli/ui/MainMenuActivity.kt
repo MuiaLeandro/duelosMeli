@@ -20,6 +20,7 @@ import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity
+import ar.teamrocket.duelosmeli.ui.duelActivities.DuelOverActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
 import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
@@ -302,7 +303,11 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun viewAboutUs() {
 
-        Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
+        val intent = Intent(this, DuelOverActivity::class.java)
+        startActivity(intent)
+        finish()
+
+        //Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
         // TODO: Agregar AboutUsActivity
         //val intent = Intent(this, AboutUsActivity::class.java)
         //startActivity(intent)
