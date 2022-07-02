@@ -302,12 +302,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewAboutUs() {
-
-        val intent = Intent(this, DuelOverActivity::class.java)
-        startActivity(intent)
-        finish()
-
-        //Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
         // TODO: Agregar AboutUsActivity
         //val intent = Intent(this, AboutUsActivity::class.java)
         //startActivity(intent)
