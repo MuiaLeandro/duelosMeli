@@ -20,7 +20,6 @@ import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
 import ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity
-import ar.teamrocket.duelosmeli.ui.duelActivities.DuelOverActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
 import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
