@@ -63,16 +63,18 @@ class ListActivity : ComponentActivity() {
                     text = itemPlayed.title,
                     style = MaterialTheme.typography.h6,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 2
                 )
                 Spacer(Modifier.size(8.dp))
                 Divider(
                     color = Color.LightGray
                 )
                 AsyncImage(
-                    model = itemPlayed.picture, contentDescription = null, modifier = Modifier
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    modifier = Modifier.size(277.dp),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    model = itemPlayed.picture
                 )
                 Divider(
                     color = Color.LightGray
@@ -86,8 +88,8 @@ class ListActivity : ComponentActivity() {
                         .fillMaxWidth()
                         .clickable {
 
-                        //TODO abrir la publicación en Mercado Libre
-                        // itemPlayed.link
+                            //TODO abrir la publicación en Mercado Libre
+                            // itemPlayed.link
 
                         }
                 )
