@@ -61,9 +61,10 @@ class DuelActivity : AppCompatActivity() {
             pressedOption(3)
         }
     }
+
     private fun startTimer() {
         var i = 1
-        countDownTimer = object : CountDownTimer(timer,10){
+        countDownTimer = object : CountDownTimer(timer, 10) {
 
             override fun onFinish() {
                 when (vm.itemDuel.value?.correctPosition) {
@@ -78,10 +79,14 @@ class DuelActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.N)
             override fun onTick(millisUntilFinished: Long) {
                 i++
-                binding.pbDeterminateBarDuel.setProgress(i * 100 / ((start.toInt()-1500) / 10),true)
+                binding.pbDeterminateBarDuel.setProgress(
+                    i * 100 / ((start.toInt() - 1500) / 10),
+                    true
+                )
             }
         }.start()
     }
+
     private fun oneCorrect() {
         binding.btnOption1Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
             null))
@@ -253,6 +258,7 @@ class DuelActivity : AppCompatActivity() {
         binding.clLoading.visibility = View.GONE
         startTimer()
     }
+
     private fun pauseTimer() {
         countDownTimer.cancel()
     }

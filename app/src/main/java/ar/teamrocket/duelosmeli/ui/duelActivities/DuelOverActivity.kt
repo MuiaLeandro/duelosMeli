@@ -1,7 +1,9 @@
 package ar.teamrocket.duelosmeli.ui.duelActivities
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityDuelOverBinding
@@ -38,21 +40,29 @@ class DuelOverActivity : AppCompatActivity() {
     }
 
     private fun shareByTelegram(pointsAchieved: Int) {
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "¡Terminé la partida!\nHice $pointsAchieved puntos.")
-            setPackage("org.telegram.messenger")
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, "¡Terminé la partida!\nHice $pointsAchieved puntos.")
+                setPackage("org.telegram.messenger")
+            }
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "¡No tenés Telegram instalado!", Toast.LENGTH_LONG).show()
         }
-        startActivity(intent)
     }
 
     private fun shareByWhatsapp(pointsAchieved: Int) {
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "¡Terminé la partida!\nHice $pointsAchieved puntos.")
-            setPackage("com.whatsapp")
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, "¡Terminé la partida!\nHice $pointsAchieved puntos.")
+                setPackage("com.whatsapp")
+            }
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "¡No tenés WhatsApp instalado!", Toast.LENGTH_LONG).show()
         }
-        startActivity(intent)
     }
 
     private fun achievedPointsBinder(pointsAchieved: Int) {
