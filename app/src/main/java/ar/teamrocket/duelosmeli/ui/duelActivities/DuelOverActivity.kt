@@ -9,12 +9,15 @@ import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 
 class DuelOverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDuelOverBinding
+    companion object{
+        val EXT_POINTS = "EXT_POINTS"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDuelOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val pointsAchieved = intent.extras!!.getInt("Points")
+        val pointsAchieved = intent.extras!!.getInt(EXT_POINTS)
 
         binding.iHeader.tvTitle.text = getString(R.string.partida_finalizada)
         achievedPointsBinder(pointsAchieved)

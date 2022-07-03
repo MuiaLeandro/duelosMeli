@@ -7,14 +7,14 @@
     tools:context=".ui.singleplayerActivities.views.GameActivity">
 
     <include
-        android:id="@+id/iHeader"
+        android:id="@+id/iHeaderDuel"
         layout="@layout/include_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/pbDeterminateBar"
+        android:id="@+id/pbDeterminateBarDuel"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:progressBackgroundTint="@color/blue1"
         android:progressTint="@color/white"
@@ -23,17 +23,17 @@
         android:indeterminate="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iHeader"
+        app:layout_constraintTop_toBottomOf="@id/iHeaderDuel"
         tools:progress="70" />
 
     <ScrollView
-        android:id="@+id/svScrollView"
+        android:id="@+id/svScrollViewDuel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbDeterminateBar" >
+        app:layout_constraintTop_toBottomOf="@+id/pbDeterminateBarDuel" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -45,18 +45,18 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tvProductName"
+                android:id="@+id/tvProductNameDuel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:textSize="21sp"
-                app:layout_constraintEnd_toEndOf="@+id/ivProductPicture"
-                app:layout_constraintStart_toStartOf="@+id/ivProductPicture"
-                app:layout_constraintTop_toBottomOf="@+id/ivProductPicture"
+                app:layout_constraintEnd_toEndOf="@+id/ivProductPictureDuel"
+                app:layout_constraintStart_toStartOf="@+id/ivProductPictureDuel"
+                app:layout_constraintTop_toBottomOf="@+id/ivProductPictureDuel"
                 tools:text="Aca va el nombre del producto" />
 
             <Button
-                android:id="@+id/btnOption1"
+                android:id="@+id/btnOption1Duel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -65,11 +65,11 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvProductName"
+                app:layout_constraintTop_toBottomOf="@+id/tvProductNameDuel"
                 tools:text="Opción 1" />
 
             <Button
-                android:id="@+id/btnOption3"
+                android:id="@+id/btnOption3Duel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -78,11 +78,11 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnOption2"
+                app:layout_constraintTop_toBottomOf="@+id/btnOption2Duel"
                 tools:text="Opción 3" />
 
             <Button
-                android:id="@+id/btnOption2"
+                android:id="@+id/btnOption2Duel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -91,11 +91,11 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnOption1"
+                app:layout_constraintTop_toBottomOf="@+id/btnOption1Duel"
                 tools:text="Opción 2" />
 
             <ImageView
-                android:id="@+id/ivProductPicture"
+                android:id="@+id/ivProductPictureDuel"
                 android:layout_width="0dp"
                 android:layout_height="277dp"
                 android:layout_marginStart="32dp"
@@ -103,12 +103,12 @@
                 android:layout_marginEnd="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRound"
+                app:layout_constraintTop_toBottomOf="@+id/tvRoundDuel"
                 tools:ignore="ContentDescription"
                 tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
 
             <TextView
-                android:id="@+id/tvRound"
+                android:id="@+id/tvRoundDuel"
                 android:text="1/5"
                 android:layout_width="0dp"
                 android:textSize="21sp"

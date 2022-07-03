@@ -244,9 +244,7 @@ class MainMenuActivity : AppCompatActivity() {
             if (result.contents == null){
                 Toast.makeText(this, "No pude leer el QR", Toast.LENGTH_LONG).show()
             }else{
-                // TODO: Agarrar el QR scaneado y hacer lo que sea necesario
                 //result.contents es quien contiene el resultado del QR scaneado
-                Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
                 viewNewDuel(result.contents)
             }
         }else{
