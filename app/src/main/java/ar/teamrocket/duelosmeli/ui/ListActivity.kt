@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -81,7 +82,14 @@ class ListActivity : ComponentActivity() {
                     text = "Ver en Mercado Libre",
                     color = Color.Blue,
                     textAlign = TextAlign.Right,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+
+                        //TODO abrir la publicación en Mercado Libre
+                        // itemPlayed.link
+
+                        }
                 )
             }
         }

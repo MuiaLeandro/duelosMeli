@@ -7,4 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class ItemPlayed (
     var title: String,
     var picture: String,
+    var link: String
 ): Parcelable

@@ -74,7 +74,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     * */
 
     fun findItemFromCategory(categoryId: String) {
-       val itemPlayed  = ItemPlayed("", "")
+       val itemPlayed  = ItemPlayed("", "", "")
         viewModelScope.launch {
             try {
                 if (systemLanguage == "pt") {
