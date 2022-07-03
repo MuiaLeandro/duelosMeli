@@ -275,6 +275,7 @@ class MainMenuActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    
     private fun viewNewMultiplayerGame() {
         val intent = Intent(this, NewMultiplayerGameActivity::class.java)
         startActivity(intent)
@@ -301,7 +302,6 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewAboutUs() {
-
         Toast.makeText(this, "Todavía no podemos presentarnos", Toast.LENGTH_LONG).show()
         // TODO: Agregar AboutUsActivity
         //val intent = Intent(this, AboutUsActivity::class.java)
