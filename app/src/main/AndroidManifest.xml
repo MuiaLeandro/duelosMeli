@@ -26,6 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
         <activity
+            android:name="ar.teamrocket.duelosmeli.ui.duelActivities.DuelOverActivity"
+            android:exported="false" />
+        <activity
             android:name="ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity"
             android:exported="false" />
         <activity
