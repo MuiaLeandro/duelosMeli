@@ -36,29 +36,15 @@ class NewDuelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //TODO: Hacer logica para que se cree el QR con los items
-
-        //items.add(ItemDuel("item1","titulo1","4565","https://dsgfgd", listOf("7854","44"),(1..3)
-           // .random()))
-        //items.add(ItemDuel("item2","titulo2","234","https://dsgfgd", listOf("56","775"),(1..3)
-          //  .random()))
-       // items.add(ItemDuel("item3","titulo3","908","https://dsgfgd", listOf("234","6789"),(1..3)
-           // .random()))
 
         binding.clLoading.visibility = View.VISIBLE
         binding.btnStartDuel.visibility = View.GONE
         vm.findCategories()
         setObservers()
 
-
         binding.iHeader.tvTitle.text = "Nuevo duelo"
-        binding.iHeader.ivButtonBack.setOnClickListener{ onBackPressed() }
-        binding.btnStartDuel.setOnClickListener{ viewDuelActivity(listToString(items)) }
-
-        //TODO: Obtener los items
-
-
-
+        binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
+        binding.btnStartDuel.setOnClickListener { viewDuelActivity(listToString(items)) }
     }
 
     private fun setObservers(){

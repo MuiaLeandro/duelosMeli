@@ -119,13 +119,15 @@ class DuelActivity : AppCompatActivity() {
         if ((vm.positionItem.value ?: 0) < vm.itemsDuel.size - 1) {
             Handler(Looper.getMainLooper()).postDelayed({ showNextItem() }, 2000)
         } else {
-            //TODO: Terminar partida
+
             Handler(Looper.getMainLooper()).postDelayed({ viewFinishDuel() }, 2000)
         }
     }
 
     private fun viewFinishDuel() {
-        Toast.makeText(this, "Tu puntuacion fue: ${vm.score.value}", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this,DuelOverActivity::class.java)
+        intent.putExtra(DuelOverActivity.EXT_POINTS,vm.score.value)
+        startActivity(intent)
     }
 
     private fun showNextItem() {
