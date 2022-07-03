@@ -2,16 +2,15 @@ package ar.teamrocket.duelosmeli.ui.duelActivities
 
 import android.content.Context
 import android.content.Intent
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.ItemDuel
@@ -29,6 +28,9 @@ class DuelActivity : AppCompatActivity() {
     lateinit var binding: ActivityDuelBinding
     private val vm: DuelGameViewModel by viewModel()
     private val gameFunctions: GameFunctions by inject()
+    private val start = 21000L
+    var timer = start
+    private lateinit var countDownTimer: CountDownTimer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,28 +44,80 @@ class DuelActivity : AppCompatActivity() {
         Log.d("ITEMS", items.toString())
 
         vm.initViewModel(items)
-
-        setListeners(items)
+        
+        setListeners()
         setObservers(items)
     }
 
-    private fun setListeners(items: MutableList<ItemDuel>) {
+    private fun setListeners() {
         binding.iHeaderDuel.ivButtonBack.setOnClickListener{ onBackPressed() }
         binding.btnOption1Duel.setOnClickListener {
-            pressedOption(items, 1)
+            pressedOption(1)
         }
         binding.btnOption2Duel.setOnClickListener {
-            pressedOption(items, 2)
+            pressedOption(2)
         }
         binding.btnOption3Duel.setOnClickListener {
-            pressedOption(items, 3)
+            pressedOption(3)
         }
     }
+    private fun startTimer() {
+        var i = 1
+        countDownTimer = object : CountDownTimer(timer,10){
 
-    private fun pressedOption(items: MutableList<ItemDuel>,positionPressed:Int) {
+            override fun onFinish() {
+                when (vm.itemDuel.value?.correctPosition) {
+                    1 -> oneCorrect()
+                    2 -> twoCorrect()
+                    else -> threeCorrect()
+                }
+                nextItemOrEndGame()
+                timer = start
+            }
+
+            @RequiresApi(Build.VERSION_CODES.N)
+            override fun onTick(millisUntilFinished: Long) {
+                i++
+                binding.pbDeterminateBarDuel.setProgress(i * 100 / ((start.toInt()-1500) / 10),true)
+            }
+        }.start()
+    }
+    private fun oneCorrect() {
+        binding.btnOption1Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
+        binding.btnOption2Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption3Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+    }
+
+    private fun twoCorrect() {
+        binding.btnOption1Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption2Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
+        binding.btnOption3Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+    }
+
+    private fun threeCorrect() {
+        binding.btnOption1Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption2Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.red1,
+            null))
+        binding.btnOption3Duel.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
+            null))
+    }
+
+    private fun pressedOption(positionPressed:Int) {
+        pauseTimer()
         optionIsChosen(positionPressed, vm.itemDuel.value?.correctPosition)
-        if ((vm.positionItem.value ?: 0) < items.size - 1) {
-            Handler(Looper.getMainLooper()).postDelayed({ hideGame() }, 2000)
+        nextItemOrEndGame()
+    }
+
+    private fun nextItemOrEndGame() {
+        if ((vm.positionItem.value ?: 0) < vm.itemsDuel.size - 1) {
+            Handler(Looper.getMainLooper()).postDelayed({ showNextItem() }, 2000)
         } else {
             //TODO: Terminar partida
             Handler(Looper.getMainLooper()).postDelayed({ viewFinishDuel() }, 2000)
@@ -74,7 +128,7 @@ class DuelActivity : AppCompatActivity() {
         Toast.makeText(this, "Tu puntuacion fue: ${vm.score.value}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun hideGame() {
+    private fun showNextItem() {
         binding.clLoading.visibility = View.VISIBLE
         vm.nextItem()
     }
@@ -87,7 +141,16 @@ class DuelActivity : AppCompatActivity() {
     }
 
     private fun calculateScore() {
-        vm.score.value = vm.score.value?.plus(10) ?: 10
+        /*
+        Como calcularemos la puntuacion:
+        preguntas bien x 1.000
+        segundos restantes x 10
+        */
+
+        //contesto bien asi que sumamos 1000
+        vm.score.value = vm.score.value?.plus(1000) ?: 1000
+        //timer son los milisegundos que le quedaban
+        vm.score.value = vm.score.value?.plus(timer.toInt()/100) ?: 0
     }
 
     private fun showCorrectOption(correctPosition: Int?, pressedOption: Int) {
@@ -186,6 +249,10 @@ class DuelActivity : AppCompatActivity() {
 
     private fun showGame() {
         binding.clLoading.visibility = View.GONE
+        startTimer()
+    }
+    private fun pauseTimer() {
+        countDownTimer.cancel()
     }
 
     private fun colorReset(){
