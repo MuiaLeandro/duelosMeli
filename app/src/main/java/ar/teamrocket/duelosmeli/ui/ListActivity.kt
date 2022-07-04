@@ -1,5 +1,7 @@
 package ar.teamrocket.duelosmeli.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -91,6 +93,10 @@ class ListActivity : ComponentActivity() {
                             //TODO abrir la publicación en Mercado Libre
                             // itemPlayed.link
 
+                            val intent: Intent = Uri.parse(itemPlayed.permalink).let {
+                                Intent(Intent.ACTION_VIEW, it)
+                            }
+                            startActivity(intent)
                         }
                 )
             }
