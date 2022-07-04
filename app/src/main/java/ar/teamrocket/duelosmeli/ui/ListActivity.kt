@@ -89,10 +89,10 @@ class ListActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-
-                            //TODO abrir la publicación en Mercado Libre
-                            // itemPlayed.link
-
+                            /**
+                             * Se abre la publicación en la app de Mercado Libre en caso de tenerla
+                             * instalada, y sinó abre la publicación en el navegador web.
+                             */
                             val intent: Intent = Uri.parse(itemPlayed.permalink).let {
                                 Intent(Intent.ACTION_VIEW, it)
                             }
