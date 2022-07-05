@@ -15,9 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +42,7 @@ class ListActivity : ComponentActivity() {
     }
 
     @Composable
-    fun cardList(lista: ArrayList<ItemPlayed>) {
+    fun cardList(listItems: ArrayList<ItemPlayed>) {
         Column {
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
@@ -53,7 +51,7 @@ class ListActivity : ComponentActivity() {
                     .background(Color.LightGray)
                     .weight(1f)
             ) {
-                items(lista.toList()) { item ->
+                items(listItems.toList()) { item ->
                     cardRow(
                         itemPlayed = item
                     )
@@ -85,7 +83,10 @@ class ListActivity : ComponentActivity() {
                     color = Color.LightGray
                 )
                 AsyncImage(
-                    modifier = Modifier.size(277.dp).fillMaxWidth().align(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .size(277.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     model = itemPlayed.picture
@@ -117,10 +118,7 @@ class ListActivity : ComponentActivity() {
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                val intent = Intent(this, GameOverActivity::class.java)
-                intent.putExtra("Points", pointsAchieved)
-                intent.putExtra("IdPlayer", idPlayer)
-                startActivity(intent)
+                gotToGameOver()
             }) {
             Text(
                 modifier = Modifier.padding(start = 4.dp, end = 4.dp),
@@ -129,5 +127,12 @@ class ListActivity : ComponentActivity() {
                 fontSize = 16.sp
             )
         }
+    }
+
+    private fun gotToGameOver() {
+        val intent = Intent(this, GameOverActivity::class.java)
+        intent.putExtra("Points", pointsAchieved)
+        intent.putExtra("IdPlayer", idPlayer)
+        startActivity(intent)
     }
 }
