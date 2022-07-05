@@ -1,5 +1,6 @@
 package ar.teamrocket.duelosmeli.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,24 +10,32 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ar.teamrocket.duelosmeli.data.model.ItemPlayed
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.GameOverActivity
 import coil.compose.AsyncImage
-import java.util.ArrayList
 
 class ListActivity : ComponentActivity() {
+
+    private var idPlayer = 0L
+    private var pointsAchieved = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val listItems = intent.extras?.getParcelableArrayList<ItemPlayed>("items")
+        idPlayer = intent.extras!!.getLong("IdPlayer")
+        pointsAchieved = intent.extras!!.getInt("Points")
+
         setContent {
             if (listItems != null) {
                 cardList(listItems)
@@ -36,16 +45,21 @@ class ListActivity : ComponentActivity() {
 
     @Composable
     fun cardList(lista: ArrayList<ItemPlayed>) {
-        LazyColumn(
-            contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.background(Color.LightGray)
-        ) {
-            items(lista.toList()) { item ->
-                cardRow(
-                    itemPlayed = item
-                )
+        Column {
+            LazyColumn(
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .background(Color.LightGray)
+                    .weight(1f)
+            ) {
+                items(lista.toList()) { item ->
+                    cardRow(
+                        itemPlayed = item
+                    )
+                }
             }
+            buttonToGameOver()
         }
     }
 
@@ -71,7 +85,7 @@ class ListActivity : ComponentActivity() {
                     color = Color.LightGray
                 )
                 AsyncImage(
-                    modifier = Modifier.size(277.dp),
+                    modifier = Modifier.size(277.dp).fillMaxWidth().align(Alignment.CenterHorizontally),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     model = itemPlayed.picture
@@ -94,6 +108,26 @@ class ListActivity : ComponentActivity() {
                         }
                 )
             }
+        }
+    }
+
+    @Composable
+    fun buttonToGameOver() {
+        Button(
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                val intent = Intent(this, GameOverActivity::class.java)
+                intent.putExtra("Points", pointsAchieved)
+                intent.putExtra("IdPlayer", idPlayer)
+                startActivity(intent)
+            }) {
+            Text(
+                modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+                text = "Continuar a la tabla de puntajes",
+                color = Color.Black,
+                fontSize = 16.sp
+            )
         }
     }
 }
