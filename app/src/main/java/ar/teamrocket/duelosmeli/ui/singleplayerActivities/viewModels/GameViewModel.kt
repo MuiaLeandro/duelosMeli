@@ -112,6 +112,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
                 val item = itemsList[(itemsList.indices).random()]
                 itemNameMutable.value = item.title
                 itemPlayed.title = item.title
+                itemPlayed.permalink = item.permalink
 
                 itemPriceString.value = numberRounder(item.price)
                 Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
