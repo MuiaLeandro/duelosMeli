@@ -182,31 +182,15 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun viewGameOver(game: Game) {
-        MaterialAlertDialogBuilder(this,
-            R.style.Dialog)
-            .setMessage("¿Querés ver el listado de las publicaciones que estuvieron en el juego?")
-            .setNegativeButton("NO") { dialog, which ->
-                goToGameOver(game)
-            }
-            .setPositiveButton("SI") { dialog, which ->
-                goToListPlayedItems()
-            }
-            .show()
+        goToListPlayedItems(game)
     }
 
-    private fun goToListPlayedItems() {
+    private fun goToListPlayedItems(game: Game) {
         listPlayedItems = vm.getListItemsPlayed()
-        Log.i("vm", "$listPlayedItems")
         val intent = Intent(this, ListActivity::class.java)
-        intent.putParcelableArrayListExtra("items", ArrayList(listPlayedItems))
-        startActivity(intent)
-        finish()
-    }
-
-    private fun goToGameOver(game: Game) {
-        val intent = Intent(this, GameOverActivity::class.java)
         intent.putExtra("Points", game.points)
         intent.putExtra("IdPlayer", game.playerId)
+        intent.putParcelableArrayListExtra("items", ArrayList(listPlayedItems))
         startActivity(intent)
         finish()
     }
