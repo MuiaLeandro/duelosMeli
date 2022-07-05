@@ -57,4 +57,5 @@
     <string name="_1_jugador">1 JUGADOR</string>
     <string name="multijugador">MULTIJUGADOR</string>
     <string name="cambiar_foto">Cambiar foto del perfil</string>
+    <string name="title_activity_list">ListActivity</string>
 </resources>

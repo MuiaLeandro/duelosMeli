@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.model.ItemPlayed
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     val categoriesException = MutableLiveData<Throwable>()
     val itemFromCategoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
+    private val listItemsPlayed = mutableListOf<ItemPlayed>()
 
 
     fun findCategories() {
@@ -72,6 +74,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     * */
 
     fun findItemFromCategory(categoryId: String) {
+       val itemPlayed  = ItemPlayed("", "", "")
         viewModelScope.launch {
             try {
                 if (systemLanguage == "pt") {
@@ -108,10 +111,13 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
 
                 val item = itemsList[(itemsList.indices).random()]
                 itemNameMutable.value = item.title
+                itemPlayed.title = item.title
+                itemPlayed.permalink = item.permalink
 
                 itemPriceString.value = numberRounder(item.price)
                 Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
-                searchItem(item.id)
+                searchItem(item.id, itemPlayed)
+                listItemsPlayed.add(itemPlayed)
                 randomOptionsCalculator(item)
             } catch (e: Exception) {
                 itemFromCategoryException.value = e
@@ -125,11 +131,16 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
         return numberFormatter.format(numberDouble.toInt())
     }
 
-    fun searchItem(id: String) {
+    fun getListItemsPlayed(): MutableList<ItemPlayed> {
+        return listItemsPlayed
+    }
+
+    fun searchItem(id: String, itemPlayed: ItemPlayed) {
         viewModelScope.launch {
             try {
                 val article = meliRepositoryImpl.searchItem(id)
                 picture.value = article.pictures[0].secureUrl
+                itemPlayed.picture = article.pictures[0].secureUrl
             } catch (e: Exception){
                 itemException.value = e
             }

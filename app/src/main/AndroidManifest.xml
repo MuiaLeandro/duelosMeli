@@ -23,11 +23,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuelosMeli">
         <activity
+            android:name="ar.teamrocket.duelosmeli.ui.ListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_list"
+            android:theme="@style/Theme.DuelosMeli" />
+        <activity
             android:name=".ui.HowToPlayActivity"
             android:exported="false" />
-         <meta-data
-         android:name="com.google.android.geo.API_KEY"
-         android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false" />
