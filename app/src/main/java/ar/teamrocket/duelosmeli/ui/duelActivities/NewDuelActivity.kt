@@ -1,38 +1,28 @@
 package ar.teamrocket.duelosmeli.ui.duelActivities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.ItemDuel
 import ar.teamrocket.duelosmeli.databinding.ActivityNewDuelBinding
-import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownHostException
 
 class NewDuelActivity : AppCompatActivity() {
     lateinit var binding :ActivityNewDuelBinding
     private val vm: GameViewModel by viewModel()
-    private var itemTitle: String = ""
-    private var itemPrice: String = ""
-    private var itemPicture: String = ""
-    private var itemFakePrice = mutableListOf<String>()
-    private var itemCorrectOption: Int = 0
-    val items = mutableListOf<ItemDuel>()
-    val gson = Gson()
+    private val items = mutableListOf<ItemDuel>()
+    private val gson = Gson()
     var counter: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

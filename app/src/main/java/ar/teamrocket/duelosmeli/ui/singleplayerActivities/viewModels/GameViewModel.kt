@@ -36,7 +36,8 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     private var itemTitle: String = ""
     private var itemPrice: String = ""
     private var itemPicture: String = ""
-    private var itemFakePrice = mutableListOf<String>()
+    private var itemFakePrice1 = ""
+    private var itemFakePrice2 = ""
     private var itemCorrectOption: Int = 0
     val itemDuel = MutableLiveData<ItemDuel>()
 
@@ -143,8 +144,12 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
                 picture.value = article.pictures[0].secureUrl
                 itemPicture = picture.value!!
 
-                val itemDuelObject = ItemDuel("item", itemTitle, itemPrice, itemPicture,
-                    itemFakePrice,
+                val itemDuelObject = ItemDuel("item",
+                    itemTitle,
+                    itemPrice,
+                    itemPicture,
+                    itemFakePrice1,
+                    itemFakePrice2,
                     itemCorrectOption
                         )
                 itemDuel.value = itemDuelObject
@@ -165,9 +170,9 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
             }
         } else randomOptionsPosition(randomPrice1, randomPrice2)
 
-        itemFakePrice.clear()
-        itemFakePrice.add(numberRounder(randomPrice1))
-        itemFakePrice.add(numberRounder(randomPrice2))
+
+        itemFakePrice1 = numberRounder(randomPrice1)
+        itemFakePrice2 = numberRounder(randomPrice2)
         //randomOptionsPosition(randomPrice1, randomPrice2)
     }
 

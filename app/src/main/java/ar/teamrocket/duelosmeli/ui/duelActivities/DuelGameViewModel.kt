@@ -13,7 +13,7 @@ class DuelGameViewModel:ViewModel() {
     fun initViewModel(items:List<ItemDuel>){
         itemsDuel = items
         positionItem.value = 0
-        itemDuel.value = itemsDuel[positionItem.value ?: 0]
+        itemDuel.value = itemsDuel[0]
     }
     fun nextItem(){
         positionItem.value = positionItem.value?.plus(1) ?: 0

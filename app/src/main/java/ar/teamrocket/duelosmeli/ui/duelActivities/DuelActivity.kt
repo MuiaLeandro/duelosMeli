@@ -237,18 +237,18 @@ class DuelActivity : AppCompatActivity() {
         when (item.correctPosition) {
             1 -> {
                 binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice1)
+                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice2)
             }
             2 -> {
                 binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice1)
+                binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.fakePrice2)
             }
             3 -> {
                 binding.btnOption3Duel.text = getString(R.string.money_sign).plus(item.price)
-                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice[0])
-                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice[1])
+                binding.btnOption1Duel.text = getString(R.string.money_sign).plus(item.fakePrice1)
+                binding.btnOption2Duel.text = getString(R.string.money_sign).plus(item.fakePrice2)
             }
             else -> println("Out of bounds")
         }
