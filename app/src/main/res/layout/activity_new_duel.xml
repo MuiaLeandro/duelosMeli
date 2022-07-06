@@ -72,6 +72,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/pbDeterminateBarDuel"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:progressBackgroundTint="@color/blue1"
+            android:progressTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/animationView"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:indeterminate="false"
+            tools:progress="70" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
             android:layout_width="300dp"

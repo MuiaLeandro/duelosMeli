@@ -1,10 +1,13 @@
 package ar.teamrocket.duelosmeli.ui.duelActivities
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.ItemDuel
 import ar.teamrocket.duelosmeli.databinding.ActivityNewDuelBinding
@@ -47,13 +50,19 @@ class NewDuelActivity : AppCompatActivity() {
         binding.btnStartDuel.setOnClickListener { viewDuelActivity(listToString(items)) }
     }
 
+
     private fun setObservers(){
         vm.itemDuel.observe(this){
             if (counter < 5){
                 items.add(it)
+                Log.d(("Item" + counter.toString()), itemToString(it))
                 vm.findCategories()
                 counter++
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    binding.pbDeterminateBarDuel.setProgress(counter * 20, true)
+                }
             } else {
+                Log.d("Items", listToString(items))
                 QRGenerator(items)
                 binding.clLoading.visibility = View.GONE
                 binding.btnStartDuel.visibility = View.VISIBLE
@@ -64,6 +73,7 @@ class NewDuelActivity : AppCompatActivity() {
         vm.itemFromCategoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)
     }
+
 
     private fun viewDuelActivity(items:String) {
         val intent = Intent(this, DuelActivity::class.java)
@@ -85,6 +95,10 @@ class NewDuelActivity : AppCompatActivity() {
     }
 
     fun listToString(list: List<ItemDuel>): String{
+        return gson.toJson(list)
+    }
+
+    fun itemToString(list: ItemDuel): String{
         return gson.toJson(list)
     }
 

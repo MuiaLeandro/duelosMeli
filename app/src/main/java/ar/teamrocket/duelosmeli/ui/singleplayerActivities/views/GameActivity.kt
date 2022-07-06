@@ -391,9 +391,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                         // Seteo de título y descripción del Dialog
                     .setTitle(R.string.usa_puntos)
                     .setMessage(R.string.pedi_una_ayuda)
-
+                    .setCancelable(false)
                         //Botón de canjeo de puntos para pasar de producto
                     .setPositiveButton(R.string.pasar_pregunta) { dialog, which ->
+                        mov = 0
                         if (game.points >= 3) {
                             game.points-=3
                             nextProduct()
@@ -406,6 +407,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     }
                         //Botón de canjeo de puntos para obtener una vida extra
                     .setNegativeButton(R.string.vida_extra) { dialog, which ->
+                        mov = 0
                         if (game.points >= 5) {
                             if (game.errors > 0) {
                                 gameFunctions.lifesCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
@@ -430,6 +432,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                                 .show()
                         }
                     }
+                    .setNeutralButton("Cerrar ventana"){dialog , _ ->
+                        dialog.cancel()
+                        mov = 0
+                    }
                     .show()
                 mov++
             }
@@ -442,10 +448,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                con un if más, para que entre acá, así se olvida del sides=8 y después si volvemos
                a resetear el mov a 0.
              */
-            else if(sides < 1f && mov==1){
-                mov++
-            }
-            if(mov==2) mov=0
+//            else if(sides < 1f && mov==1){
+//                mov++
+//            }
+//            if(mov==2) mov=0
         }
 
     }

@@ -166,8 +166,8 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
         } else randomOptionsPosition(randomPrice1, randomPrice2)
 
         itemFakePrice.clear()
-        itemFakePrice.add(randomPrice1.toString())
-        itemFakePrice.add(randomPrice2.toString())
+        itemFakePrice.add(numberRounder(randomPrice1))
+        itemFakePrice.add(numberRounder(randomPrice2))
         //randomOptionsPosition(randomPrice1, randomPrice2)
     }
 
