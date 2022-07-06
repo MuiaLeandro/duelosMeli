@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.ItemDuel
 import ar.teamrocket.duelosmeli.databinding.ActivityNewDuelBinding
@@ -29,6 +30,7 @@ class NewDuelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         binding.clLoading.visibility = View.VISIBLE
         binding.btnStartDuel.visibility = View.GONE

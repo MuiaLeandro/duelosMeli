@@ -10,6 +10,7 @@ import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.model.ItemDuel
@@ -36,6 +37,7 @@ class DuelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val gson = Gson()
         val itemsString = intent.getStringExtra("ITEMS")
         val itemsType = object : TypeToken<MutableList<ItemDuel>>() {}.type

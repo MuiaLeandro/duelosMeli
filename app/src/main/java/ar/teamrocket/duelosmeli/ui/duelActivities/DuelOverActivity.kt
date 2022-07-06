@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityDuelOverBinding
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
@@ -19,6 +20,7 @@ class DuelOverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDuelOverBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val pointsAchieved = intent.extras!!.getInt(EXT_POINTS)
 
         binding.iHeader.tvTitle.text = getString(R.string.partida_finalizada)

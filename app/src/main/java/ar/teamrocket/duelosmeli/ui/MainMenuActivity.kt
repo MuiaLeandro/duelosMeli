@@ -49,6 +49,7 @@ class MainMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         if(prefs.getLocationEnabled()){
