@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -42,6 +41,7 @@ class DuelActivity : AppCompatActivity() {
         val itemsType = object : TypeToken<MutableList<ItemDuel>>() {}.type
         val items: MutableList<ItemDuel> = gson.fromJson(itemsString, itemsType)
         Log.d("ITEMS", items.toString())
+        binding.clLoading.visibility = View.VISIBLE
 
         vm.initViewModel(items)
         
@@ -64,7 +64,7 @@ class DuelActivity : AppCompatActivity() {
 
     private fun startTimer() {
         var i = 1
-        countDownTimer = object : CountDownTimer(timer, 10) {
+        countDownTimer = object : CountDownTimer(timer, 1) {
 
             override fun onFinish() {
                 when (vm.itemDuel.value?.correctPosition) {
@@ -80,11 +80,12 @@ class DuelActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 i++
                 binding.pbDeterminateBarDuel.setProgress(
-                    i * 100 / ((start.toInt() - 1500) / 10),
+                    i * 100 / ((start.toInt() - 1500) / 1),
                     true
                 )
             }
         }.start()
+        binding.clLoading.visibility = View.GONE
     }
 
     private fun oneCorrect() {
@@ -255,7 +256,6 @@ class DuelActivity : AppCompatActivity() {
     }
 
     private fun showGame() {
-        binding.clLoading.visibility = View.GONE
         startTimer()
     }
 
