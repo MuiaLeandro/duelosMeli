@@ -55,12 +55,14 @@ class NewDuelActivity : AppCompatActivity() {
         vm.itemDuel.observe(this){
             if (counter < 5){
                 items.add(it)
+                Log.d(("Item" + counter.toString()), itemToString(it))
                 vm.findCategories()
                 counter++
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     binding.pbDeterminateBarDuel.setProgress(counter * 20, true)
                 }
             } else {
+                Log.d("Items", listToString(items))
                 QRGenerator(items)
                 binding.clLoading.visibility = View.GONE
                 binding.btnStartDuel.visibility = View.VISIBLE
@@ -93,6 +95,10 @@ class NewDuelActivity : AppCompatActivity() {
     }
 
     fun listToString(list: List<ItemDuel>): String{
+        return gson.toJson(list)
+    }
+
+    fun itemToString(list: ItemDuel): String{
         return gson.toJson(list)
     }
 
