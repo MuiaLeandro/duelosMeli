@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ar.teamrocket.duelosmeli.data.model.Article
 import ar.teamrocket.duelosmeli.data.model.Articles
 import ar.teamrocket.duelosmeli.data.model.Category
+import ar.teamrocket.duelosmeli.data.model.ItemDuel
 import ar.teamrocket.duelosmeli.data.model.ItemPlayed
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
@@ -34,6 +35,13 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     val itemFromCategoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
     private val listItemsPlayed = mutableListOf<ItemPlayed>()
+    private var itemTitle: String = ""
+    private var itemPrice: String = ""
+    private var itemPicture: String = ""
+    private var itemFakePrice1 = ""
+    private var itemFakePrice2 = ""
+    private var itemCorrectOption: Int = 0
+    val itemDuel = MutableLiveData<ItemDuel>()
 
 
     fun findCategories() {
@@ -49,6 +57,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
 
                 //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
                 randomNumber1to3Mutable.value = (1..3).random()
+                itemCorrectOption = randomNumber1to3Mutable.value!!
             } catch (e: Exception){
                 categoriesException.value = e
             }
@@ -111,10 +120,13 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
 
                 val item = itemsList[(itemsList.indices).random()]
                 itemNameMutable.value = item.title
+                itemTitle = itemNameMutable.value!!
                 itemPlayed.title = item.title
                 itemPlayed.permalink = item.permalink
 
                 itemPriceString.value = numberRounder(item.price)
+                itemPrice = itemPriceString.value!!
+
                 Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
                 searchItem(item.id, itemPlayed)
                 listItemsPlayed.add(itemPlayed)
@@ -140,6 +152,17 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
             try {
                 val article = meliRepositoryImpl.searchItem(id)
                 picture.value = article.pictures[0].secureUrl
+                itemPicture = picture.value!!
+
+                val itemDuelObject = ItemDuel("item",
+                    itemTitle,
+                    itemPrice,
+                    itemPicture,
+                    itemFakePrice1,
+                    itemFakePrice2,
+                    itemCorrectOption
+                        )
+                itemDuel.value = itemDuelObject
                 itemPlayed.picture = article.pictures[0].secureUrl
             } catch (e: Exception){
                 itemException.value = e
@@ -158,6 +181,9 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
             }
         } else randomOptionsPosition(randomPrice1, randomPrice2)
 
+
+        itemFakePrice1 = numberRounder(randomPrice1)
+        itemFakePrice2 = numberRounder(randomPrice2)
         //randomOptionsPosition(randomPrice1, randomPrice2)
     }
 
