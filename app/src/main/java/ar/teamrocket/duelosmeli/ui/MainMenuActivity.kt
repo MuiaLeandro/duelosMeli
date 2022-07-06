@@ -12,6 +12,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import ar.teamrocket.duelosmeli.ui.duelActivities.NewDuelActivity
@@ -294,10 +295,11 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun viewHowToPlayActivity() {
+        Toast.makeText(this, "¡Pronto tendremos un instructivo!", Toast.LENGTH_LONG).show()
         //TODO: Agregar instructivo del juego
-        val intent = Intent(this, HowToPlayActivity::class.java)
-        startActivity(intent)
-        finish()
+//        val intent = Intent(this, HowToPlayActivity::class.java)
+//        startActivity(intent)
+//        finish()
     }
 
     private fun viewAboutUs() {
