@@ -13,6 +13,7 @@ import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
 import ar.teamrocket.duelosmeli.data.repository.impl.PlayersRepositoryImpl
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
+import ar.teamrocket.duelosmeli.ui.duelActivities.DuelGameViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGamePartialResultActivityViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameReadyViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
@@ -34,6 +35,7 @@ class MyApplication : Application() {
         viewModel { MultiplayerGameReadyViewModel(get()) }
         viewModel { NewMultiplayerGameViewModel(get()) }
         viewModel { MultiplayerGameViewModel(get(), get()) }
+        viewModel { DuelGameViewModel() }
 
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }

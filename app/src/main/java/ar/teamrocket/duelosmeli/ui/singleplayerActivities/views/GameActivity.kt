@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.MediaPlayer
 import android.os.*
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.AttrRes
@@ -17,18 +18,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
-import ar.teamrocket.duelosmeli.data.preferences.Prefs
+import ar.teamrocket.duelosmeli.data.model.ItemPlayed
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.ui.HomeActivity
+import ar.teamrocket.duelosmeli.ui.ListActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.UnknownHostException
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
@@ -46,6 +48,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var whistleSongExtraLife: MediaPlayer
     private lateinit var sensorManager: SensorManager
     private var mov: Int = 0
+    private lateinit var listPlayedItems : MutableList<ItemPlayed>
 
     lateinit var game: Game
 
@@ -53,6 +56,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        listPlayedItems = mutableListOf()
 
         binding.iHeader.tvTitle.text = getString(R.string.whats_the_price)
 
@@ -178,10 +182,15 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun viewGameOver(game: Game) {
-        val intent = Intent(this, GameOverActivity::class.java)
-        intent.putExtra("Points",game.points)
-        intent.putExtra("IdPlayer",game.playerId)
+        goToListPlayedItems(game)
+    }
 
+    private fun goToListPlayedItems(game: Game) {
+        listPlayedItems = vm.getListItemsPlayed()
+        val intent = Intent(this, ListActivity::class.java)
+        intent.putExtra("Points", game.points)
+        intent.putExtra("IdPlayer", game.playerId)
+        intent.putParcelableArrayListExtra("items", ArrayList(listPlayedItems))
         startActivity(intent)
         finish()
     }
@@ -391,9 +400,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                         // Seteo de título y descripción del Dialog
                     .setTitle(R.string.usa_puntos)
                     .setMessage(R.string.pedi_una_ayuda)
-
+                    .setCancelable(false)
                         //Botón de canjeo de puntos para pasar de producto
                     .setPositiveButton(R.string.pasar_pregunta) { dialog, which ->
+                        mov = 0
                         if (game.points >= 3) {
                             game.points-=3
                             nextProduct()
@@ -406,6 +416,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     }
                         //Botón de canjeo de puntos para obtener una vida extra
                     .setNegativeButton(R.string.vida_extra) { dialog, which ->
+                        mov = 0
                         if (game.points >= 5) {
                             if (game.errors > 0) {
                                 gameFunctions.lifesCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
@@ -430,6 +441,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                                 .show()
                         }
                     }
+                    .setNeutralButton("Cerrar ventana"){dialog , _ ->
+                        dialog.cancel()
+                        mov = 0
+                    }
                     .show()
                 mov++
             }
@@ -442,10 +457,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                con un if más, para que entre acá, así se olvida del sides=8 y después si volvemos
                a resetear el mov a 0.
              */
-            else if(sides < 1f && mov==1){
-                mov++
-            }
-            if(mov==2) mov=0
+//            else if(sides < 1f && mov==1){
+//                mov++
+//            }
+//            if(mov==2) mov=0
         }
 
     }

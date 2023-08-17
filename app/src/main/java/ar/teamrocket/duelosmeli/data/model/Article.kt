@@ -7,7 +7,8 @@ data class Article (
     var title: String,
     var thumbnail: String,
     var pictures: List<ArticlePicture>,
-    var price: Double
+    var price: Double,
+    var permalink: String
 )
 
 data class ArticlePicture (

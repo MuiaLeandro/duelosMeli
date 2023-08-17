@@ -21,16 +21,20 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        // Reproducción del sonido de apertura de la app
-        openingSound = MediaPlayer.create(this, R.raw.open)
-        openingSound.setOnPreparedListener {
-            openingSound.start()
-        }
 
         // Se instancia una clase que implementa una interfaz con funciones para esta Activity
         homeFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)
         homeFunctions.showImage(this, R.drawable.duelosmeli, binding.ivTitle)
         binding.btnPlayGame.setOnClickListener { viewMainMenu() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reproducción del sonido de apertura de la app
+        openingSound = MediaPlayer.create(this, R.raw.open)
+        openingSound.setOnPreparedListener {
+            openingSound.start()
+        }
     }
 
     private fun viewMainMenu() {
