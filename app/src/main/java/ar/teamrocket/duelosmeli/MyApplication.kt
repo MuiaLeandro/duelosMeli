@@ -33,6 +33,7 @@ class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
+        viewModel { NewGameViewModel(get()) }
         viewModel { GameViewModel(get(), get()) }
         viewModel { MultiplayerGamePartialResultActivityViewModel(get()) }
         viewModel { MultiplayerGameReadyViewModel(get()) }
