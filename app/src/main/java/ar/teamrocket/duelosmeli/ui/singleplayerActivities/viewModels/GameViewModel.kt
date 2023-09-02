@@ -4,11 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.teamrocket.duelosmeli.data.model.Article
-import ar.teamrocket.duelosmeli.data.model.Articles
-import ar.teamrocket.duelosmeli.data.model.Category
-import ar.teamrocket.duelosmeli.data.model.ItemDuel
-import ar.teamrocket.duelosmeli.data.model.ItemPlayed
+import ar.teamrocket.duelosmeli.data.model.*
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import kotlinx.coroutines.launch
@@ -17,11 +13,10 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-
 class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs: Prefs) : ViewModel() {
 
     private val systemLanguage: String = Locale.getDefault().language
-    private lateinit var categories: List<Category>
+    private val categories: List<Category> = CategoriesList.categoriesList
     private lateinit var categoryId: String
     lateinit var items: Articles
     val itemNameMutable = MutableLiveData<String>()
@@ -48,10 +43,6 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
         viewModelScope.launch {
             starGame.value = false
             try {
-                categories = when(systemLanguage) {
-                    "pt" -> meliRepositoryImpl.searchCategoriesBR()
-                    else -> meliRepositoryImpl.searchCategories()
-                }
                 categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
