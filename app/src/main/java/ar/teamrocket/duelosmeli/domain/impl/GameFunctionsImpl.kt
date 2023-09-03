@@ -9,16 +9,15 @@ import ar.teamrocket.duelosmeli.domain.GameFunctions
 
 class GameFunctionsImpl : GameFunctions {
 
+    override fun audioPlayer(context: Context, sound: Int) {
+        MediaPlayer.create(context, sound)
+            .setOnPreparedListener { it.start() }
+    }
+
     override fun optionsSounds(context: Context, state: Boolean) {
         when (state) {
-            true -> {
-                val correctSound = MediaPlayer.create(context, R.raw.correct)
-                correctSound.start()
-            }
-            false -> {
-                val incorrectSound = MediaPlayer.create(context, R.raw.incorrect)
-                incorrectSound.start()
-            }
+            true -> audioPlayer(context, R.raw.correct)
+            false -> audioPlayer(context, R.raw.incorrect)
         }
     }
 
