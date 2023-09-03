@@ -5,6 +5,8 @@ import android.widget.ImageView
 
 interface GameFunctions {
 
+    fun audioPlayer(context: Context, sound: Int)
+
     fun optionsSounds(context: Context, state: Boolean)
 
     fun mistakeCounterUpdater(game: Game, lifeThree: ImageView, lifeTwo: ImageView, lifeOne: ImageView)
