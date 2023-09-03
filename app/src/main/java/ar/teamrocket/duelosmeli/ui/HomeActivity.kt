@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
 import ar.teamrocket.duelosmeli.domain.GameFunctions
-import ar.teamrocket.duelosmeli.domain.HomeFunctions
-import ar.teamrocket.duelosmeli.domain.impl.HomeFunctionsImpl
 import org.koin.android.ext.android.inject
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    private var homeFunctions: HomeFunctions = HomeFunctionsImpl()
     private val gameFunctions: GameFunctions by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +21,8 @@ class HomeActivity : AppCompatActivity() {
 
 
         // Se instancia una clase que implementa una interfaz con funciones para esta Activity
-        homeFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)
-        homeFunctions.showImage(this, R.drawable.duelosmeli, binding.ivTitle)
+        gameFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)
+        gameFunctions.showImage(this, R.drawable.duelosmeli, binding.ivTitle)
         binding.btnPlayGame.setOnClickListener { viewMainMenu() }
     }
 

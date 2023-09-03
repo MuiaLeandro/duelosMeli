@@ -6,8 +6,16 @@ import android.widget.ImageView
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
+import ar.teamrocket.duelosmeli.domain.GifDrawableImageViewTarget
+import com.bumptech.glide.Glide
 
 class GameFunctionsImpl : GameFunctions {
+
+    override fun showImage(context: Context, image: Int, imageView: ImageView) {
+        Glide.with(context)
+            .load(image)
+            .into(GifDrawableImageViewTarget(imageView, 1));
+    }
 
     override fun audioPlayer(context: Context, sound: Int) {
         MediaPlayer.create(context, sound)

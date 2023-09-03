@@ -5,6 +5,8 @@ import android.widget.ImageView
 
 interface GameFunctions {
 
+    fun showImage(context: Context, image: Int, imageView: ImageView)
+
     fun audioPlayer(context: Context, sound: Int)
 
     fun optionsSounds(context: Context, state: Boolean)
