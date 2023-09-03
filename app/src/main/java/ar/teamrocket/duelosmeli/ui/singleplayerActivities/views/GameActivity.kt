@@ -1,17 +1,12 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
-import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -290,7 +285,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private fun timerFunctions(game: Game){
         var actualGame = game
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
-        Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            gameFunctions.colorFormatter(this, listOf(binding.btnOption1, binding.btnOption2, binding.btnOption3), R.attr.colorPrimary)
+        },1500)
         Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
@@ -339,23 +336,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
             null))
-    }
-
-
-    private fun colorResetter(){
-        binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption2.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption3.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-    }
-
-    @ColorInt
-    fun Context.getColorFromAttr(
-        @AttrRes attrColor: Int,
-        typedValue: TypedValue = TypedValue(),
-        resolveRefs: Boolean = true
-    ): Int {
-        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-        return typedValue.data
     }
 
     // ******** Feature de sensor - Acelerómetro - Rotando el celu hacia la izquierda ********
