@@ -1,19 +1,20 @@
 package ar.teamrocket.duelosmeli.ui
 
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityHomeBinding
+import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.domain.HomeFunctions
 import ar.teamrocket.duelosmeli.domain.impl.HomeFunctionsImpl
+import org.koin.android.ext.android.inject
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private var homeFunctions: HomeFunctions = HomeFunctionsImpl()
-    private lateinit var openingSound: MediaPlayer
+    private val gameFunctions: GameFunctions by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +32,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Reproducción del sonido de apertura de la app
-        openingSound = MediaPlayer.create(this, R.raw.open)
-        openingSound.setOnPreparedListener {
-            openingSound.start()
-        }
+        gameFunctions.audioPlayer(this, R.raw.open)
     }
 
     private fun viewMainMenu() {

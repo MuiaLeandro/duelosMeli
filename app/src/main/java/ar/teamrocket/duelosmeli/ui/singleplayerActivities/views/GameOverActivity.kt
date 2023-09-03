@@ -1,7 +1,6 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
 import android.content.Intent
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +8,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.databinding.ActivityGameOverBinding
+import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.adapters.HighScoreAdapter
 import org.koin.android.ext.android.inject
@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 class GameOverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGameOverBinding
     private val playerDao : PlayerDao by inject()
+    private val gameFunctions: GameFunctions by inject()
     //TODO: Agregar ViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +26,6 @@ class GameOverActivity : AppCompatActivity() {
 
         binding.iHeader.tvTitle.text=getString(R.string.partida_finalizada)
         binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
-
-
-        val gameOverSound = MediaPlayer.create(this, R.raw.gameover)
-        gameOverSound.start()
         binding.btnBackToHome.setOnClickListener { viewNewGame() }
 
         val topTenPlayers = playerDao.getTopTenOrderByScore()
@@ -58,6 +55,11 @@ class GameOverActivity : AppCompatActivity() {
         //Highscore RecyclerView
         binding.rvScoreTable.layoutManager = LinearLayoutManager(this)
         binding.rvScoreTable.adapter = HighScoreAdapter(topTenPlayers)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        gameFunctions.audioPlayer(this, R.raw.gameover)
     }
 
     private fun achievedPointsBinder(pointsAchieved: Int, zero: String, one: String, moreThanOne: String) {

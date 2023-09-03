@@ -6,7 +6,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.media.MediaPlayer
 import android.os.*
 import android.util.Log
 import android.util.TypedValue
@@ -44,8 +43,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private var correctPricePosition: Int = 0
     private lateinit var fake1: String
     private lateinit var fake2: String
-    private lateinit var doorbellSound: MediaPlayer
-    private lateinit var whistleSongExtraLife: MediaPlayer
     private lateinit var sensorManager: SensorManager
     private var mov: Int = 0
     private lateinit var listPlayedItems : MutableList<ItemPlayed>
@@ -61,10 +58,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         binding.iHeader.tvTitle.text = getString(R.string.whats_the_price)
 
         // Reproducción de sonido de timbre
-        doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
-        doorbellSound.setOnPreparedListener {
-            doorbellSound.start()
-        }
+        gameFunctions.audioPlayer(this, R.raw.doorbell)
 
         val playerId = intent.extras!!.getLong("Id")
         game = Game(playerId)
@@ -424,10 +418,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                                 game.points-=5
 
                                 // Sonido de vida extra
-                                whistleSongExtraLife = MediaPlayer.create(this, R.raw.whistle_song)
-                                whistleSongExtraLife.setOnPreparedListener {
-                                    whistleSongExtraLife.start()
-                                }
+                                gameFunctions.audioPlayer(this, R.raw.whistle_song)
                             } else {
                                 Snackbar.make(binding.root, R.string.vidas_completas, Snackbar.LENGTH_LONG)
                                     //.setTextColor(resources.getColor(R.color.black))
