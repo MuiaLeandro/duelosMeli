@@ -13,7 +13,7 @@ interface GameFunctions {
 
     fun audioPlayer(context: Context, sound: Int)
 
-    fun optionsSounds(context: Context, state: Boolean)
+    fun optionsSounds(context: Context, state: Boolean, trueStateSound: Int, falseStateSound: Int)
 
     fun mistakeCounterUpdater(game: Game, lifeThree: ImageView, lifeTwo: ImageView, lifeOne: ImageView)
 

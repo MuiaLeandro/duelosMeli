@@ -187,7 +187,7 @@ class DuelActivity : AppCompatActivity() {
             }
         }
         if (correctPosition != pressedOption){
-            gameFunctions.optionsSounds(this,false)
+            gameFunctions.optionsSounds(this,false, R.raw.correct, R.raw.incorrect)
             when (pressedOption) {
                 1 -> { binding.btnOption1Duel
                     .setBackgroundColor(ResourcesCompat.getColor(resources,
@@ -203,7 +203,7 @@ class DuelActivity : AppCompatActivity() {
                 }
             }
         } else {
-            gameFunctions.optionsSounds(this,true)
+            gameFunctions.optionsSounds(this,true, R.raw.correct, R.raw.incorrect)
         }
     }
 

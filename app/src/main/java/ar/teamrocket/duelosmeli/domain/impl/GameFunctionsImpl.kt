@@ -25,10 +25,10 @@ class GameFunctionsImpl : GameFunctions {
             .setOnPreparedListener { it.start() }
     }
 
-    override fun optionsSounds(context: Context, state: Boolean) {
+    override fun optionsSounds(context: Context, state: Boolean, trueStateSound: Int, falseStateSound: Int) {
         when (state) {
-            true -> audioPlayer(context, R.raw.correct)
-            false -> audioPlayer(context, R.raw.incorrect)
+            true -> audioPlayer(context, trueStateSound)
+            false -> audioPlayer(context, falseStateSound)
         }
     }
 

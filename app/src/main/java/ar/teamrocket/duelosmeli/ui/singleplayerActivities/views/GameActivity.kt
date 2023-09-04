@@ -267,7 +267,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         }
 
         if (correctOption != pressedOption){
-            gameFunctions.optionsSounds(this,false)
+            gameFunctions.optionsSounds(this,false, R.raw.correct, R.raw.incorrect)
             when (pressedOption) {
                 1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources,
                     R.color.red1,null)) }
@@ -277,7 +277,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     (resources, R.color.red1,null)) }
             }
         } else {
-            gameFunctions.optionsSounds(this,true)
+            gameFunctions.optionsSounds(this,true, R.raw.correct, R.raw.incorrect)
         }
     }
 

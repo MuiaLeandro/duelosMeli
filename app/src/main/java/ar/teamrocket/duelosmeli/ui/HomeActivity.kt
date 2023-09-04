@@ -19,8 +19,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-
-        // Se instancia una clase que implementa una interfaz con funciones para esta Activity
         gameFunctions.showImage(this, R.drawable.animated_logo, binding.ivLogo)
         gameFunctions.showImage(this, R.drawable.duelosmeli, binding.ivTitle)
         binding.btnPlayGame.setOnClickListener { viewMainMenu() }
