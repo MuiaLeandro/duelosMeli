@@ -6,6 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.*
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -101,6 +102,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
                         override fun onError(e: java.lang.Exception?) {
                             //do smth when there is picture loading error
+                            Log.i("Error", "Error when trying to load picture")
                         }
                     })
             }
@@ -114,7 +116,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                 1 -> binding.btnOption1.text = getString(R.string.money_sign).plus(price)
                 2 -> binding.btnOption2.text = getString(R.string.money_sign).plus(price)
                 3 -> binding.btnOption3.text = getString(R.string.money_sign).plus(price)
-                else -> println("Out of bounds")
+                //else -> println("Out of bounds")
+                else -> Log.i("Error", "Out of bounds")
             }
             vm.fakePrice1.observe(this) {
                 fake1 = it
@@ -122,7 +125,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     1 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake1)
                     2 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
                     3 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
-                    else -> println("Out of bounds")
+                    //else -> println("Out of bounds")
+                    else -> Log.i("Error", "Out of bounds")
                 }
             }
             vm.fakePrice2.observe(this) {
@@ -131,7 +135,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     1 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
                     2 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
                     3 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake2)
-                    else -> println("Out of bounds")
+                    //else -> println("Out of bounds")
+                    else -> Log.i("Error", "Out of bounds")
                 }
             }
             successChecker(correctPricePosition, game)
