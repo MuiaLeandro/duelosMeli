@@ -3,6 +3,8 @@ package ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels
 import androidx.lifecycle.*
 import ar.teamrocket.duelosmeli.data.database.Multiplayer
 import ar.teamrocket.duelosmeli.data.model.Article
+import ar.teamrocket.duelosmeli.data.model.CategoriesList
+import ar.teamrocket.duelosmeli.data.model.Category
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.domain.GameMultiplayer
@@ -21,13 +23,13 @@ class MultiplayerGameViewModel(val meliRepositoryImpl: MeliRepository, var repos
     var currentPlayer = MutableLiveData<Multiplayer>()
     var playersOrderByScore = MutableLiveData<List<Multiplayer>>()
     var team = MutableLiveData<List<Multiplayer>>()
+    private val categories: List<Category> = CategoriesList.categoriesList
 
 
     fun findCategories() {
         viewModelScope.launch {
             starGame.value = false
             try {
-                val categories = meliRepositoryImpl.searchCategories()
                 val categoryId = categories[(categories.indices).random()].id
                 findItemFromCategory(categoryId)
 
