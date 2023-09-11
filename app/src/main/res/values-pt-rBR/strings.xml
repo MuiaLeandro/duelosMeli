@@ -54,4 +54,7 @@
     <string name="acerca_de">Sobre duelosMeli</string>
     <string name="_1_jugador">1 JOGADOR</string>
     <string name="multijugador">MULTIJOGADOR</string>
+    <string name="revisar_conexion">Verifique se você está conectado a uma rede Wi-Fi com conexão à Internet ou rede de dados móveis. Ainda não temos um modo de jogo offline :(</string>
+    <string name="salir">Sair</string>
+    <string name="sin_internet">Opa! Parece que você não tem internet</string>
 </resources>

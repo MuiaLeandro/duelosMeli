@@ -79,5 +79,6 @@ class NewGameActivity : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
