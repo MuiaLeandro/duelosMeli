@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.databinding.ActivityMultiplayerGameBinding
@@ -26,6 +28,8 @@ class MultiplayerGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiplayerGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val game = intent.extras!!.getParcelable<GameMultiplayer>("Game")!!
         vm.setGame(game)
