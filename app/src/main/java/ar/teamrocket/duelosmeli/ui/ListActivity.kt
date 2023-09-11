@@ -139,5 +139,6 @@ class ListActivity : ComponentActivity() {
         intent.putExtra("Points", pointsAchieved)
         intent.putExtra("IdPlayer", idPlayer)
         startActivity(intent)
+        finish()
     }
 }

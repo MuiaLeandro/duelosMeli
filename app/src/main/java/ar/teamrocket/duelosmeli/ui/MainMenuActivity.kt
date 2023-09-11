@@ -20,20 +20,25 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
+import ar.teamrocket.duelosmeli.isInternetAvailable
 import ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.view.NewMultiplayerGameActivity
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.MainMenuViewModel
 import ar.teamrocket.duelosmeli.ui.userProfile.UserProfileActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.net.UnknownHostException
 import java.util.*
 
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
+    private val viewModel: MainMenuViewModel by viewModel()
     val scanner = QRScanner()
     private val prefs: Prefs by inject()
     private val westCities = setOf("La Matanza", "Merlo", "Moreno", "Morón", "Gral. Rodríguez", "Marcos Paz", "Hurlingham", "Ituzaingó", "Tres de Febrero")
@@ -60,19 +65,71 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         if(prefs.getIsFirstUse()){
-            showDialogForGameWithLocation()
-            prefs.saveIsFirstUse(false)
+            if (isInternetAvailable(this)) {
+                showDialogForGameWithLocation()
+                prefs.saveIsFirstUse(false)
+            }
+            else {
+                prefs.saveIsFirstUse(true)
+            }
         }
 
-        binding.btnSinglePlayer.setOnClickListener { viewNewGame() }
-        binding.btnMultiPlayer.setOnClickListener { viewNewMultiplayerGame() }
-        binding.btnDuelMode.setOnClickListener { showDialogForDuelMode() }
+        binding()
+        searchCategories()
+        setObservers()
+    }
+
+    /**
+     * Bindeamos todos los botones. Para los casos que necesitamos internet verificamos la conexión.
+     * No permitimos avanzar al usuario en el flujo de la app más allá de esta activity si no
+     * cuenta con internet en el dispositivo (con las funciones que no necesitan internet por el
+     * momento si se puede interactuar).
+     */
+    private fun binding() {
+        binding.btnSinglePlayer.setOnClickListener { if (isInternetAvailable(this)) viewNewGame() else searchCategories() }
+        binding.btnMultiPlayer.setOnClickListener { if (isInternetAvailable(this)) viewNewMultiplayerGame() else searchCategories() }
+        binding.btnDuelMode.setOnClickListener { if (isInternetAvailable(this)) showDialogForDuelMode() else searchCategories() }
         binding.btnUserProfile.setOnClickListener{ viewUserProfile() }
         binding.btnHowToPlay.setOnClickListener{ viewHowToPlayActivity() }
         binding.btnAbout.setOnClickListener {viewAboutUs() }
-        binding.clLocationContainer.setOnClickListener { showDialogForGameWithLocation() }
+        binding.clLocationContainer.setOnClickListener { if (isInternetAvailable(this)) showDialogForGameWithLocation() else searchCategories() }
     }
 
+    private fun setObservers() {
+        searchCategoriesObserver()
+    }
+
+    private fun searchCategories() {
+        viewModel.searchCategories()
+    }
+
+    /**
+     * Maneja la exepción lanzada al intentar la pegada a la API de categorías. Mostramos un dialog.
+     * [negativeFun] es el botón "Salir". La función [finish] finaliza la activity y salimos del juego.
+     * [positiveFun] es el botón "Reintentar conexión". Se reintenta ejecutar [searchCategories]
+     * Si no se consiguen traer las categorías por el error de conexión se vuelve a entrar a este flujo.
+     */
+    private fun handleUnknownHostException(e: Throwable?) {
+        GenericMaterialDialog(
+            this,
+            R.string.sin_internet,
+            R.string.revisar_conexion,
+            R.string.salir,
+            R.string.reintentar_conexion,
+            negativeFun = { finish() },
+            positiveFun =  { searchCategories() })
+            .buildDialog()
+    }
+
+    /**
+     * Se observa la MutableLiveData [categoriesException] del viewmodel [MainMenuViewModel]
+     * Si tenemos el [UnknownHostException] se lanza la función que handlea la exepción.
+     */
+    private fun searchCategoriesObserver() {
+        viewModel.categoriesException.observe(this, this::handleUnknownHostException)
+    }
+
+    //TODO hacer un constructor sin titulo para este dialog. Extraer los strings. Agregar traducciones. Si se quieren dejar los comentarios de las funciones, documentarlo arriba de la función
     private fun showDialogForGameWithLocation(){
         MaterialAlertDialogBuilder(this,
             R.style.Dialog)
@@ -86,7 +143,7 @@ class MainMenuActivity : AppCompatActivity() {
                 getLocation() // obtiene ubicacion
             }
             .show()
-    }
+        }
 
     private fun isLocationPermissionGranted()=
         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -176,6 +233,7 @@ class MainMenuActivity : AppCompatActivity() {
     * usuario que los habilite manualmente. De lo contrario hacemos el request para que acepte los
     * permisos por primera vez.
     * */
+    //TODO usariamos el constructor hecho para el modal de arriba. Extraer los strings. Agregar traducciones
     private fun requestLocationPermission() {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_COARSE_LOCATION)){
             MaterialAlertDialogBuilder(this,
@@ -222,6 +280,7 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    //TODO usar el constructor completo. Extraer los strings. Agregar traducciones. Si se quieren dejar los comentarios de las funciones, documentarlo arriba de la función
     private fun showDialogForDuelMode(){
         MaterialAlertDialogBuilder(this,
         R.style.Dialog)

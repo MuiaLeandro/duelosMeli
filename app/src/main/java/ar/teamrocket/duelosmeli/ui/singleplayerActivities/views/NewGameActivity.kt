@@ -24,7 +24,10 @@ class NewGameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
     binding.iHeader.tvTitle.text=getString(R.string.player)
-    binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
+    binding.iHeader.ivButtonBack.setOnClickListener {
+        onBackPressed()
+        finish()
+    }
 
 
     //Obtengo todos los jugadores guardados
@@ -55,6 +58,7 @@ class NewGameActivity : AppCompatActivity() {
                     val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
                     val player = playerDao.getById(idLastPlayer.toLong()) // obtengo el nuevo jugador desde la DB.
                     viewGame(player)
+                    finish()
                 }
             }
         }
@@ -76,6 +80,7 @@ class NewGameActivity : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }
