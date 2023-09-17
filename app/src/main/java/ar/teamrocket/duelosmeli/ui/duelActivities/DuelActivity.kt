@@ -5,6 +5,7 @@ import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
@@ -34,6 +35,8 @@ class DuelActivity : AppCompatActivity() {
         binding = ActivityDuelBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         val gson = Gson()
         val itemsString = intent.getStringExtra("ITEMS")
         val itemsType = object : TypeToken<MutableList<ItemDuel>>() {}.type

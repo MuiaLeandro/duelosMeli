@@ -8,8 +8,12 @@ import android.hardware.SensorManager
 import android.os.*
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.PlayerDao
@@ -49,6 +53,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         listPlayedItems = mutableListOf()
 
         binding.iHeader.tvTitle.text = getString(R.string.whats_the_price)

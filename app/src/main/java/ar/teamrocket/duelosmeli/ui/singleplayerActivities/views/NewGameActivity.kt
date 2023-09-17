@@ -8,70 +8,69 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ar.teamrocket.duelosmeli.ui.MainMenuActivity
 import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.database.Player
-import ar.teamrocket.duelosmeli.data.database.PlayerDao
-import org.koin.android.ext.android.inject
 import ar.teamrocket.duelosmeli.databinding.ActivityNewGameBinding
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.adapters.PlayersAdapter
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.NewGameViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewGameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewGameBinding
-
-    private val playerDao: PlayerDao by inject()
-//TODO: Add View Model
+    private val vm: NewGameViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-    binding.iHeader.tvTitle.text=getString(R.string.player)
-    binding.iHeader.ivButtonBack.setOnClickListener {
-        onBackPressed()
-        finish()
+        initUI()
+        setObservers()
+        setListener()
     }
 
+    private fun initUI() {
+        binding.iHeader.tvTitle.text = getString(R.string.player)
+        vm.setupAllPlayers()
+    }
 
-    //Obtengo todos los jugadores guardados
-        val allPlayers = playerDao.getAll()
-        val allPlayersOrderedByName = playerDao.getAllOrderByName()
-
-        val newPlayer = Player("",0) // como el id es autogenerado se le pone 0 y room ya sabe que id poner
-
+    private fun setListener() {
+        binding.iHeader.ivButtonBack.setOnClickListener { onBackPressed() }
         binding.btnStartGame.setOnClickListener {
-            newPlayer.name = binding.etPlayerName.text.toString().replace(" ", "")
+            handleButtonStartGame()
+        }
+    }
 
-            var playerNameAlreadyExists = false
-            for (player in allPlayers){
-                if (player.name == newPlayer.name){
-                    playerNameAlreadyExists = true
-                    break
-                }
+    private fun handleButtonStartGame() {
+        when {
+            vm.playerAlreadyExist(binding.etPlayerName.text) -> {
+                Toast.makeText(this, R.string.player_name_already_exists, Toast.LENGTH_LONG)
+                    .show()
             }
-            when {
-                playerNameAlreadyExists -> {
-                    Toast.makeText(this, R.string.player_name_already_exists, Toast.LENGTH_LONG)
-                        .show()
-                }
-                newPlayer.name == "" -> {
-                    Toast.makeText(this, R.string.put_your_name, Toast.LENGTH_LONG).show()}
-                else -> {
-                    playerDao.insertPlayer(newPlayer) //Guardo el nuevo jugador
-                    val idLastPlayer = allPlayers.size+1 //Calculamos cual es el ID que se autogeneró
-                    val player = playerDao.getById(idLastPlayer.toLong()) // obtengo el nuevo jugador desde la DB.
-                    viewGame(player)
-                    finish()
-                }
+
+            vm.playerNameIsBlank(binding.etPlayerName.text) -> {
+                Toast.makeText(this, R.string.put_your_name, Toast.LENGTH_LONG).show()
+            }
+
+            else -> {
+                vm.insertNewPlayer(binding.etPlayerName.text)
             }
         }
-
-        binding.rvSelectPlayer.layoutManager = LinearLayoutManager(this)
-        binding.rvSelectPlayer.adapter = PlayersAdapter(allPlayersOrderedByName)
-
     }
 
+    private fun setObservers() {
+        vm.newPlayerInserted.observe(this) {
+            it?.let {
+                viewGame(it)
+            }
+        }
+        vm.allPlayersByName.observe(this) {
+            it?.let {
+                binding.rvSelectPlayer.layoutManager = LinearLayoutManager(this)
+                binding.rvSelectPlayer.adapter = PlayersAdapter(it)
+            }
+        }
+    }
 
-    private fun viewGame(player: List<Player>) {
+    private fun viewGame(player: Player) {
         val intent = Intent(this, GameActivity::class.java)
-        intent.putExtra("Id",player[0].id)
+        intent.putExtra("Id", player.id)
         startActivity(intent)
         finish()
     }
@@ -82,5 +81,4 @@ class NewGameActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
 }

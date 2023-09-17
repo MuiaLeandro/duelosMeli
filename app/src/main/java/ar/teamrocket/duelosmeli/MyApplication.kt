@@ -8,8 +8,10 @@ import ar.teamrocket.duelosmeli.data.database.PlayerDao
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.data.database.UserPreferences
 import ar.teamrocket.duelosmeli.data.repository.MeliRepository
+import ar.teamrocket.duelosmeli.data.repository.PlayerRepository
 import ar.teamrocket.duelosmeli.data.repository.PlayersRepository
 import ar.teamrocket.duelosmeli.data.repository.impl.MeliRepositoryImpl
+import ar.teamrocket.duelosmeli.data.repository.impl.PlayerRepositoryImpl
 import ar.teamrocket.duelosmeli.data.repository.impl.PlayersRepositoryImpl
 import ar.teamrocket.duelosmeli.domain.GameFunctions
 import ar.teamrocket.duelosmeli.domain.impl.GameFunctionsImpl
@@ -20,6 +22,7 @@ import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerG
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.NewMultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.NewGameViewModel
 import com.facebook.drawee.backends.pipeline.Fresco
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -31,6 +34,7 @@ class MyApplication : Application() {
     private val appModule = module {
         single<PlayerDao> { getDatabase(get()).playerDao() }
 
+        viewModel { NewGameViewModel(get()) }
         viewModel { GameViewModel(get(), get()) }
         viewModel { MultiplayerGamePartialResultActivityViewModel(get()) }
         viewModel { MultiplayerGameReadyViewModel(get()) }
@@ -42,6 +46,7 @@ class MyApplication : Application() {
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
         single<PlayersRepository> { PlayersRepositoryImpl(get()) }
+        single<PlayerRepository> { PlayerRepositoryImpl(get()) }
         single { Prefs(applicationContext) }
         single { UserPreferences(applicationContext) }
     }
@@ -63,4 +68,3 @@ class MyApplication : Application() {
     )
         .allowMainThreadQueries().build()
 }
-
