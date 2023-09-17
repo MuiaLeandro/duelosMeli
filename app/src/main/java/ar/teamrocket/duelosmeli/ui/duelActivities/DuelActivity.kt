@@ -1,15 +1,11 @@
 package ar.teamrocket.duelosmeli.ui.duelActivities
 
-import android.content.Context
 import android.content.Intent
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
@@ -194,7 +190,7 @@ class DuelActivity : AppCompatActivity() {
             }
         }
         if (correctPosition != pressedOption){
-            gameFunctions.optionsSounds(this,false)
+            gameFunctions.optionsSounds(this,false, R.raw.correct, R.raw.incorrect)
             when (pressedOption) {
                 1 -> { binding.btnOption1Duel
                     .setBackgroundColor(ResourcesCompat.getColor(resources,
@@ -210,7 +206,7 @@ class DuelActivity : AppCompatActivity() {
                 }
             }
         } else {
-            gameFunctions.optionsSounds(this,true)
+            gameFunctions.optionsSounds(this,true, R.raw.correct, R.raw.incorrect)
         }
     }
 
@@ -224,7 +220,7 @@ class DuelActivity : AppCompatActivity() {
     }
 
     private fun loadUI(item: ItemDuel) {
-        colorReset()
+        gameFunctions.colorFormatter(this, listOf(binding.btnOption1Duel, binding.btnOption2Duel, binding.btnOption3Duel), R.attr.colorPrimary)
         binding.tvProductNameDuel.text = item.title
         Picasso
             .get()
@@ -266,21 +262,6 @@ class DuelActivity : AppCompatActivity() {
 
     private fun pauseTimer() {
         countDownTimer.cancel()
-    }
-
-    private fun colorReset(){
-        binding.btnOption1Duel.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption2Duel.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption3Duel.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-    }
-    @ColorInt
-    fun Context.getColorFromAttr(
-        @AttrRes attrColor: Int,
-        typedValue: TypedValue = TypedValue(),
-        resolveRefs: Boolean = true
-    ): Int {
-        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-        return typedValue.data
     }
 
     override fun onBackPressed() {

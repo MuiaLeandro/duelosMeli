@@ -1,15 +1,12 @@
 package ar.teamrocket.duelosmeli.ui.singleplayerActivities.views
 
-import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.media.MediaPlayer
 import android.os.*
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.AttrRes
@@ -46,8 +43,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private var correctPricePosition: Int = 0
     private lateinit var fake1: String
     private lateinit var fake2: String
-    private lateinit var doorbellSound: MediaPlayer
-    private lateinit var whistleSongExtraLife: MediaPlayer
     private lateinit var sensorManager: SensorManager
     private var mov: Int = 0
     private lateinit var listPlayedItems : MutableList<ItemPlayed>
@@ -66,10 +61,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         binding.iHeader.tvTitle.text = getString(R.string.whats_the_price)
 
         // Reproducción de sonido de timbre
-        doorbellSound = MediaPlayer.create(this, R.raw.doorbell)
-        doorbellSound.setOnPreparedListener {
-            doorbellSound.start()
-        }
+        gameFunctions.audioPlayer(this, R.raw.doorbell)
 
         val playerId = intent.extras!!.getLong("Id")
         game = Game(playerId)
@@ -117,6 +109,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
                         override fun onError(e: java.lang.Exception?) {
                             //do smth when there is picture loading error
+                            Log.i("Error", "Error when trying to load picture")
                         }
                     })
             }
@@ -130,7 +123,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                 1 -> binding.btnOption1.text = getString(R.string.money_sign).plus(price)
                 2 -> binding.btnOption2.text = getString(R.string.money_sign).plus(price)
                 3 -> binding.btnOption3.text = getString(R.string.money_sign).plus(price)
-                else -> println("Out of bounds")
+                //else -> println("Out of bounds")
+                else -> Log.i("Error", "Out of bounds")
             }
             vm.fakePrice1.observe(this) {
                 fake1 = it
@@ -138,7 +132,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     1 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake1)
                     2 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
                     3 -> binding.btnOption1.text = getString(R.string.money_sign).plus(fake1)
-                    else -> println("Out of bounds")
+                    //else -> println("Out of bounds")
+                    else -> Log.i("Error", "Out of bounds")
                 }
             }
             vm.fakePrice2.observe(this) {
@@ -147,7 +142,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     1 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
                     2 -> binding.btnOption3.text = getString(R.string.money_sign).plus(fake2)
                     3 -> binding.btnOption2.text = getString(R.string.money_sign).plus(fake2)
-                    else -> println("Out of bounds")
+                    //else -> println("Out of bounds")
+                    else -> Log.i("Error", "Out of bounds")
                 }
             }
             successChecker(correctPricePosition, game)
@@ -283,7 +279,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         }
 
         if (correctOption != pressedOption){
-            gameFunctions.optionsSounds(this,false)
+            gameFunctions.optionsSounds(this,false, R.raw.correct, R.raw.incorrect)
             when (pressedOption) {
                 1 -> { binding.btnOption1.setBackgroundColor(ResourcesCompat.getColor(resources,
                     R.color.red1,null)) }
@@ -293,7 +289,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                     (resources, R.color.red1,null)) }
             }
         } else {
-            gameFunctions.optionsSounds(this,true)
+            gameFunctions.optionsSounds(this,true, R.raw.correct, R.raw.incorrect)
         }
     }
 
@@ -301,7 +297,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     private fun timerFunctions(game: Game){
         var actualGame = game
         binding.btnOption1.isClickable = false; binding.btnOption2.isClickable = false; binding.btnOption3.isClickable = false
-        Handler(Looper.getMainLooper()).postDelayed({ colorResetter() },1500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            gameFunctions.colorFormatter(this, listOf(binding.btnOption1, binding.btnOption2, binding.btnOption3), R.attr.colorPrimary)
+        },1500)
         Handler(Looper.getMainLooper()).postDelayed({ actualGame = continuePlayChecker(actualGame) },1500)
 
         gameFunctions.mistakeCounterUpdater(game, binding.ivLifeThree, binding.ivLifeTwo, binding.ivLifeOne)
@@ -350,23 +348,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             null))
         binding.btnOption3.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.green1,
             null))
-    }
-
-
-    private fun colorResetter(){
-        binding.btnOption1.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption2.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-        binding.btnOption3.setBackgroundColor(getColorFromAttr(R.attr.colorPrimary))
-    }
-
-    @ColorInt
-    fun Context.getColorFromAttr(
-        @AttrRes attrColor: Int,
-        typedValue: TypedValue = TypedValue(),
-        resolveRefs: Boolean = true
-    ): Int {
-        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-        return typedValue.data
     }
 
     // ******** Feature de sensor - Acelerómetro - Rotando el celu hacia la izquierda ********
@@ -429,10 +410,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
                                 game.points-=5
 
                                 // Sonido de vida extra
-                                whistleSongExtraLife = MediaPlayer.create(this, R.raw.whistle_song)
-                                whistleSongExtraLife.setOnPreparedListener {
-                                    whistleSongExtraLife.start()
-                                }
+                                gameFunctions.audioPlayer(this, R.raw.whistle_song)
                             } else {
                                 Snackbar.make(binding.root, R.string.vidas_completas, Snackbar.LENGTH_LONG)
                                     //.setTextColor(resources.getColor(R.color.black))
