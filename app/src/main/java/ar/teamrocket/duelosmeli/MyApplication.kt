@@ -21,6 +21,7 @@ import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerG
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameReadyViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.MultiplayerGameViewModel
 import ar.teamrocket.duelosmeli.ui.multiplayerActivities.viewModels.NewMultiplayerGameViewModel
+import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameOverViewModel
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.NewGameViewModel
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -42,6 +43,7 @@ class MyApplication : Application() {
         viewModel { MultiplayerGameViewModel(get(), get()) }
         viewModel { DuelGameViewModel() }
         viewModel { MainMenuViewModel(get()) }
+        viewModel { GameOverViewModel(get()) }
 
         single<MeliRepository> { MeliRepositoryImpl() }
         single<GameFunctions> { GameFunctionsImpl() }
