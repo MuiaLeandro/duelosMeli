@@ -15,10 +15,10 @@ import kotlin.math.roundToInt
 
 class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs: Prefs) : ViewModel() {
 
-    private val systemLanguage: String = Locale.getDefault().language
+    private val systemLanguage: Country = Language.getAvailableLanguageCountry()
     private val categories: List<Category> = CategoriesList.categoriesList
-    private lateinit var categoryId: String
     lateinit var items: Articles
+    val categoryId = MutableLiveData<String>()
     val itemNameMutable = MutableLiveData<String>()
     val picture = MutableLiveData<String>()
     val itemPriceString = MutableLiveData<String>()
@@ -26,9 +26,9 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     val fakePrice1 = MutableLiveData<String>()
     val fakePrice2 = MutableLiveData<String>()
     val starGame = MutableLiveData(true)
-    val categoriesException = MutableLiveData<Throwable>()
-    val itemFromCategoryException = MutableLiveData<Throwable>()
+    val categoryException = MutableLiveData<Throwable>()
     val itemException = MutableLiveData<Throwable>()
+    val itemDetailsException = MutableLiveData<Throwable>()
     private val listItemsPlayed = mutableListOf<ItemPlayed>()
     private var itemTitle: String = ""
     private var itemPrice: String = ""
@@ -39,21 +39,30 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     val itemDuel = MutableLiveData<ItemDuel>()
 
 
-    fun findCategories() {
+    fun categorySelector() {
         viewModelScope.launch {
             starGame.value = false
             try {
-                categoryId = categories[(categories.indices).random()].id
-                findItemFromCategory(categoryId)
+                categoryId.value = categories[randomGenerator(categories.indices)].id
 
+                //TODO el random este lo deberia ejecutar desde la activity observando a la categoria, que como tuvo un cambio lo va a ejecutar, la funcion rondom estaría acá pero la llamo desde allá
                 //Obtengo en esta instancia un numero random para tenerlo antes de bindear los precios
                 randomNumber1to3Mutable.value = (1..3).random()
                 itemCorrectOption = randomNumber1to3Mutable.value!!
             } catch (e: Exception){
-                categoriesException.value = e
+                categoryException.value = e
             }
         }
     }
+
+    private fun randomGenerator(indices: IntRange): Int {
+        val randomIndices = (indices).shuffled()
+        val randomIndex = randomIndices.first()
+        // Desde este log vemos el indice de la categoría que fue elegida
+        Log.i("INDEX", "INDEX = $randomIndex")
+        return randomIndex
+    }
+
 
     /*
     *
@@ -73,58 +82,68 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     *
     * */
 
-    fun findItemFromCategory(categoryId: String) {
+    fun itemSearcher(categoryId: String) {
        val itemPlayed  = ItemPlayed("", "", "")
         viewModelScope.launch {
-            try {
-                if (systemLanguage == "pt") {
-                    items = meliRepositoryImpl.searchItemFromCategoryBR(categoryId)
-                } else {
-                    if (prefs.getLocationEnabled()) {
-                        if (prefs.getLocationStateId() == "") {
-                            items = meliRepositoryImpl.searchItemFromCategory(categoryId)
-                            val stateFilter =
-                                items.available_filters.first { filter -> filter.id == "state" }
-                            val state = stateFilter.values.firstOrNull { state ->
-                                state.name.uppercase(Locale.getDefault()) == prefs.getLocationState()
-                                    .uppercase(Locale.getDefault())
-                            }
-                            prefs.saveLocationStateId(state?.id ?: "")
-                            items = meliRepositoryImpl.searchItemFromCategory(
-                                categoryId,
-                                prefs.getLocationStateId(),
-                                prefs.getLocationCityId()
-                            )
-                        } else {
-                            items = meliRepositoryImpl.searchItemFromCategory(
-                                categoryId,
-                                prefs.getLocationStateId(),
-                                prefs.getLocationCityId()
-                            )
-                        }
-                    } else {
-                        items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+            //TODO hacer un when y try-catchear bien con la exepción
+            when (systemLanguage) {
+                Country.BRASIL -> {
+                    try {
+                        items = meliRepositoryImpl.searchItemFromCategoryBR(categoryId)
+                    } catch (e: Exception) {
+                        itemException.value = e
                     }
                 }
-                val itemsList: MutableList<Article> = mutableListOf()
-                itemsList.addAll(items.results)
-
-                val item = itemsList[(itemsList.indices).random()]
-                itemNameMutable.value = item.title
-                itemTitle = itemNameMutable.value!!
-                itemPlayed.title = item.title
-                itemPlayed.permalink = item.permalink
-
-                itemPriceString.value = numberRounder(item.price)
-                itemPrice = itemPriceString.value!!
-
-                Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
-                searchItem(item.id, itemPlayed)
-                listItemsPlayed.add(itemPlayed)
-                randomOptionsCalculator(item)
-            } catch (e: Exception) {
-                itemFromCategoryException.value = e
+                else -> {
+                    try {
+                        when (prefs.getLocationEnabled()) {
+                            true -> {
+                                //TODO ver si se puede pasar esto de location al main menu para que no lo tenga que ejecutar cuando tiene que buscar items
+                                if (prefs.getLocationStateId() == "") {
+                                    items = meliRepositoryImpl.searchItemFromCategory(categoryId)
+                                    val stateFilter =
+                                        items.available_filters.first { filter -> filter.id == "state" }
+                                    val state = stateFilter.values.firstOrNull { state ->
+                                        state.name.uppercase(Locale.getDefault()) == prefs.getLocationState()
+                                            .uppercase(Locale.getDefault())
+                                    }
+                                    prefs.saveLocationStateId(state?.id ?: "")
+                                    items = meliRepositoryImpl.searchItemFromCategory(
+                                        categoryId,
+                                        prefs.getLocationStateId(),
+                                        prefs.getLocationCityId()
+                                    )
+                                } else {
+                                    items = meliRepositoryImpl.searchItemFromCategory(
+                                        categoryId,
+                                        prefs.getLocationStateId(),
+                                        prefs.getLocationCityId()
+                                    )
+                                }
+                            }
+                            false -> { items = meliRepositoryImpl.searchItemFromCategory(categoryId) }
+                        }
+                    } catch (e: Exception) {
+                        itemException.value = e
+                    }
+                }
             }
+            val itemsList: MutableList<Article> = mutableListOf()
+            itemsList.addAll(items.results)
+
+            val item = itemsList[(itemsList.indices).random()]
+            itemNameMutable.value = item.title
+            itemTitle = itemNameMutable.value!!
+            itemPlayed.title = item.title
+            itemPlayed.permalink = item.permalink
+
+            itemPriceString.value = numberRounder(item.price)
+            itemPrice = itemPriceString.value!!
+
+            Log.d("ITEM_ID","ITEM: ${item.id} CATEGORY: $categoryId")
+            searchItem(item.id, itemPlayed)
+            listItemsPlayed.add(itemPlayed)
+            randomOptionsCalculator(item)
         }
     }
 
@@ -139,6 +158,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     }
 
     fun searchItem(id: String, itemPlayed: ItemPlayed) {
+        //TODO renombrar esta funcion tipo search item details, porque con esta llamada se pueden traer mas datos del item
         viewModelScope.launch {
             try {
                 val article = meliRepositoryImpl.searchItem(id)
@@ -156,12 +176,14 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
                 itemDuel.value = itemDuelObject
                 itemPlayed.picture = article.pictures[0].secureUrl
             } catch (e: Exception){
-                itemException.value = e
+                //TODO checkear este handleo
+                itemDetailsException.value = e
             }
         }
     }
 
     fun randomOptionsCalculator(item: Article) {
+        // TODO se puede mejorar y/o sacar de este viemodel la funcion?
         val randomPrice1 = randomPriceCalculator(item)
         var randomPrice2 = randomPriceCalculator(item)
 
@@ -179,6 +201,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     }
 
     private fun randomPriceCalculator(item: Article): Double {
+        // TODO se puede mejorar y/o sacar de este viemodel la funcion?
         val realPrice = item.price
         val randomNumber = (1..8).random()
         var fakePrice = 0.0
@@ -198,6 +221,7 @@ class GameViewModel (val meliRepositoryImpl : MeliRepository, private val prefs:
     }
 
     private fun randomOptionsPosition(
+        // TODO se puede mejorar y/o sacar de este viemodel la funcion?
         randomCalculatedPrice1: Double,
         randomCalculatedPrice2: Double
     ) {
