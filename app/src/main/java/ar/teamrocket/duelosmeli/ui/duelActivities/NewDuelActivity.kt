@@ -34,7 +34,7 @@ class NewDuelActivity : AppCompatActivity() {
 
         binding.clLoading.visibility = View.VISIBLE
         binding.btnStartDuel.visibility = View.GONE
-        vm.findCategories()
+        vm.categorySelector()
         setObservers()
 
         binding.iHeader.tvTitle.text = "Nuevo duelo"
@@ -48,7 +48,7 @@ class NewDuelActivity : AppCompatActivity() {
             if (counter < 5){
                 items.add(it)
                 Log.d(("Item" + counter.toString()), itemToString(it))
-                vm.findCategories()
+                vm.categorySelector()
                 counter++
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     binding.pbDeterminateBarDuel.setProgress(counter * 20, true)
@@ -61,9 +61,9 @@ class NewDuelActivity : AppCompatActivity() {
             }
         }
 
-        vm.categoriesException.observe(this, this::handleException)
-        vm.itemFromCategoryException.observe(this, this::handleException)
+        vm.categoryException.observe(this, this::handleException)
         vm.itemException.observe(this, this::handleException)
+        vm.itemDetailsException.observe(this, this::handleException)
     }
 
 
@@ -119,7 +119,7 @@ class NewDuelActivity : AppCompatActivity() {
                 }
                 .setPositiveButton(R.string.reintentar_conexion) { dialog, which ->
                     // Respond to positive button press
-                    vm.findCategories()
+                    vm.categorySelector()
                 }
                 .show()
     }

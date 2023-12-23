@@ -20,6 +20,7 @@ import ar.teamrocket.duelosmeli.R
 import ar.teamrocket.duelosmeli.data.QRScanner
 import ar.teamrocket.duelosmeli.data.preferences.Prefs
 import ar.teamrocket.duelosmeli.databinding.ActivityMainMenuBinding
+import ar.teamrocket.duelosmeli.httpStatusHandler
 import ar.teamrocket.duelosmeli.isInternetAvailable
 import ar.teamrocket.duelosmeli.ui.duelActivities.DuelActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.views.NewGameActivity
@@ -32,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
 import java.net.UnknownHostException
 import java.util.*
 
@@ -104,29 +106,11 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     /**
-     * Maneja la exepción lanzada al intentar la pegada a la API de categorías. Mostramos un dialog.
-     * [negativeFun] es el botón "Salir". La función [finish] finaliza la activity y salimos del juego.
-     * [positiveFun] es el botón "Reintentar conexión". Se reintenta ejecutar [searchCategories]
-     * Si no se consiguen traer las categorías por el error de conexión se vuelve a entrar a este flujo.
-     */
-    private fun handleUnknownHostException(e: Throwable?) {
-        GenericMaterialDialog(
-            this,
-            R.string.sin_internet,
-            R.string.revisar_conexion,
-            R.string.salir,
-            R.string.reintentar_conexion,
-            negativeFun = { finish() },
-            positiveFun =  { searchCategories() })
-            .buildDialog()
-    }
-
-    /**
      * Se observa la MutableLiveData [categoriesException] del viewmodel [MainMenuViewModel]
      * Si tenemos el [UnknownHostException] se lanza la función que handlea la exepción.
      */
     private fun searchCategoriesObserver() {
-        viewModel.categoriesException.observe(this, this::handleUnknownHostException)
+        viewModel.categoriesException.observe(this, this::handleCategoriesException)
     }
 
     //TODO hacer un constructor sin titulo para este dialog. Extraer los strings. Agregar traducciones. Si se quieren dejar los comentarios de las funciones, documentarlo arriba de la función
@@ -198,7 +182,7 @@ class MainMenuActivity : AppCompatActivity() {
     private fun getAddress(latitude: Double, longitude: Double): Address {
         val geocoder = Geocoder(this, Locale.getDefault())
         val address = geocoder.getFromLocation(latitude,longitude,1)
-        return address[0]
+        return address!![0]
     }
     private fun getCountryName(latitude: Double, longitude: Double): String {
         return getAddress(latitude, longitude).countryName
@@ -373,5 +357,36 @@ class MainMenuActivity : AppCompatActivity() {
         val intent = Intent(this, NewDuelActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    /**
+     * Handlea las posibles exepciones para la búsqueda de categorías
+     * @param [e] la exepción "per se"
+     */
+    private fun handleCategoriesException(e: Throwable?) {
+        when (e) {
+            is HttpException -> httpStatusHandler(e)
+            is UnknownHostException -> handleUnknownHostException(e)
+            else -> throw RuntimeException("Unexpected exception. Message: ${e?.message}. Cause: ${e?.cause}")
+        }
+    }
+
+    /**
+     * Handlea la exepción lanzada al intentar la pegada a la API de categorías sin contar con conexión a internet. Mostramos un dialog.
+     * @param [e] la exepción "per se".
+     * [negativeFun] es el botón "Salir". La función [finish] finaliza la activity y salimos del juego.
+     * [positiveFun] es el botón "Reintentar conexión". Se reintenta ejecutar [searchCategories]
+     * Si no se consiguen traer las categorías por el error de conexión se vuelve a entrar a este flujo.
+     */
+    private fun handleUnknownHostException(e: Throwable?) {
+        GenericMaterialDialog(
+            this,
+            R.string.sin_internet,
+            R.string.revisar_conexion,
+            R.string.salir,
+            R.string.reintentar_conexion,
+            negativeFun = { finish() },
+            positiveFun =  { searchCategories() })
+            .buildDialog()
     }
 }

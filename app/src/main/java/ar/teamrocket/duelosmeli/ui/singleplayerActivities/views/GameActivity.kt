@@ -9,8 +9,6 @@ import android.os.*
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -21,6 +19,7 @@ import ar.teamrocket.duelosmeli.data.model.ItemPlayed
 import ar.teamrocket.duelosmeli.databinding.ActivityGameBinding
 import ar.teamrocket.duelosmeli.domain.Game
 import ar.teamrocket.duelosmeli.domain.GameFunctions
+import ar.teamrocket.duelosmeli.httpStatusHandler
 import ar.teamrocket.duelosmeli.ui.HomeActivity
 import ar.teamrocket.duelosmeli.ui.ListActivity
 import ar.teamrocket.duelosmeli.ui.singleplayerActivities.viewModels.GameViewModel
@@ -30,6 +29,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
 import java.net.UnknownHostException
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
@@ -79,7 +79,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     private fun continueGame(){
         binding.clLoading.visibility=View.VISIBLE
-        vm.findCategories()
+        vm.categorySelector()
     }
 
     private fun setListeners(){
@@ -148,38 +148,46 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             }
             successChecker(correctPricePosition, game)
         }
-        vm.categoriesException.observe(this, this::handleException)
-        vm.itemFromCategoryException.observe(this, this::handleException)
-        vm.itemException.observe(this, this::handleException)
+        vm.categoryException.observe(this, this::categoryExceptionHandler)
+        vm.itemException.observe(this, this::itemExceptionHandler)
+        vm.itemDetailsException.observe(this, this::itemExceptionHandler)
+
+        vm.categoryId.observe(this, this::itemSearcher)
     }
 
-    private fun handleException(exception: Throwable?) {
-        if (exception is UnknownHostException)
-            //Toast.makeText(this, "Ups! Connection lost :(", Toast.LENGTH_LONG).show()
-        /*Snackbar.make(binding.root, "Ups! Connection lost :(", Snackbar.LENGTH_SHORT)
-            .setTextColor(resources.getColor(R.color.black))
-            .setBackgroundTint(resources.getColor(R.color.black))
-            .show()*/
-        MaterialAlertDialogBuilder(this,
-            R.style.Dialog)
-            .setTitle(R.string.conexion_perdida)
-            .setMessage(R.string.asegurar_conexion)
-            .setNegativeButton(R.string.terminar_partida) { dialog, which ->
-                // Respond to negative button press
-                viewGameOver(game)
+    /**
+     * Handlea la exepción por fallar en la selección de categorías
+     * @param [e] la exepción "per se"
+     */
+    private fun categoryExceptionHandler(e: Throwable?) {
+        Log.e("Exception", "Unexpected category exception")
+        throw RuntimeException("Unexpected category-exception. Message: ${e?.message}. Cause: ${e?.cause}")
+    }
+
+    private fun itemExceptionHandler(e: Throwable?) {
+        when (e) {
+            is HttpException -> httpStatusHandler(e)
+            is UnknownHostException -> {
+                MaterialAlertDialogBuilder(this,
+                    R.style.Dialog)
+                    .setTitle(R.string.conexion_perdida)
+                    .setMessage(R.string.asegurar_conexion)
+                    .setNegativeButton(R.string.terminar_partida) { dialog, which ->
+                        // Respond to negative button press
+                        viewGameOver(game)
+                    }
+                    .setPositiveButton(R.string.reintentar_conexion) { dialog, which ->
+                        // Respond to positive button press
+                        vm.categorySelector()
+                    }
+                    .show()
+                //TODO: sobreescribir onBackPressed para que se ejecute el game over
             }
-            .setPositiveButton(R.string.reintentar_conexion) { dialog, which ->
-                // Respond to positive button press
-                vm.findCategories()
-            }
-            .show()
-            //TODO: sobreescribir onBackPressed para que se ejecute el game over
-            /*when (exception.code()) {
-                400 -> Toast.makeText(this, R.string.bad_request.toString(), Toast.LENGTH_LONG).show()
-                404 -> Toast.makeText(this, R.string.resource_not_found.toString(), Toast.LENGTH_LONG).show()
-                in 500..599 -> Toast.makeText(this, R.string.server_error.toString(), Toast.LENGTH_LONG).show()
-                else -> Toast.makeText(this, R.string.unknown_error.toString(), Toast.LENGTH_LONG).show()
-            }*/
+        }
+    }
+
+    private fun itemSearcher(categoryId: String) {
+        vm.itemSearcher(categoryId)
     }
 
     private fun viewGameOver(game: Game) {
